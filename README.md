@@ -6,15 +6,15 @@ An elegant, responsive, and feature-complete food delivery single-page applicati
 
 ## 🌟 Key Features
 
-### 1. Home & Restaurant Discovery
-- **Hero & Promotional Banners**: Interactive banners showcasing promotional coupon claims (`WELCOME50`, `FREEDEL`) with one-click copy/apply.
-- **Cuisine Category Filters**: Quick category selector with emojis and pill styling (Burgers, Artisan Pizza, Royal Biryani, Kyoto Ramen & Asian, Healthy Bowls, Mexican, Desserts & Pastries).
-- **Multi-Faceted Search & Filter Engine**:
-  - Live full-text search across restaurant names, cuisines, and specific menu dishes.
-  - Dietary toggles: Pure Veg filter with green dietary indicators.
-  - Quality thresholds: Ratings 4.0+ and Fast Delivery (< 30 mins) toggles.
-  - Sorting: Recommended, Top Rated, Fastest Delivery, Price (Low to High / High to Low).
-- **Rich Restaurant Cards**: High-definition food imagery, delivery ETA, distance, cost-for-two, discount tags, and favorite bookmarking.
+### 1. Smart Location System (Auto GPS & Manual Entry)
+- **Automatic GPS Location Detection**: One-click detection using the HTML5 Geolocation API with reverse geocoding to automatically identify the user's locality, city, state, and PIN code.
+- **Manual Search & Location Picker**:
+  - Instant search across major Indian tech hubs and residential areas (Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Pune).
+  - Quick-select popular city chips and localities (Koramangala, Indiranagar, Connaught Place, Bandra West, Cyber City, etc.).
+  - **Custom Address Builder**: Enter specific Flat/Building number, street, area, city, and 6-digit PIN code.
+  - One-click auto-fill during checkout.
+
+### 2. Home & Restaurant Discovery
 
 ### 2. Restaurant Details & Menu Customization
 - **Immersive Restaurant Header**: Ambient backdrop cover, verified review badges, operational status, and delivery details.
