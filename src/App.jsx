@@ -14,8 +14,11 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import OrderTrackingPage from './pages/OrderTrackingPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
 
+import { AuthProvider } from './context/AuthContext';
 import { FilterProvider } from './context/FilterContext';
 import { CartProvider } from './context/CartContext';
 import { OrderProvider } from './context/OrderContext';
@@ -31,31 +34,34 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <LocationProvider>
-      <FilterProvider>
-        <CartProvider>
-          <OrderProvider>
-            <div className="min-h-screen flex flex-col bg-slate-50/70 bg-mesh text-gray-900 selection:bg-brand-500 selection:text-white">
-              <ScrollToTop />
-              {/* Global Navigation */}
-              <Navbar />
+    <AuthProvider>
+      <LocationProvider>
+        <FilterProvider>
+          <CartProvider>
+            <OrderProvider>
+              <div className="min-h-screen flex flex-col bg-slate-50/70 bg-mesh text-gray-900 selection:bg-brand-500 selection:text-white">
+                <ScrollToTop />
+                {/* Global Navigation */}
+                <Navbar />
 
-              {/* Main Page Route Views */}
-              <div className="flex-1 flex flex-col">
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/restaurant/:slug" element={<RestaurantDetailPage />} />
-                  <Route path="/cart" element={<CartPage />} />
-                  <Route path="/checkout" element={<CheckoutPage />} />
-                  <Route
-                    path="/order-confirmation/:orderId"
-                    element={<OrderConfirmationPage />}
-                  />
-                  <Route path="/track/:orderId" element={<OrderTrackingPage />} />
-                  <Route path="/orders" element={<OrderHistoryPage />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </div>
+                {/* Main Page Route Views */}
+                <div className="flex-1 flex flex-col">
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/restaurant/:slug" element={<RestaurantDetailPage />} />
+                    <Route path="/cart" element={<CartPage />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    <Route
+                      path="/order-confirmation/:orderId"
+                      element={<OrderConfirmationPage />}
+                    />
+                    <Route path="/track/:orderId" element={<OrderTrackingPage />} />
+                    <Route path="/orders" element={<OrderHistoryPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </div>
 
               {/* Overlays, Drawers & Location Modal */}
               <CartDrawer />
@@ -72,5 +78,6 @@ export default function App() {
         </CartProvider>
       </FilterProvider>
     </LocationProvider>
+  </AuthProvider>
   );
 }

@@ -10,18 +10,23 @@ import {
   UtensilsCrossed,
   Crosshair,
   Compass,
+  User,
+  LogOut,
 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { useOrders } from '../../context/OrderContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function Navbar() {
+  const { user, isAuthenticated, logout } = useAuth();
   const { bill, openCartDrawer } = useCart();
   const { orders } = useOrders();
   const { currentLocation, openLocationModal } = useLocationContext();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-gray-100/80 shadow-2xs transition-all">
@@ -106,6 +111,59 @@ export default function Navbar() {
                   </span>
                 )}
               </Link>
+              {/* User Account / Sign In */}
+              {isAuthenticated ? (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-xs font-bold text-gray-800 bg-gray-50 hover:bg-brand-50 hover:text-brand-600 border border-gray-200/90 transition-all shadow-2xs group"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-brand-600 to-rose-500 text-white flex items-center justify-center text-[10px] font-black shadow-xs">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="max-w-[110px] truncate">{user.name.split(' ')[0]}</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-brand-600" />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {userMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                      <div className="px-4 py-2.5 border-b border-gray-100">
+                        <p className="text-xs font-black text-gray-900 truncate">{user.name}</p>
+                        <p className="text-[11px] text-gray-500 truncate">{user.email || user.phone}</p>
+                      </div>
+                      <Link
+                        to="/orders"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-gray-700 hover:bg-brand-50 hover:text-brand-600 transition-colors"
+                      >
+                        <Clock className="w-3.5 h-3.5 text-gray-400" />
+                        <span>My Orders & History</span>
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          logout();
+                          setUserMenuOpen(false);
+                        }}
+                        className="w-full text-left flex items-center gap-2 px-4 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="px-3 py-2 rounded-xl text-sm font-bold text-gray-700 hover:text-brand-600 hover:bg-gray-50 transition-all flex items-center gap-1.5"
+                >
+                  <User className="w-4 h-4 text-brand-600" />
+                  <span>Sign In</span>
+                </Link>
+              )}
             </nav>
 
             {/* Quick Mobile Location Pin Button */}
@@ -158,6 +216,48 @@ export default function Navbar() {
         {/* Mobile dropdown menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-100 py-3 space-y-2">
+            {/* User Profile / Login status in Mobile */}
+            {isAuthenticated ? (
+              <div className="px-4 py-2.5 rounded-xl bg-gray-50 flex items-center justify-between">
+                <div className="flex items-center gap-2.5 truncate">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-600 to-rose-500 text-white flex items-center justify-center text-xs font-black">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="truncate">
+                    <p className="text-xs font-black text-gray-900 truncate">{user.name}</p>
+                    <p className="text-[10px] text-gray-500 truncate">{user.email || user.phone}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-lg"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 px-1">
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 text-center rounded-xl bg-brand-50 text-brand-700 text-xs font-bold border border-brand-200"
+                >
+                  Log In
+                </Link>
+                <Link
+                  to="/signup"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 text-center rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 text-white text-xs font-bold shadow-xs"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+
             {/* Location in mobile drawer */}
             <button
               type="button"
@@ -165,7 +265,7 @@ export default function Navbar() {
                 setMobileMenuOpen(false);
                 openLocationModal();
               }}
-              className="w-full text-left px-4 py-2.5 rounded-xl bg-brand-50 text-brand-800 text-xs font-bold flex items-center justify-between"
+              className="w-full text-left px-4 py-2.5 rounded-xl bg-brand-50/70 text-brand-800 text-xs font-bold flex items-center justify-between"
             >
               <div className="flex items-center gap-2 truncate">
                 <MapPin className="w-4 h-4 text-brand-600 flex-shrink-0" />
