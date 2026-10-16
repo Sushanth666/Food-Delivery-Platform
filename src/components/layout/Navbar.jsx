@@ -9,7 +9,7 @@ import {
   User,
   LogOut,
   Clock,
-  Compass,
+  ChevronDown,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
@@ -41,7 +41,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20 gap-3 sm:gap-6">
           {/* LEFT: Logo & Delivering To Pill */}
           <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0">
-            {/* CraveWave Brand Logo matching reference */}
+            {/* CraveWave Brand Logo */}
             <Link to="/" className="flex items-center gap-2 group">
               {/* Fluid wavy icon */}
               <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#E11D48] to-rose-500 flex items-center justify-center text-white shadow-lg shadow-rose-950/50 group-hover:scale-105 transition-transform">
@@ -64,7 +64,7 @@ export default function Navbar() {
               </span>
             </Link>
 
-            {/* Delivering To Pill matching screenshot */}
+            {/* Delivering To Pill */}
             <button
               type="button"
               onClick={openLocationModal}
@@ -86,7 +86,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* CENTER: Search Bar matching screenshot */}
+          {/* CENTER: Search Bar */}
           <div className="flex-1 max-w-xl mx-2 hidden sm:block">
             <div className="relative flex items-center">
               <Search className="w-4 h-4 text-gray-400 absolute left-4 pointer-events-none" />
@@ -109,37 +109,82 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* RIGHT: Profile, Wishlist, Cart with Icon on top & text below */}
-          <div className="flex items-center gap-4 sm:gap-6 flex-shrink-0">
-            {/* 1. Profile Button */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => {
-                  if (isAuthenticated) {
-                    setUserDropdownOpen(!userDropdownOpen);
-                  } else {
-                    navigate('/login');
-                  }
-                }}
-                className="flex flex-col items-center justify-center text-gray-300 hover:text-white transition-colors group cursor-pointer"
-                aria-label="Profile"
-              >
-                {isAuthenticated && user?.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-7 h-7 rounded-full object-cover border border-rose-500 shadow-sm"
-                  />
-                ) : (
-                  <div className="w-7 h-7 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/15 flex items-center justify-center text-white transition-colors">
-                    <User className="w-3.5 h-3.5" />
-                  </div>
+          {/* RIGHT: Actions with Cart and Sign In places exchanged */}
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
+            {/* 1. CART BUTTON (Now on the Left) */}
+            <button
+              id="navbar-cart-button"
+              type="button"
+              onClick={openCartDrawer}
+              className="relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer group"
+              aria-label="Cart"
+            >
+              <div className="relative">
+                <ShoppingBag className="w-4 h-4 text-white" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2.5 bg-white text-[#E11D48] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
+                    {cartCount}
+                  </span>
                 )}
-                <span className="text-[10px] font-semibold text-gray-400 group-hover:text-gray-200 mt-1 leading-none">
-                  {isAuthenticated ? user.name.split(' ')[0] : 'Profile'}
-                </span>
-              </button>
+              </div>
+              <span className="font-extrabold text-xs sm:text-sm">Cart</span>
+            </button>
+
+            {/* 2. WISHLIST BUTTON (Center) */}
+            <button
+              type="button"
+              onClick={openWishlist}
+              className="relative flex items-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all cursor-pointer group"
+              aria-label="Wishlist"
+              title="View Wishlist"
+            >
+              <div className="relative">
+                <Heart className="w-4 h-4 text-gray-300 group-hover:text-rose-400 transition-colors" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center shadow-xs">
+                    {wishlistCount}
+                  </span>
+                )}
+              </div>
+              <span className="text-xs font-semibold text-gray-300 group-hover:text-white hidden md:inline">
+                Wishlist
+              </span>
+            </button>
+
+            {/* 3. SIGN IN / PROFILE BUTTON (Now on the Right) */}
+            <div className="relative">
+              {isAuthenticated ? (
+                <button
+                  type="button"
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer group"
+                  aria-label="Profile"
+                >
+                  {user?.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="w-5 h-5 rounded-full object-cover border border-rose-500 shadow-xs"
+                    />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-brand-600 to-rose-500 text-white flex items-center justify-center text-[10px] font-black">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <span className="text-xs font-bold text-gray-200 group-hover:text-white max-w-[85px] truncate">
+                    {user.name.split(' ')[0]}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-transform" />
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer group"
+                >
+                  <User className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
+                  <span className="text-xs sm:text-sm font-bold">Sign In</span>
+                </Link>
+              )}
 
               {/* Profile Dropdown if logged in */}
               {isAuthenticated && userDropdownOpen && (
@@ -180,46 +225,6 @@ export default function Navbar() {
                 </>
               )}
             </div>
-
-            {/* 2. Wishlist Button */}
-            <button
-              type="button"
-              onClick={openWishlist}
-              className="relative flex flex-col items-center justify-center text-gray-300 hover:text-white transition-colors group cursor-pointer"
-              aria-label="Wishlist"
-            >
-              <div className="relative">
-                <Heart className="w-5 h-5 text-gray-300 group-hover:text-rose-400 transition-colors" />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
-                    {wishlistCount}
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] font-semibold text-gray-400 group-hover:text-gray-200 mt-1 leading-none">
-                Wishlist
-              </span>
-            </button>
-
-            {/* 3. Cart Button */}
-            <button
-              type="button"
-              onClick={openCartDrawer}
-              className="relative flex flex-col items-center justify-center text-gray-300 hover:text-white transition-colors group cursor-pointer"
-              aria-label="Cart"
-            >
-              <div className="relative">
-                <ShoppingBag className="w-5 h-5 text-gray-300 group-hover:text-rose-400 transition-colors" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
-                    {cartCount}
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] font-semibold text-gray-400 group-hover:text-gray-200 mt-1 leading-none">
-                Cart
-              </span>
-            </button>
           </div>
         </div>
 
