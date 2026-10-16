@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 const DEMO_USER = {
   id: 'usr-901',
-  name: 'Sushanth Kumar',
+  name: 'Sushanth',
   email: 'sushanth@example.com',
   phone: '+91 98765 43210',
   avatar: getIndianAvatarByName('Sushanth Kumar'), // Authentic Indian man photo
