@@ -356,13 +356,13 @@ export default function RestaurantDetailPage() {
                         {/* Add / Quantity Button */}
                         <div className="mt-2.5 w-full">
                           {itemQtyInCart > 0 && !item.customizable ? (
-                            <div className="w-full flex items-center justify-between bg-gradient-to-r from-brand-600 to-amber-500 text-white rounded-xl px-2.5 py-1.5 shadow-sm">
+                            <div className="w-full flex items-center justify-between bg-gradient-to-r from-brand-600 to-rose-600 text-white rounded-xl px-2.5 py-1.5 shadow-sm">
                               <button
                                 type="button"
                                 onClick={() =>
                                   updateQuantity(primaryKey, itemQtyInCart - 1)
                                 }
-                                className="text-white hover:text-amber-200 p-0.5 active:scale-90 transition-transform"
+                                className="text-white hover:text-rose-200 p-0.5 active:scale-90 transition-transform"
                                 aria-label="Decrease quantity"
                               >
                                 <Minus className="w-3.5 h-3.5 stroke-[3]" />
@@ -375,7 +375,7 @@ export default function RestaurantDetailPage() {
                                 onClick={() =>
                                   updateQuantity(primaryKey, itemQtyInCart + 1)
                                 }
-                                className="text-white hover:text-amber-200 p-0.5 active:scale-90 transition-transform"
+                                className="text-white hover:text-rose-200 p-0.5 active:scale-90 transition-transform"
                                 aria-label="Increase quantity"
                               >
                                 <Plus className="w-3.5 h-3.5 stroke-[3]" />
@@ -385,7 +385,7 @@ export default function RestaurantDetailPage() {
                             <button
                               type="button"
                               onClick={() => handleAddItem(item)}
-                              className="w-full py-1.5 px-3 rounded-xl bg-white border border-brand-500 text-brand-600 hover:bg-gradient-to-r hover:from-brand-600 hover:to-amber-500 hover:text-white hover:border-transparent font-extrabold text-xs shadow-xs hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 group/btn"
+                              className="w-full py-1.5 px-3 rounded-xl bg-white border border-brand-500 text-brand-600 hover:bg-gradient-to-r hover:from-brand-600 hover:to-rose-600 hover:text-white hover:border-transparent font-extrabold text-xs shadow-xs hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 group/btn"
                             >
                               <Plus className="w-3.5 h-3.5 stroke-[3]" />
                               <span>{itemQtyInCart > 0 ? `Add (${itemQtyInCart})` : 'ADD'}</span>

@@ -67,7 +67,7 @@ export default function CategoryBar() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-2xl border transition-all duration-300 group active:scale-95 ${
                 isSelected
-                  ? 'bg-gradient-to-r from-brand-600 to-amber-500 border-transparent text-white shadow-lg shadow-brand-500/30 scale-105'
+                  ? 'bg-gradient-to-r from-brand-600 to-rose-600 border-transparent text-white shadow-lg shadow-brand-500/30 scale-105'
                   : 'bg-white/80 backdrop-blur-md border-gray-200/90 text-gray-700 hover:border-brand-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5'
               }`}
             >
@@ -76,7 +76,7 @@ export default function CategoryBar() {
                 className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl transition-transform duration-300 group-hover:scale-110 shadow-xs ${
                   isSelected
                     ? 'bg-white/20 text-white'
-                    : 'bg-gradient-to-br from-amber-50 to-orange-50 border border-orange-100/80'
+                    : 'bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100/80'
                 }`}
               >
                 <span>{cat.icon}</span>

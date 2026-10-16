@@ -75,23 +75,23 @@
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* Subtle Indian saffron/amber radial mesh glow for vibrant body feel */
+/* Subtle Midnight Crimson / Ruby Rose radial mesh glow */
 .bg-mesh {
   background-image: 
-    radial-gradient(at 0% 0%, rgba(255, 237, 213, 0.45) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(254, 215, 170, 0.3) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(255, 247, 237, 0.6) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(255, 228, 230, 0.45) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(254, 205, 211, 0.3) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(255, 241, 242, 0.6) 0px, transparent 50%);
 }
 
-/* Shimmer animated gradient text */
+/* Shimmer animated gradient text in Crimson Ruby */
 .text-gradient-brand {
-  background: linear-gradient(135deg, #111827 0%, #EA580C 50%, #F59E0B 100%);
+  background: linear-gradient(135deg, #0F172A 0%, #E11D48 50%, #FB7185 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-saffron {
-  background: linear-gradient(135deg, #EA580C 0%, #F97316 50%, #FBBF24 100%);
+.text-gradient-ruby {
+  background: linear-gradient(135deg, #BE123C 0%, #E11D48 50%, #FDA4AF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -102,5 +102,5 @@
 }
 
 .badge-glow-brand {
-  box-shadow: 0 0 16px -2px rgba(234, 88, 12, 0.3);
+  box-shadow: 0 0 16px -2px rgba(225, 29, 72, 0.35);
 }

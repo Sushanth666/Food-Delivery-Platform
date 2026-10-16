@@ -78,7 +78,7 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-brand-500/25">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-brand-500/25">
                 <UtensilsCrossed className="w-4 h-4" />
               </div>
               <span className="text-xl font-black font-display text-white tracking-tight">

@@ -30,7 +30,7 @@ export default function Navbar() {
           {/* Left: Brand & Location */}
           <div className="flex items-center gap-3 sm:gap-4 lg:gap-5 min-w-0">
             <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-brand-500/25 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-brand-500/25 group-hover:scale-105 transition-transform">
                 <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="flex flex-col">
@@ -123,7 +123,7 @@ export default function Navbar() {
               id="navbar-cart-button"
               type="button"
               onClick={openCartDrawer}
-              className="relative flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-amber-500 hover:from-brand-700 hover:to-amber-600 text-white font-bold text-sm shadow-md shadow-brand-500/25 transition-all hover:shadow-lg hover:shadow-brand-500/35 active:scale-95"
+              className="relative flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white font-bold text-sm shadow-md shadow-brand-500/25 transition-all hover:shadow-lg hover:shadow-brand-500/35 active:scale-95"
             >
               <div className="relative">
                 <ShoppingBag className="w-4 h-4" />

@@ -26,8 +26,8 @@ export default function RestaurantCard({ restaurant }) {
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
           <div className="flex items-center gap-1.5 flex-wrap">
             {restaurant.tag && (
-              <span className="pointer-events-auto px-2.5 py-1 bg-gradient-to-r from-brand-600 to-amber-500 text-white text-[11px] font-black uppercase tracking-wider rounded-lg shadow-md flex items-center gap-1 border border-white/20">
-                <Sparkles className="w-3 h-3 text-amber-200 fill-amber-200" />
+              <span className="pointer-events-auto px-2.5 py-1 bg-gradient-to-r from-brand-600 to-rose-600 text-white text-[11px] font-black uppercase tracking-wider rounded-lg shadow-md flex items-center gap-1 border border-white/20">
+                <Sparkles className="w-3 h-3 text-rose-200 fill-rose-200" />
                 <span>{restaurant.tag}</span>
               </span>
             )}
