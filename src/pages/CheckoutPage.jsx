@@ -13,9 +13,11 @@ import {
   ArrowRight,
   AlertCircle,
   Lock,
+  Crosshair,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useOrders } from '../context/OrderContext';
+import { useLocationContext } from '../context/LocationContext';
 import { formatCurrency } from '../utils/formatCurrency';
 import confetti from 'canvas-confetti';
 
@@ -23,14 +25,15 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const { cartItems, currentRestaurant, bill, clearCart } = useCart();
   const { placeOrder } = useOrders();
+  const { currentLocation, openLocationModal } = useLocationContext();
 
   // Form State
   const [formData, setFormData] = useState({
     fullName: 'Rahul Sharma',
     phone: '+91 98765 43210',
-    street: 'Flat 402, Sai Orchid Residency, 12th Main Road, 4th Block',
-    city: 'Koramangala, Bengaluru, Karnataka',
-    zip: '560034',
+    street: currentLocation.area || 'Flat 402, Sai Orchid Residency, 12th Main Road, 4th Block',
+    city: currentLocation.city ? `${currentLocation.city}, ${currentLocation.state || 'Karnataka'}` : 'Koramangala, Bengaluru, Karnataka',
+    zip: currentLocation.pincode || '560034',
     instructions: 'Leave with security / call upon arrival',
   });
 
@@ -155,13 +158,32 @@ export default function CheckoutPage() {
           <div className="lg:col-span-7 space-y-6">
             {/* Delivery Address Card */}
             <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-soft space-y-4">
-              <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100">
-                <div className="w-8 h-8 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600">
-                  <MapPin className="w-4 h-4" />
+              <div className="flex items-center justify-between pb-3 border-b border-gray-100 flex-wrap gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-extrabold text-gray-900 text-base">
+                    1. Delivery Address
+                  </h3>
                 </div>
-                <h3 className="font-extrabold text-gray-900 text-base">
-                  1. Delivery Address
-                </h3>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      street: currentLocation.area || prev.street,
+                      city: currentLocation.city ? `${currentLocation.city}, ${currentLocation.state || 'Karnataka'}` : prev.city,
+                      zip: currentLocation.pincode || prev.zip,
+                    }));
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                  title="Auto-fill with currently detected location"
+                >
+                  <Crosshair className="w-3.5 h-3.5 text-brand-600" />
+                  <span>Use Detected Location</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
