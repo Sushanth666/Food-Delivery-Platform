@@ -7,6 +7,7 @@ import {
   Heart,
   ShoppingBag,
   User,
+  UserCog,
   LogOut,
   Clock,
   ChevronDown,
@@ -17,6 +18,8 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { useFilter } from '../../context/FilterContext';
+import { getIndianAvatarByName } from '../../utils/indianAvatars';
+import EditProfileModal from '../common/EditProfileModal';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -27,6 +30,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
 
   // Total quantity of items in cart
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -148,6 +152,7 @@ export default function Navbar() {
             <div className="relative">
               {isAuthenticated ? (
                 <button
+                  id="user-profile-btn"
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer group"
@@ -186,32 +191,61 @@ export default function Navbar() {
                     className="fixed inset-0 z-40"
                     onClick={() => setUserDropdownOpen(false)}
                   />
-                  <div className="absolute right-0 mt-3 w-56 bg-[#16161D] border border-white/10 rounded-2xl shadow-2xl z-50 p-2 text-white">
-                    <div className="px-3 py-2 border-b border-white/10 mb-1">
-                      <p className="text-xs font-bold text-white truncate">
-                        {user.name}
-                      </p>
-                      <p className="text-[10px] text-gray-400 truncate">
-                        {user.email || user.phone}
-                      </p>
+                  <div className="absolute right-0 mt-3 w-64 bg-[#14141C]/95 border border-white/15 rounded-2xl shadow-2xl z-50 p-2.5 text-white backdrop-blur-xl">
+                    {/* User Profile Header with Avatar */}
+                    <div className="flex items-center gap-3 px-2.5 py-2.5 border-b border-white/10 mb-1.5 bg-white/[0.02] rounded-xl">
+                      <div className="relative flex-shrink-0">
+                        <img
+                          src={user.avatar || getIndianAvatarByName(user.name)}
+                          alt={user.name}
+                          className="w-10 h-10 rounded-xl object-cover border-2 border-rose-500 shadow-md shadow-rose-950/60"
+                        />
+                        <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#14141C] rounded-full" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-black text-white truncate">
+                          {user.name}
+                        </p>
+                        <p className="text-[11px] text-gray-400 truncate">
+                          {user.email || user.phone}
+                        </p>
+                      </div>
                     </div>
+
+                    {/* Edit Profile Button */}
+                    <button
+                      id="edit-profile-btn"
+                      type="button"
+                      onClick={() => {
+                        setIsEditProfileOpen(true);
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer group"
+                    >
+                      <UserCog className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
+                      <span>Edit Profile Details</span>
+                    </button>
+
+                    {/* Order History */}
                     <Link
                       to="/orders"
                       onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer group"
                     >
-                      <Clock className="w-3.5 h-3.5 text-rose-400" />
+                      <Clock className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
                       <span>Order History</span>
                     </Link>
+
+                    {/* Logout */}
                     <button
                       type="button"
                       onClick={() => {
                         logout();
                         setUserDropdownOpen(false);
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-950/40 transition-colors mt-1"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-950/40 transition-colors mt-1 cursor-pointer"
                     >
-                      <LogOut className="w-3.5 h-3.5" />
+                      <LogOut className="w-4 h-4" />
                       <span>Log Out</span>
                     </button>
                   </div>
@@ -235,6 +269,12 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Edit Profile Details Modal */}
+      <EditProfileModal
+        isOpen={isEditProfileOpen}
+        onClose={() => setIsEditProfileOpen(false)}
+      />
     </header>
   );
 }

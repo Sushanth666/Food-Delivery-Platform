@@ -95,6 +95,22 @@ export function AuthProvider({ children }) {
     return { success: true };
   };
 
+  const updateProfile = (updatedFields) => {
+    setUser((prev) => {
+      if (!prev) return null;
+      const updated = {
+        ...prev,
+        ...updatedFields,
+      };
+      // If user changed name and didn't manually pick an avatar, update avatar to match gender
+      if (updatedFields.name && !updatedFields.avatar && !prev.customAvatarSelected) {
+        updated.avatar = getIndianAvatarByName(updatedFields.name.trim());
+      }
+      return updated;
+    });
+    return { success: true };
+  };
+
   const logout = () => {
     setUser(null);
   };
@@ -108,6 +124,7 @@ export function AuthProvider({ children }) {
         loginWithPhone,
         signup,
         demoLogin,
+        updateProfile,
         logout,
       }}
     >
