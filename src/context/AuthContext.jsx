@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getIndianAvatarByName } from '../utils/indianAvatars';
 
 const AuthContext = createContext();
 
@@ -7,7 +8,7 @@ const DEMO_USER = {
   name: 'Sushanth Kumar',
   email: 'sushanth@example.com',
   phone: '+91 98765 43210',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+  avatar: getIndianAvatarByName('Sushanth Kumar'), // Authentic Indian man photo
   savedAddresses: [
     {
       id: 'addr-1',
@@ -15,16 +16,22 @@ const DEMO_USER = {
       line: 'Flat 402, Royal Residency, Avinashi Road',
       city: 'Tiruppur',
       state: 'Tamil Nadu',
-      pincode: '641602'
-    }
-  ]
+      pincode: '641602',
+    },
+  ],
 };
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
       const stored = localStorage.getItem('cravewave_user');
-      return stored ? JSON.parse(stored) : null;
+      if (!stored) return null;
+      const parsed = JSON.parse(stored);
+      // Ensure avatar matches name gender (fix legacy cached female photo)
+      if (parsed?.name) {
+        parsed.avatar = getIndianAvatarByName(parsed.name);
+      }
+      return parsed;
     } catch {
       return null;
     }
@@ -43,13 +50,17 @@ export function AuthProvider({ children }) {
   }, [user]);
 
   const login = (email, password) => {
-    // In a frontend mock, create or authenticate user
+    const derivedName = email
+      .split('@')[0]
+      .replace(/[._]/g, ' ')
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+
     const loggedUser = {
       id: 'usr-' + Date.now(),
-      name: email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+      name: derivedName || 'Sushanth Kumar',
       email,
       phone: '+91 98765 43210',
-      avatar: null,
+      avatar: getIndianAvatarByName(derivedName || 'Sushanth Kumar'),
     };
     setUser(loggedUser);
     return { success: true };
@@ -58,10 +69,10 @@ export function AuthProvider({ children }) {
   const loginWithPhone = (phone, otp) => {
     const loggedUser = {
       id: 'usr-' + Date.now(),
-      name: 'Valued Foodie',
+      name: 'Rahul Sharma',
       email: 'user@cravewave.in',
       phone: phone.startsWith('+91') ? phone : `+91 ${phone}`,
-      avatar: null,
+      avatar: getIndianAvatarByName('Rahul Sharma'),
     };
     setUser(loggedUser);
     return { success: true };
@@ -70,10 +81,10 @@ export function AuthProvider({ children }) {
   const signup = ({ name, email, phone, password }) => {
     const newUser = {
       id: 'usr-' + Date.now(),
-      name,
+      name: name.trim(),
       email,
       phone: phone.startsWith('+91') ? phone : `+91 ${phone}`,
-      avatar: null,
+      avatar: getIndianAvatarByName(name.trim()),
     };
     setUser(newUser);
     return { success: true };

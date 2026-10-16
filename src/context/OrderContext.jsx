@@ -1,48 +1,27 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getLocalStorage, setLocalStorage } from '../utils/storage';
 import { INITIAL_MOCK_ORDERS } from '../data/mockOrders';
+import { INDIAN_DELIVERY_PARTNERS, getIndianAvatarByName } from '../utils/indianAvatars';
 
 const OrderContext = createContext(null);
 
-const MOCK_DRIVERS = [
-  {
-    name: 'Ramesh Kumar',
-    phone: '+91 98450 12345',
-    rating: 4.9,
-    trips: 1840,
-    vehicle: 'TVS Apache 160 (KA-05-EX-4921)',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    name: 'Vikram Singh',
-    phone: '+91 98210 99887',
-    rating: 5.0,
-    trips: 920,
-    vehicle: 'Hero Splendor Plus (DL-03-CB-9081)',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    name: 'Mohammed Zeeshan',
-    phone: '+91 97110 54321',
-    rating: 4.8,
-    trips: 2150,
-    vehicle: 'Ather 450X EV Scooter (MH-02-FK-3321)',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    name: 'Pooja Patel',
-    phone: '+91 99800 66778',
-    rating: 4.9,
-    trips: 1320,
-    vehicle: 'Honda Activa 6G (KA-01-EQ-5544)',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
-  },
-];
-
 export function OrderProvider({ children }) {
-  const [orders, setOrders] = useState(() =>
-    getLocalStorage('cw_orders', INITIAL_MOCK_ORDERS)
-  );
+  const [orders, setOrders] = useState(() => {
+    const rawOrders = getLocalStorage('cw_orders', INITIAL_MOCK_ORDERS);
+    // Sanitize driver avatars to strictly match the gender of their Indian names
+    return (rawOrders || []).map((order) => {
+      if (order.deliveryDriver?.name) {
+        return {
+          ...order,
+          deliveryDriver: {
+            ...order.deliveryDriver,
+            avatar: getIndianAvatarByName(order.deliveryDriver.name, order.deliveryDriver.gender),
+          },
+        };
+      }
+      return order;
+    });
+  });
 
   useEffect(() => {
     setLocalStorage('cw_orders', orders);
@@ -57,7 +36,7 @@ export function OrderProvider({ children }) {
     deliveryInstructions,
   }) => {
     const randomDriver =
-      MOCK_DRIVERS[Math.floor(Math.random() * MOCK_DRIVERS.length)];
+      INDIAN_DELIVERY_PARTNERS[Math.floor(Math.random() * INDIAN_DELIVERY_PARTNERS.length)];
     const orderId = `CW-${Math.floor(10000 + Math.random() * 90000)}`;
 
     const newOrder = {
@@ -81,7 +60,10 @@ export function OrderProvider({ children }) {
       deliveryAddress,
       paymentMethod,
       deliveryInstructions: deliveryInstructions || 'Leave at security gate / ring bell once',
-      deliveryDriver: randomDriver,
+      deliveryDriver: {
+        ...randomDriver,
+        avatar: getIndianAvatarByName(randomDriver.name, randomDriver.gender),
+      },
       estimatedDeliveryTime: '25-35 mins',
     };
 

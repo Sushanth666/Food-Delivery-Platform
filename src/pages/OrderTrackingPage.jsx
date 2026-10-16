@@ -18,6 +18,7 @@ import {
 import { useOrders } from '../context/OrderContext';
 import { ORDER_STATUS_STEPS } from '../data/mockOrders';
 import { formatCurrency } from '../utils/formatCurrency';
+import { getIndianAvatarByName } from '../utils/indianAvatars';
 
 export default function OrderTrackingPage() {
   const { orderId } = useParams();
@@ -259,10 +260,10 @@ export default function OrderTrackingPage() {
               <div className="bg-[#14141C]/95 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <img
-                    src={
-                      order.deliveryDriver.avatar ||
-                      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
-                    }
+                    src={getIndianAvatarByName(
+                      order.deliveryDriver.name,
+                      order.deliveryDriver.gender
+                    )}
                     alt={order.deliveryDriver.name}
                     className="w-16 h-16 rounded-2xl object-cover border-2 border-rose-500/40"
                   />
