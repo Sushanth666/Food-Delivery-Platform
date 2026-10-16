@@ -29,7 +29,7 @@ export default function RatingPill({ rating, reviewCount = null, size = 'md' }) 
         <Star className={isLarge ? 'w-3.5 h-3.5 fill-current' : 'w-3 h-3 fill-current'} />
       </span>
       {reviewCount && (
-        <span className="text-xs text-gray-700 font-semibold">
+        <span className="text-xs text-gray-400 font-semibold">
           ({reviewCount.toLocaleString()})
         </span>
       )}

@@ -26,13 +26,32 @@ export default function OrderHistoryPage() {
     <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
         {/* Header */}
-        <div className="pb-6 border-b border-white/10">
-          <h1 className="text-2xl sm:text-3xl font-black font-display text-white tracking-tight">
-            Your Order History
-          </h1>
-          <p className="text-xs sm:text-sm text-gray-400 mt-1">
-            Review past deliveries, track active shipments, or re-order your favorite meals with one click
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-white/15 gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold text-rose-400 uppercase tracking-wider mb-2">
+              <Clock className="w-3.5 h-3.5" />
+              <span>Order History & Activity</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black font-display text-white tracking-tight flex items-center gap-3">
+              <span>Your Order History</span>
+              {orders.length > 0 && (
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-white/10 text-rose-300 border border-white/15">
+                  {orders.length} {orders.length === 1 ? 'order' : 'orders'}
+                </span>
+              )}
+            </h1>
+            <p className="text-xs sm:text-sm text-gray-300 mt-1.5 max-w-2xl leading-relaxed">
+              Review past deliveries, track active shipments, or re-order your favorite meals with one click.
+            </p>
+          </div>
+
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs border border-white/15 transition-all self-start sm:self-center shadow-xs cursor-pointer group"
+          >
+            <ShoppingBag className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
+            <span>Order More Food</span>
+          </Link>
         </div>
 
         {orders.length === 0 ? (

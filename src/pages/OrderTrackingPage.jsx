@@ -68,37 +68,39 @@ export default function OrderTrackingPage() {
     <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-white/10 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-white/15 gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 text-xs text-gray-400 font-semibold mb-1">
+            <div className="flex items-center gap-2 text-xs text-gray-400 font-semibold mb-1.5">
               <Link to="/orders" className="hover:text-rose-400 transition-colors">
                 Orders
               </Link>
-              <span>/</span>
-              <span className="text-white font-bold">Live Tracking</span>
+              <span className="text-gray-600">/</span>
+              <span className="text-rose-400 font-bold">Live Tracking</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black font-display text-white tracking-tight flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-black font-display text-white tracking-tight flex flex-wrap items-center gap-2.5">
               <span>Tracking Order</span>
-              <span className="font-mono text-rose-400 text-xl">#{order.id}</span>
+              <span className="font-mono text-rose-300 bg-rose-950/70 border border-rose-500/40 px-2.5 py-0.5 rounded-xl text-lg sm:text-xl font-bold shadow-xs">
+                #{order.id}
+              </span>
             </h1>
-            <p className="text-xs text-gray-400 mt-1">
-              From{' '}
-              <span className="font-bold text-rose-300">
+            <p className="text-xs sm:text-sm text-gray-300 mt-1.5 flex items-center gap-1.5">
+              <span className="text-gray-400">From</span>
+              <span className="font-bold text-white bg-white/10 px-2 py-0.5 rounded-md border border-white/15">
                 {order.restaurantName}
               </span>
             </p>
           </div>
 
-          {/* Demo Simulator Controls for Tester */}
-          <div className="flex items-center gap-2 bg-[#14141C] border border-white/10 p-2 rounded-2xl shadow-lg self-start sm:self-auto">
-            <span className="text-[11px] font-bold text-gray-400 px-2 uppercase">
-              Simulator:
+          {/* Test Status Simulator Controls */}
+          <div className="flex items-center gap-2 bg-[#14141C]/95 backdrop-blur-md border border-white/15 p-2 rounded-2xl shadow-xl self-start sm:self-center">
+            <span className="text-[11px] font-black text-gray-300 px-2 uppercase tracking-wider">
+              Test Status:
             </span>
             <button
               type="button"
               onClick={() => updateOrderStatus(order.id, Math.min(5, currentStep + 1))}
               disabled={currentStep >= 5}
-              className="px-3 py-1.5 bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 disabled:bg-gray-800 disabled:text-gray-500 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
+              className="px-3.5 py-2 bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 disabled:from-gray-800 disabled:to-gray-800 disabled:text-gray-500 text-white text-xs font-black rounded-xl shadow-md shadow-rose-950/50 transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
             >
               <FastForward className="w-3.5 h-3.5" />
               <span>Next Step</span>
@@ -106,7 +108,7 @@ export default function OrderTrackingPage() {
             <button
               type="button"
               onClick={() => updateOrderStatus(order.id, 1)}
-              className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+              className="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
               title="Reset to Step 1"
             >
               <RotateCcw className="w-4 h-4" />
