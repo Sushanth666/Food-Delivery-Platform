@@ -90,7 +90,7 @@ export default function LocationModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={closeLocationModal}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/80 backdrop-blur-md"
         />
 
         {/* Modal Card */}
@@ -98,16 +98,16 @@ export default function LocationModal() {
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 border border-gray-100 flex flex-col max-h-[88vh]"
+          className="relative w-full max-w-lg bg-[#131319] text-white rounded-3xl shadow-2xl shadow-rose-950/70 overflow-hidden z-10 border border-white/10 flex flex-col max-h-[88vh]"
         >
           {/* Header */}
-          <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
+          <div className="p-6 border-b border-white/10 flex items-center justify-between bg-[#131319] sticky top-0 z-10">
             <div>
-              <h3 className="text-lg font-black text-gray-900 tracking-tight flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-brand-600" />
+              <h3 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-rose-400" />
                 <span>Select Delivery Location</span>
               </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-xs text-gray-400 mt-0.5">
                 Automatically detect or choose from popular Indian cities & areas
               </p>
             </div>
@@ -115,7 +115,7 @@ export default function LocationModal() {
             <button
               type="button"
               onClick={closeLocationModal}
-              className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -129,10 +129,10 @@ export default function LocationModal() {
                 type="button"
                 onClick={detectLocation}
                 disabled={isDetecting}
-                className="w-full p-4 rounded-2xl bg-gradient-to-r from-brand-50 via-amber-50/50 to-orange-50 border-2 border-brand-200/80 hover:border-brand-500 text-left flex items-center justify-between group transition-all duration-200 shadow-sm"
+                className="w-full p-4 rounded-2xl bg-gradient-to-r from-rose-950/60 via-purple-950/40 to-rose-950/60 border-2 border-rose-800/50 hover:border-rose-500 text-left flex items-center justify-between group transition-all duration-200 shadow-md cursor-pointer"
               >
                 <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-brand-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-rose-950/60 group-hover:scale-105 transition-transform">
                     {isDetecting ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
@@ -140,13 +140,13 @@ export default function LocationModal() {
                     )}
                   </div>
                   <div>
-                    <div className="text-sm font-extrabold text-gray-900 group-hover:text-brand-600 transition-colors flex items-center gap-1.5">
+                    <div className="text-sm font-extrabold text-white group-hover:text-rose-300 transition-colors flex items-center gap-1.5">
                       <span>Use Current Location</span>
-                      <span className="text-[10px] font-black uppercase tracking-wider bg-brand-600 text-white px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-rose-600 text-white px-2 py-0.5 rounded-full">
                         Auto GPS
                       </span>
                     </div>
-                    <p className="text-xs text-gray-600 mt-0.5">
+                    <p className="text-xs text-gray-400 mt-0.5">
                       {isDetecting
                         ? 'Fetching GPS coordinates from your browser...'
                         : 'Enable device location to find restaurants closest to you'}
@@ -154,30 +154,30 @@ export default function LocationModal() {
                   </div>
                 </div>
 
-                <Navigation className="w-4 h-4 text-brand-600 flex-shrink-0 hidden sm:block" />
+                <Navigation className="w-4 h-4 text-rose-400 flex-shrink-0 hidden sm:block" />
               </button>
 
               {/* Error feedback if permission denied */}
               {detectionError && (
-                <div className="mt-2.5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
+                <div className="mt-2.5 p-3 rounded-xl bg-rose-950/60 border border-rose-800/60 text-rose-300 text-xs font-semibold flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
                   <span>{detectionError}</span>
                 </div>
               )}
             </div>
 
             {/* Mode Switch Tabs */}
-            <div className="flex border-b border-gray-200">
+            <div className="flex border-b border-white/10">
               <button
                 type="button"
                 onClick={() => {
                   setActiveTab('browse');
                   setFormError('');
                 }}
-                className={`flex-1 pb-3 text-xs font-bold transition-all border-b-2 -mb-px text-center ${
+                className={`flex-1 pb-3 text-xs font-bold transition-all border-b-2 -mb-px text-center cursor-pointer ${
                   activeTab === 'browse'
-                    ? 'border-brand-600 text-brand-600 font-extrabold'
-                    : 'border-transparent text-gray-500 hover:text-gray-800'
+                    ? 'border-rose-500 text-rose-400 font-extrabold'
+                    : 'border-transparent text-gray-400 hover:text-white'
                 }`}
               >
                 Browse Popular Locations
@@ -188,10 +188,10 @@ export default function LocationModal() {
                   setActiveTab('custom');
                   setFormError('');
                 }}
-                className={`flex-1 pb-3 text-xs font-bold transition-all border-b-2 -mb-px text-center ${
+                className={`flex-1 pb-3 text-xs font-bold transition-all border-b-2 -mb-px text-center cursor-pointer ${
                   activeTab === 'custom'
-                    ? 'border-brand-600 text-brand-600 font-extrabold'
-                    : 'border-transparent text-gray-500 hover:text-gray-800'
+                    ? 'border-rose-500 text-rose-400 font-extrabold'
+                    : 'border-transparent text-gray-400 hover:text-white'
                 }`}
               >
                 + Enter Custom Address
@@ -208,13 +208,13 @@ export default function LocationModal() {
                     placeholder="Search locality, city or 6-digit PIN (e.g. Indiranagar, Bandra, 560034)..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-9 py-2.5 text-xs font-medium rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 bg-gray-50 focus:bg-white"
+                    className="w-full pl-10 pr-9 py-2.5 text-xs font-medium rounded-xl border border-white/10 focus:outline-none focus:border-rose-500 bg-[#1A1A22] text-white placeholder:text-gray-500"
                   />
                   {searchQuery && (
                     <button
                       type="button"
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -233,18 +233,18 @@ export default function LocationModal() {
                         key={loc.id}
                         type="button"
                         onClick={() => setManualLocation(loc)}
-                        className={`w-full p-3 rounded-2xl border text-left flex items-start justify-between gap-3 transition-all ${
+                        className={`w-full p-3 rounded-2xl border text-left flex items-start justify-between gap-3 transition-all cursor-pointer ${
                           isSelected
-                            ? 'border-brand-500 bg-brand-50/60 shadow-sm'
-                            : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+                            ? 'border-rose-500 bg-rose-950/50 shadow-md text-white'
+                            : 'border-white/5 bg-[#1A1A22] hover:border-white/20 text-gray-300'
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           <div
                             className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
                               isSelected
-                                ? 'bg-brand-600 text-white'
-                                : 'bg-gray-100 text-gray-500'
+                                ? 'bg-gradient-to-tr from-brand-600 to-rose-600 text-white'
+                                : 'bg-[#252533] text-gray-400'
                             }`}
                           >
                             <Building2 className="w-4 h-4" />
@@ -252,23 +252,23 @@ export default function LocationModal() {
 
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-gray-900">
+                              <span className="text-xs font-bold text-white">
                                 {loc.area}
                               </span>
                               {loc.tag && (
-                                <span className="text-[10px] font-semibold text-gray-500 bg-gray-100 px-1.5 py-0.2 rounded">
+                                <span className="text-[10px] font-semibold text-rose-300 bg-rose-950/60 border border-rose-800/40 px-1.5 py-0.2 rounded">
                                   {loc.tag}
                                 </span>
                               )}
                             </div>
-                            <p className="text-[11px] text-gray-500 mt-0.5">
+                            <p className="text-[11px] text-gray-400 mt-0.5">
                               {loc.city}, {loc.state} — PIN {loc.pincode}
                             </p>
                           </div>
                         </div>
 
                         {isSelected && (
-                          <div className="w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center flex-shrink-0">
+                          <div className="w-5 h-5 rounded-full bg-rose-600 text-white flex items-center justify-center flex-shrink-0">
                             <Check className="w-3 h-3 stroke-[3]" />
                           </div>
                         )}
@@ -281,7 +281,7 @@ export default function LocationModal() {
               /* Custom Address Form */
               <form onSubmit={handleCustomSubmit} className="space-y-3.5">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                  <label className="block text-xs font-bold text-gray-300 mb-1">
                     House / Flat / Building No. (Optional)
                   </label>
                   <input
@@ -291,12 +291,12 @@ export default function LocationModal() {
                     onChange={(e) =>
                       setCustomForm({ ...customForm, flatNo: e.target.value })
                     }
-                    className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500"
+                    className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-white/10 bg-[#1A1A22] text-white focus:outline-none focus:border-rose-500 placeholder:text-gray-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                  <label className="block text-xs font-bold text-gray-300 mb-1">
                     Street / Locality / Landmark *
                   </label>
                   <input
@@ -306,13 +306,13 @@ export default function LocationModal() {
                     onChange={(e) =>
                       setCustomForm({ ...customForm, area: e.target.value })
                     }
-                    className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500"
+                    className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-white/10 bg-[#1A1A22] text-white focus:outline-none focus:border-rose-500 placeholder:text-gray-500"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                    <label className="block text-xs font-bold text-gray-300 mb-1">
                       City *
                     </label>
                     <input
@@ -322,12 +322,12 @@ export default function LocationModal() {
                       onChange={(e) =>
                         setCustomForm({ ...customForm, city: e.target.value })
                       }
-                      className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500"
+                      className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-white/10 bg-[#1A1A22] text-white focus:outline-none focus:border-rose-500 placeholder:text-gray-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                    <label className="block text-xs font-bold text-gray-300 mb-1">
                       PIN Code (6 Digits) *
                     </label>
                     <input
@@ -338,18 +338,18 @@ export default function LocationModal() {
                       onChange={(e) =>
                         setCustomForm({ ...customForm, pincode: e.target.value })
                       }
-                      className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500"
+                      className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-white/10 bg-[#1A1A22] text-white focus:outline-none focus:border-rose-500 placeholder:text-gray-500"
                     />
                   </div>
                 </div>
 
                 {formError && (
-                  <p className="text-xs font-semibold text-rose-600">{formError}</p>
+                  <p className="text-xs font-semibold text-rose-400">{formError}</p>
                 )}
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-md transition-colors"
+                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs shadow-md transition-colors cursor-pointer"
                 >
                   Confirm & Set Location
                 </button>
@@ -358,15 +358,15 @@ export default function LocationModal() {
           </div>
 
           {/* Footer note displaying current active location */}
-          <div className="p-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between text-xs text-gray-600">
+          <div className="p-4 border-t border-white/10 bg-[#101016] flex items-center justify-between text-xs text-gray-400">
             <div className="truncate pr-2">
-              <span className="font-bold text-gray-800">Delivering to: </span>
-              <span className="text-brand-600 font-semibold truncate">
+              <span className="font-bold text-gray-300">Delivering to: </span>
+              <span className="text-rose-400 font-semibold truncate">
                 {currentLocation.formatted || `${currentLocation.area}, ${currentLocation.city}`}
               </span>
             </div>
             {currentLocation.isAutoDetected && (
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0">
+              <span className="bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0">
                 GPS Verified
               </span>
             )}

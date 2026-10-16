@@ -59,21 +59,22 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-    const cleanPhone = phone.replace(/\D/g, '');
-    if (cleanPhone.length < 10) {
-      setError('Please enter a valid 10-digit Indian mobile number.');
+    if (!phone.trim()) {
+      setError('Please enter your 10-digit mobile number.');
       return;
     }
 
     if (!otpSent) {
+      // Simulate sending OTP
       setLoading(true);
       setTimeout(() => {
-        setLoading(false);
         setOtpSent(true);
-      }, 700);
+        setLoading(false);
+      }, 600);
     } else {
+      // Verify OTP
       if (otp.length < 4) {
-        setError('Please enter the 4-digit verification code.');
+        setError('Please enter the 4 or 6-digit OTP sent to your phone.');
         return;
       }
       setLoading(true);
@@ -95,34 +96,34 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-[#0B0B0E] bg-dark-luxury">
       {/* Ambient background blur circles */}
-      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-rose-500/15 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-600/15 blur-3xl pointer-events-none" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-rose-600/15 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-600/20 blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
-        {/* Card Container */}
-        <div className="glass-card bg-white/95 rounded-3xl p-6 sm:p-9 border border-gray-100 shadow-2xl shadow-rose-950/10">
+        {/* Card Container in Midnight Crimson Dark Luxury Glass */}
+        <div className="bg-[#131319]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-9 border border-white/10 shadow-2xl shadow-rose-950/50">
           {/* Logo & Heading */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-7">
             <Link to="/" className="inline-flex items-center gap-2.5 group mb-3">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-brand-500/30 group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/60 group-hover:scale-105 transition-transform border border-white/10">
                 <UtensilsCrossed className="w-6 h-6" />
               </div>
               <div className="flex flex-col text-left">
-                <span className="text-2xl font-black font-display tracking-tight bg-gradient-to-r from-gray-950 via-gray-800 to-brand-600 bg-clip-text text-transparent leading-none">
-                  CraveWave
+                <span className="text-2xl font-black font-display tracking-tight text-white leading-none">
+                  Crave<span className="text-[#E11D48]">Wave</span>
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-brand-600 mt-1">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 mt-1">
                   Food Delivered Fast
                 </span>
               </div>
             </Link>
 
-            <h1 className="text-2xl sm:text-3xl font-black font-display text-gray-900 tracking-tight mt-2">
+            <h1 className="text-2xl sm:text-3xl font-black font-display text-white tracking-tight mt-2">
               Welcome Back
             </h1>
-            <p className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+            <p className="text-xs sm:text-sm text-gray-400 mt-1 font-medium">
               Log in to order your favorite Indian cuisines and track deliveries live
             </p>
           </div>
@@ -133,25 +134,25 @@ export default function LoginPage() {
               type="button"
               onClick={handleDemoLogin}
               disabled={loading}
-              className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-rose-50 to-orange-50 border border-rose-200/80 hover:border-brand-500 text-brand-700 font-bold text-xs flex items-center justify-center gap-2 transition-all hover:shadow-sm active:scale-95 group"
+              className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-rose-950/60 to-purple-950/40 border border-rose-800/50 hover:border-rose-500 text-rose-200 font-bold text-xs flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-rose-950/50 active:scale-95 group cursor-pointer"
             >
-              <Zap className="w-4 h-4 text-brand-600 fill-brand-600 group-hover:scale-110 transition-transform" />
+              <Zap className="w-4 h-4 text-rose-400 fill-rose-400 group-hover:scale-110 transition-transform" />
               <span>⚡ One-Click Demo Foodie Login</span>
             </button>
           </div>
 
           {/* Tab Switcher: Email vs Phone OTP */}
-          <div className="grid grid-cols-2 p-1 rounded-2xl bg-gray-100/80 mb-6 text-xs font-bold text-gray-600">
+          <div className="grid grid-cols-2 p-1 rounded-2xl bg-[#1C1C24] border border-white/10 mb-6 text-xs font-bold">
             <button
               type="button"
               onClick={() => {
                 setActiveTab('email');
                 setError('');
               }}
-              className={`py-2 rounded-xl transition-all ${
+              className={`py-2 rounded-xl transition-all cursor-pointer ${
                 activeTab === 'email'
-                  ? 'bg-white text-gray-950 shadow-xs font-extrabold'
-                  : 'hover:text-gray-900'
+                  ? 'bg-gradient-to-r from-brand-600 to-rose-600 text-white shadow-md shadow-rose-950/60 font-black'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               Email & Password
@@ -162,10 +163,10 @@ export default function LoginPage() {
                 setActiveTab('phone');
                 setError('');
               }}
-              className={`py-2 rounded-xl transition-all ${
+              className={`py-2 rounded-xl transition-all cursor-pointer ${
                 activeTab === 'phone'
-                  ? 'bg-white text-gray-950 shadow-xs font-extrabold'
-                  : 'hover:text-gray-900'
+                  ? 'bg-gradient-to-r from-brand-600 to-rose-600 text-white shadow-md shadow-rose-950/60 font-black'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               Mobile OTP 🇮🇳
@@ -174,8 +175,8 @@ export default function LoginPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <div className="mb-5 p-3 rounded-xl bg-rose-950/60 border border-rose-800/60 text-rose-300 text-xs font-bold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-400" />
               <span>{error}</span>
             </div>
           )}
@@ -184,7 +185,7 @@ export default function LoginPage() {
           {activeTab === 'email' ? (
             <form onSubmit={handleEmailSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold text-gray-300 mb-1.5">
                   Email Address
                 </label>
                 <div className="relative">
@@ -195,22 +196,20 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@example.com"
                     required
-                    className="w-full pl-10 pr-3.5 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:bg-white text-sm font-semibold text-gray-900 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all placeholder:text-gray-400 placeholder:font-normal"
+                    className="w-full pl-10 pr-3.5 py-3 rounded-2xl bg-[#1A1A22] border border-white/10 focus:border-rose-500 focus:bg-[#20202A] text-sm font-semibold text-white focus:outline-none focus:ring-4 focus:ring-rose-500/20 transition-all placeholder:text-gray-500"
                   />
                 </div>
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-bold text-gray-700">
+                  <label className="text-xs font-bold text-gray-300">
                     Password
                   </label>
                   <button
                     type="button"
-                    onClick={() =>
-                      alert('Password reset link simulated: Please check your email inbox.')
-                    }
-                    className="text-[11px] font-bold text-brand-600 hover:text-brand-700 hover:underline"
+                    onClick={() => setError('Password reset instructions sent to your email.')}
+                    className="text-xs font-bold text-rose-400 hover:text-rose-300 transition-colors"
                   >
                     Forgot Password?
                   </button>
@@ -223,41 +222,41 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     required
-                    className="w-full pl-10 pr-10 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:bg-white text-sm font-semibold text-gray-900 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all placeholder:text-gray-400 placeholder:font-normal"
+                    className="w-full pl-10 pr-10 py-3 rounded-2xl bg-[#1A1A22] border border-white/10 focus:border-rose-500 focus:bg-[#20202A] text-sm font-semibold text-white focus:outline-none focus:ring-4 focus:ring-rose-500/20 transition-all placeholder:text-gray-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center pt-1">
-                <input
-                  id="remember-me"
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 border-gray-300"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-xs font-semibold text-gray-600 cursor-pointer"
-                >
-                  Keep me signed in on this device
+              <div className="flex items-center justify-between text-xs pt-1">
+                <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="rounded border-white/20 bg-[#1A1A22] text-rose-600 focus:ring-rose-500"
+                  />
+                  <span>Keep me signed in on this device</span>
                 </label>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white font-extrabold text-sm shadow-md shadow-brand-500/25 transition-all hover:shadow-lg hover:shadow-brand-500/35 active:scale-98 flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 via-rose-600 to-brand-600 hover:from-brand-500 hover:to-rose-500 text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-rose-950/60 transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer mt-2"
               >
                 {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Signing In...</span>
                 ) : (
                   <>
                     <span>Log In to CraveWave</span>
@@ -267,25 +266,25 @@ export default function LoginPage() {
               </button>
             </form>
           ) : (
-            /* Tab 2: Phone OTP Form */
+            /* Tab 2: Indian Phone OTP Form */
             <form onSubmit={handlePhoneSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                  Mobile Number
+                <label className="block text-xs font-bold text-gray-300 mb-1.5">
+                  Mobile Number (India)
                 </label>
-                <div className="flex rounded-2xl border border-gray-200 overflow-hidden focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-500/10 transition-all bg-gray-50 focus-within:bg-white">
-                  <div className="bg-gray-100 px-3 flex items-center text-xs font-bold text-gray-700 border-r border-gray-200">
-                    🇮🇳 +91
+                <div className="flex gap-2">
+                  <div className="flex items-center gap-1.5 px-3 py-3 rounded-2xl bg-[#1A1A22] border border-white/10 text-white text-xs font-bold flex-shrink-0">
+                    <span>🇮🇳</span>
+                    <span>+91</span>
                   </div>
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                     placeholder="98765 43210"
-                    maxLength={10}
                     required
                     disabled={otpSent}
-                    className="w-full px-3.5 py-3 text-sm font-semibold text-gray-900 focus:outline-none bg-transparent placeholder:text-gray-400 placeholder:font-normal"
+                    className="flex-1 px-3.5 py-3 rounded-2xl bg-[#1A1A22] border border-white/10 focus:border-rose-500 focus:bg-[#20202A] text-sm font-semibold text-white focus:outline-none focus:ring-4 focus:ring-rose-500/20 transition-all placeholder:text-gray-500"
                   />
                 </div>
               </div>
@@ -293,36 +292,44 @@ export default function LoginPage() {
               {otpSent && (
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-bold text-gray-700">
+                    <label className="text-xs font-bold text-gray-300">
                       Enter 4-Digit OTP
                     </label>
-                    <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
-                      <CheckCircle className="w-3.5 h-3.5" />
-                      OTP Sent to +91 {phone}
+                    <span className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
+                      <CheckCircle className="w-3 h-3" />
+                      <span>OTP Sent to +91 {phone}</span>
                     </span>
                   </div>
                   <input
                     type="text"
                     value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    placeholder="Enter OTP (e.g. 1234)"
+                    onChange={(e) => setOtp(e.target.value.slice(0, 6))}
+                    placeholder="Enter 1234"
                     maxLength={6}
+                    autoFocus
                     required
-                    className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:bg-white text-center tracking-widest text-lg font-black text-gray-900 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all"
+                    className="w-full text-center tracking-widest text-xl font-black py-3 rounded-2xl bg-[#1A1A22] border border-white/10 focus:border-rose-500 focus:bg-[#20202A] text-white focus:outline-none focus:ring-4 focus:ring-rose-500/20 transition-all placeholder:text-gray-500"
                   />
-                  <p className="text-[11px] text-gray-500 mt-1 text-center">
-                    Demo OTP code: Enter any 4 digits (e.g. <strong>1234</strong>)
-                  </p>
+                  <div className="flex justify-between text-xs mt-2 text-gray-400">
+                    <span>Didn't get code?</span>
+                    <button
+                      type="button"
+                      onClick={() => setError('New OTP sent to +91 ' + phone)}
+                      className="text-rose-400 font-bold hover:underline"
+                    >
+                      Resend OTP
+                    </button>
+                  </div>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white font-extrabold text-sm shadow-md shadow-brand-500/25 transition-all hover:shadow-lg hover:shadow-brand-500/35 active:scale-98 flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 via-rose-600 to-brand-600 hover:from-brand-500 hover:to-rose-500 text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-rose-950/60 transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer mt-2"
               >
                 {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Processing...</span>
                 ) : otpSent ? (
                   <>
                     <span>Verify & Continue</span>
@@ -330,7 +337,7 @@ export default function LoginPage() {
                   </>
                 ) : (
                   <>
-                    <span>Send Verification Code</span>
+                    <span>Send Verification OTP</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -338,61 +345,64 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* Social Sign-in Divider */}
-          <div className="mt-7 pt-6 border-t border-gray-100 text-center">
-            <span className="text-xs font-semibold text-gray-400">
-              Or quick connect with
-            </span>
-
-            <div className="grid grid-cols-2 gap-3 mt-3">
-              <button
-                type="button"
-                onClick={handleDemoLogin}
-                className="py-2.5 px-3 rounded-xl border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 text-xs font-bold text-gray-700 flex items-center justify-center gap-2 transition-all shadow-2xs"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                  />
-                </svg>
-                <span>Google</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleDemoLogin}
-                className="py-2.5 px-3 rounded-xl border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 text-xs font-bold text-gray-700 flex items-center justify-center gap-2 transition-all shadow-2xs"
-              >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z" />
-                </svg>
-                <span>Apple</span>
-              </button>
+          {/* Social Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/10" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase font-extrabold text-gray-400">
+              <span className="bg-[#131319] px-3">or continue with</span>
             </div>
           </div>
 
-          {/* Footer Link to Signup */}
-          <div className="mt-6 text-center text-xs font-semibold text-gray-500">
+          {/* Social Buttons */}
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="py-2.5 px-3 rounded-2xl bg-[#1A1A22] hover:bg-[#22222E] border border-white/10 hover:border-white/20 text-xs font-bold text-gray-300 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24">
+                <path
+                  fill="#EA4335"
+                  d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"
+                />
+                <path
+                  fill="#4285F4"
+                  d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 17c1.8 3.7 5.6 6.5 10.1 6.5z"
+                />
+              </svg>
+              <span>Google</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="py-2.5 px-3 rounded-2xl bg-[#1A1A22] hover:bg-[#22222E] border border-white/10 hover:border-white/20 text-xs font-bold text-gray-300 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.89c.66-.8 1.11-1.92.99-3.04-1 .04-2.17.67-2.85 1.47-.6.69-1.13 1.83-1 2.93 1.13.09 2.24-.58 2.86-1.36z" />
+              </svg>
+              <span>Apple</span>
+            </button>
+          </div>
+
+          {/* Switch to Signup */}
+          <div className="text-center text-xs text-gray-400">
             Don't have an account yet?{' '}
             <Link
               to="/signup"
-              state={{ from: redirectPath }}
-              className="text-brand-600 font-extrabold hover:text-brand-700 hover:underline"
+              className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4"
             >
-              Sign up for free →
+              Sign Up Now
             </Link>
           </div>
         </div>
