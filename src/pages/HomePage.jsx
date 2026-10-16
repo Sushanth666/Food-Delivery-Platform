@@ -13,8 +13,12 @@ export default function HomePage() {
     searchTerm,
     selectedCategory,
     isPureVegOnly,
+    isNonVegOnly,
     minRating,
     maxDeliveryTime,
+    onlyOffers,
+    onlyBestsellers,
+    budgetUnder,
     sortBy,
     resetFilters,
   } = useFilter();
@@ -70,6 +74,11 @@ export default function HomePage() {
         return false;
       }
 
+      // Non-Veg filter (restaurants that are NOT pure veg, serving non-veg delights)
+      if (isNonVegOnly && rest.isPureVeg) {
+        return false;
+      }
+
       // Rating filter
       if (minRating && rest.rating < minRating) {
         return false;
@@ -82,6 +91,21 @@ export default function HomePage() {
           const upperTime = parseInt(match[match.length - 1], 10);
           if (upperTime > maxDeliveryTime) return false;
         }
+      }
+
+      // Great Offers only
+      if (onlyOffers && !rest.tag) {
+        return false;
+      }
+
+      // Bestsellers / Top Rated only
+      if (onlyBestsellers && rest.rating < 4.5 && !rest.tag?.toLowerCase().includes('trending')) {
+        return false;
+      }
+
+      // Budget friendly (cost for two <= budgetUnder)
+      if (budgetUnder && rest.costForTwo > budgetUnder) {
+        return false;
       }
 
       return true;
@@ -100,8 +124,12 @@ export default function HomePage() {
     searchTerm,
     selectedCategory,
     isPureVegOnly,
+    isNonVegOnly,
     minRating,
     maxDeliveryTime,
+    onlyOffers,
+    onlyBestsellers,
+    budgetUnder,
     sortBy,
   ]);
 

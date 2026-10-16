@@ -8,6 +8,9 @@ import {
   Sparkles,
   Zap,
   TrendingUp,
+  Tag,
+  Flame,
+  BadgeIndianRupee,
 } from 'lucide-react';
 import { useFilter } from '../../context/FilterContext';
 
@@ -18,11 +21,19 @@ export default function FilterBar() {
     searchTerm,
     setSearchTerm,
     isPureVegOnly,
-    setIsPureVegOnly,
+    togglePureVeg,
+    isNonVegOnly,
+    toggleNonVeg,
     minRating,
     setMinRating,
     maxDeliveryTime,
     setMaxDeliveryTime,
+    onlyOffers,
+    setOnlyOffers,
+    onlyBestsellers,
+    setOnlyBestsellers,
+    budgetUnder,
+    setBudgetUnder,
     sortBy,
     setSortBy,
     resetFilters,
@@ -79,34 +90,54 @@ export default function FilterBar() {
       {/* Filter & Sorting Controls */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/10">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Veg Only Toggle */}
+          {/* 1. Pure Veg Toggle (Indian Green Square + Dot) */}
           <button
             type="button"
-            onClick={() => setIsPureVegOnly(!isPureVegOnly)}
+            onClick={togglePureVeg}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-2 transition-all active:scale-95 ${
               isPureVegOnly
-                ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300 shadow-xs'
-                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/20'
+                ? 'bg-emerald-950/70 border-emerald-500 text-emerald-300 shadow-md shadow-emerald-950/40 ring-2 ring-emerald-500/20'
+                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/25 hover:text-white'
             }`}
           >
-            <div className="w-3.5 h-3.5 rounded border border-emerald-500 flex items-center justify-center p-0.5">
+            <div className="w-3.5 h-3.5 rounded border border-emerald-500 flex items-center justify-center p-0.5 bg-emerald-950/40">
               <div
                 className={`w-1.5 h-1.5 rounded-full ${
-                  isPureVegOnly ? 'bg-emerald-400' : 'bg-gray-500'
+                  isPureVegOnly ? 'bg-emerald-400' : 'bg-gray-400'
                 }`}
               />
             </div>
             <span>Pure Veg</span>
           </button>
 
-          {/* Rating 4.0+ Toggle */}
+          {/* 2. Non-Veg Toggle (Indian Red/Brown Square + Triangle) */}
+          <button
+            type="button"
+            onClick={toggleNonVeg}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-2 transition-all active:scale-95 ${
+              isNonVegOnly
+                ? 'bg-rose-950/80 border-rose-500 text-rose-300 shadow-md shadow-rose-950/40 ring-2 ring-rose-500/20'
+                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/25 hover:text-white'
+            }`}
+          >
+            <div className="w-3.5 h-3.5 rounded border border-rose-500 flex items-center justify-center p-0.5 bg-rose-950/40">
+              <div
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isNonVegOnly ? 'bg-rose-500' : 'bg-rose-400/60'
+                }`}
+              />
+            </div>
+            <span>Non-Veg</span>
+          </button>
+
+          {/* 3. Rating 4.0+ Toggle */}
           <button
             type="button"
             onClick={() => setMinRating(minRating === 4.0 ? null : 4.0)}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
               minRating === 4.0
-                ? 'bg-amber-950/60 border-amber-500 text-amber-300 shadow-xs'
-                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/20'
+                ? 'bg-amber-950/70 border-amber-500 text-amber-300 shadow-md shadow-amber-950/40 ring-2 ring-amber-500/20'
+                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/25 hover:text-white'
             }`}
           >
             <Star
@@ -119,22 +150,64 @@ export default function FilterBar() {
             <span>Rating 4.0+</span>
           </button>
 
-          {/* Fast Delivery (< 30 min) */}
+          {/* 4. Fast Express Delivery (< 30 min) */}
           <button
             type="button"
             onClick={() => setMaxDeliveryTime(maxDeliveryTime === 30 ? null : 30)}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
               maxDeliveryTime === 30
-                ? 'bg-rose-950/70 border-rose-500 text-rose-300 shadow-xs'
-                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/20'
+                ? 'bg-orange-950/70 border-orange-500 text-orange-300 shadow-md shadow-orange-950/40 ring-2 ring-orange-500/20'
+                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/25 hover:text-white'
             }`}
           >
             <Zap
               className={`w-3.5 h-3.5 ${
-                maxDeliveryTime === 30 ? 'text-rose-400 fill-rose-400' : 'text-gray-400'
+                maxDeliveryTime === 30 ? 'text-orange-400 fill-orange-400' : 'text-gray-400'
               }`}
             />
             <span>Express (&lt; 30m)</span>
+          </button>
+
+          {/* 5. Great Offers Toggle */}
+          <button
+            type="button"
+            onClick={() => setOnlyOffers(!onlyOffers)}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
+              onlyOffers
+                ? 'bg-purple-950/70 border-purple-500 text-purple-300 shadow-md shadow-purple-950/40 ring-2 ring-purple-500/20'
+                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/25 hover:text-white'
+            }`}
+          >
+            <Tag className="w-3.5 h-3.5 text-purple-400" />
+            <span>Offers</span>
+          </button>
+
+          {/* 6. Top Rated 4.5+ / Bestsellers */}
+          <button
+            type="button"
+            onClick={() => setOnlyBestsellers(!onlyBestsellers)}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
+              onlyBestsellers
+                ? 'bg-red-950/70 border-red-500 text-red-300 shadow-md shadow-red-950/40 ring-2 ring-red-500/20'
+                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/25 hover:text-white'
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <span>Top Rated 4.5+</span>
+          </button>
+
+          {/* 7. Budget Friendly Under ₹350 */}
+          <button
+            type="button"
+            onClick={() => setBudgetUnder(budgetUnder === 350 ? null : 350)}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
+              budgetUnder === 350
+                ? 'bg-blue-950/70 border-blue-500 text-blue-300 shadow-md shadow-blue-950/40 ring-2 ring-blue-500/20'
+                : 'bg-[#1C1C24] border-white/10 text-gray-300 hover:border-white/25 hover:text-white'
+            }`}
+          >
+            <BadgeIndianRupee className="w-3.5 h-3.5 text-blue-400" />
+            <span>Under ₹350</span>
           </button>
 
           {/* Reset Filters Button */}
@@ -142,10 +215,10 @@ export default function FilterBar() {
             <button
               type="button"
               onClick={resetFilters}
-              className="px-3 py-2 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-950/40 transition-colors flex items-center gap-1"
+              className="px-3 py-2 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-950/50 transition-colors flex items-center gap-1"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset</span>
+              <span>Reset All</span>
             </button>
           )}
         </div>

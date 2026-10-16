@@ -35,8 +35,25 @@ export default function RestaurantDetailPage() {
 
   const [searchMenu, setSearchMenu] = useState('');
   const [filterVegOnly, setFilterVegOnly] = useState(false);
+  const [filterNonVegOnly, setFilterNonVegOnly] = useState(false);
   const [filterBestsellerOnly, setFilterBestsellerOnly] = useState(false);
   const [customizingItem, setCustomizingItem] = useState(null);
+
+  const toggleVegOnly = () => {
+    setFilterVegOnly((prev) => {
+      const next = !prev;
+      if (next) setFilterNonVegOnly(false);
+      return next;
+    });
+  };
+
+  const toggleNonVegOnly = () => {
+    setFilterNonVegOnly((prev) => {
+      const next = !prev;
+      if (next) setFilterVegOnly(false);
+      return next;
+    });
+  };
 
   // Find restaurant by slug or id
   const restaurant = useMemo(() => {
@@ -72,6 +89,7 @@ export default function RestaurantDetailPage() {
       .map((cat) => {
         const filteredItems = cat.items.filter((item) => {
           if (filterVegOnly && !item.isVeg) return false;
+          if (filterNonVegOnly && item.isVeg) return false;
           if (filterBestsellerOnly && !item.isBestseller) return false;
           if (searchMenu.trim()) {
             const q = searchMenu.toLowerCase();
@@ -88,7 +106,7 @@ export default function RestaurantDetailPage() {
         };
       })
       .filter((cat) => cat.items.length > 0);
-  }, [restaurant, filterVegOnly, filterBestsellerOnly, searchMenu]);
+  }, [restaurant, filterVegOnly, filterNonVegOnly, filterBestsellerOnly, searchMenu]);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-28">
@@ -203,12 +221,13 @@ export default function RestaurantDetailPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             {/* Quick Dietary Filters */}
             <div className="flex items-center gap-2">
+              {/* Pure Veg */}
               <button
                 type="button"
-                onClick={() => setFilterVegOnly(!filterVegOnly)}
+                onClick={toggleVegOnly}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
                   filterVegOnly
-                    ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-xs'
+                    ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-xs ring-2 ring-emerald-500/20'
                     : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
                 }`}
               >
@@ -222,12 +241,33 @@ export default function RestaurantDetailPage() {
                 <span>Pure Veg</span>
               </button>
 
+              {/* Non-Veg */}
+              <button
+                type="button"
+                onClick={toggleNonVegOnly}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
+                  filterNonVegOnly
+                    ? 'bg-rose-50 border-rose-500 text-rose-800 shadow-xs ring-2 ring-rose-500/20'
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <div className="w-3 h-3 rounded border border-rose-600 flex items-center justify-center p-0.5">
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      filterNonVegOnly ? 'bg-rose-600' : 'bg-gray-300'
+                    }`}
+                  />
+                </div>
+                <span>Non-Veg</span>
+              </button>
+
+              {/* Bestsellers */}
               <button
                 type="button"
                 onClick={() => setFilterBestsellerOnly(!filterBestsellerOnly)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
                   filterBestsellerOnly
-                    ? 'bg-amber-50 border-amber-500 text-amber-900 shadow-xs'
+                    ? 'bg-amber-50 border-amber-500 text-amber-900 shadow-xs ring-2 ring-amber-500/20'
                     : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
                 }`}
               >
