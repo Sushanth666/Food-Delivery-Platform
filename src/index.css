@@ -55,15 +55,52 @@
   scrollbar-width: none;
 }
 
-/* Glassmorphism helpers */
+/* Glassmorphism & Visual Polish helpers */
 .glass {
   background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .glass-dark {
-  background: rgba(17, 24, 39, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Subtle Indian saffron/amber radial mesh glow for vibrant body feel */
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(255, 237, 213, 0.45) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(254, 215, 170, 0.3) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(255, 247, 237, 0.6) 0px, transparent 50%);
+}
+
+/* Shimmer animated gradient text */
+.text-gradient-brand {
+  background: linear-gradient(135deg, #111827 0%, #EA580C 50%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-saffron {
+  background: linear-gradient(135deg, #EA580C 0%, #F97316 50%, #FBBF24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Food badge glow */
+.badge-glow-veg {
+  box-shadow: 0 0 12px -2px rgba(22, 163, 74, 0.3);
+}
+
+.badge-glow-brand {
+  box-shadow: 0 0 16px -2px rgba(234, 88, 12, 0.3);
 }

@@ -2,13 +2,16 @@ import React from 'react';
 import {
   Search,
   X,
-  SlidersHorizontal,
   Star,
   Clock,
   RotateCcw,
   Sparkles,
+  Zap,
+  TrendingUp,
 } from 'lucide-react';
 import { useFilter } from '../../context/FilterContext';
+
+const POPULAR_SEARCHES = ['Biryani', 'Masala Dosa', 'Butter Chicken', 'Pav Bhaji', 'Paneer Tikka'];
 
 export default function FilterBar() {
   const {
@@ -27,18 +30,18 @@ export default function FilterBar() {
   } = useFilter();
 
   return (
-    <div className="bg-white rounded-3xl p-4 sm:p-5 border border-gray-100 shadow-soft space-y-4 mb-8">
-      {/* Top Search Input */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+    <div className="glass-card rounded-3xl p-4 sm:p-5 shadow-card border border-white/80 space-y-3.5 mb-8 transition-shadow">
+      {/* Top Search Input with ambient glow */}
+      <div className="relative group">
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-brand-600 transition-colors">
           <Search className="w-5 h-5 text-brand-600" />
         </div>
         <input
           type="text"
-          placeholder="Search restaurants, dishes (e.g. Biryani, Masala Dosa, Butter Chicken, Chole Bhature, Pav Bhaji)..."
+          placeholder="Search restaurants, dishes (e.g. Biryani, Masala Dosa, Butter Chicken, Pav Bhaji)..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-12 pr-10 py-3.5 bg-gray-50 hover:bg-gray-100/70 focus:bg-white text-sm font-medium text-gray-900 rounded-2xl border border-gray-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all placeholder:text-gray-400"
+          className="w-full pl-12 pr-10 py-3.5 bg-gray-50/80 hover:bg-gray-100/70 focus:bg-white text-sm font-semibold text-gray-900 rounded-2xl border border-gray-200/80 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all placeholder:text-gray-400 placeholder:font-normal"
         />
         {searchTerm && (
           <button
@@ -51,24 +54,48 @@ export default function FilterBar() {
         )}
       </div>
 
+      {/* Popular quick search suggestions */}
+      {!searchTerm && (
+        <div className="hidden sm:flex items-center gap-2 text-xs text-gray-500 pt-0.5">
+          <span className="font-bold flex items-center gap-1 text-gray-400">
+            <TrendingUp className="w-3.5 h-3.5 text-brand-500" />
+            Popular:
+          </span>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {POPULAR_SEARCHES.map((query) => (
+              <button
+                key={query}
+                type="button"
+                onClick={() => setSearchTerm(query)}
+                className="px-2.5 py-1 rounded-lg bg-gray-100/70 hover:bg-brand-50 hover:text-brand-600 text-[11px] font-semibold text-gray-600 transition-colors"
+              >
+                {query}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Filter & Sorting Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-gray-100">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-gray-100/80">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Veg Only Toggle */}
+          {/* Veg Only Toggle (with authentic Indian green square-dot emblem) */}
           <button
             type="button"
             onClick={() => setIsPureVegOnly(!isPureVegOnly)}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-2 transition-all active:scale-95 ${
               isPureVegOnly
-                ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-sm'
+                ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-xs'
                 : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
             }`}
           >
-            <span
-              className={`w-2.5 h-2.5 rounded-full ${
-                isPureVegOnly ? 'bg-emerald-600' : 'bg-gray-300'
-              }`}
-            />
+            <div className="w-3.5 h-3.5 rounded border border-emerald-600 flex items-center justify-center p-0.5">
+              <div
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isPureVegOnly ? 'bg-emerald-600' : 'bg-gray-300'
+                }`}
+              />
+            </div>
             <span>Pure Veg</span>
           </button>
 
@@ -78,7 +105,7 @@ export default function FilterBar() {
             onClick={() => setMinRating(minRating === 4.0 ? null : 4.0)}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
               minRating === 4.0
-                ? 'bg-amber-50 border-amber-500 text-amber-900 shadow-sm'
+                ? 'bg-amber-50 border-amber-500 text-amber-900 shadow-xs'
                 : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
             }`}
           >
@@ -89,7 +116,7 @@ export default function FilterBar() {
                   : 'text-gray-400'
               }`}
             />
-            <span>Ratings 4.0+</span>
+            <span>Rating 4.0+</span>
           </button>
 
           {/* Fast Delivery (< 30 min) */}
@@ -98,16 +125,16 @@ export default function FilterBar() {
             onClick={() => setMaxDeliveryTime(maxDeliveryTime === 30 ? null : 30)}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all active:scale-95 ${
               maxDeliveryTime === 30
-                ? 'bg-blue-50 border-blue-500 text-blue-900 shadow-sm'
+                ? 'bg-orange-50 border-orange-500 text-brand-900 shadow-xs'
                 : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
             }`}
           >
-            <Clock
+            <Zap
               className={`w-3.5 h-3.5 ${
-                maxDeliveryTime === 30 ? 'text-blue-600' : 'text-gray-400'
+                maxDeliveryTime === 30 ? 'text-brand-600 fill-brand-500' : 'text-gray-400'
               }`}
             />
-            <span>Fast (&lt; 30 mins)</span>
+            <span>Express (&lt; 30m)</span>
           </button>
 
           {/* Reset Filters Button */}
@@ -131,7 +158,7 @@ export default function FilterBar() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="text-xs font-bold text-gray-700 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-500 cursor-pointer"
+            className="text-xs font-bold text-gray-700 bg-gray-50/90 border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-500 cursor-pointer shadow-2xs hover:bg-white transition-colors"
           >
             <option value="recommended">Recommended</option>
             <option value="rating">Rating: High to Low</option>

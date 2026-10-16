@@ -35,7 +35,7 @@ export default function App() {
       <FilterProvider>
         <CartProvider>
           <OrderProvider>
-            <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 selection:bg-brand-500 selection:text-white">
+            <div className="min-h-screen flex flex-col bg-slate-50/70 bg-mesh text-gray-900 selection:bg-brand-500 selection:text-white">
               <ScrollToTop />
               {/* Global Navigation */}
               <Navbar />

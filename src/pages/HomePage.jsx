@@ -114,9 +114,9 @@ export default function HomePage() {
       {/* Section Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-black font-display text-gray-900 tracking-tight flex items-center gap-2">
             <span>Restaurants Near You</span>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-50 text-brand-600 border border-brand-100">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-50 text-brand-600 border border-brand-100 shadow-2xs">
               {filteredRestaurants.length} available
             </span>
           </h2>
