@@ -10,6 +10,7 @@ import {
   LogOut,
   Clock,
   ChevronDown,
+  UtensilsCrossed,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
@@ -41,27 +42,19 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20 gap-3 sm:gap-6">
           {/* LEFT: Logo & Delivering To Pill */}
           <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0">
-            {/* CraveWave Brand Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
-              {/* Fluid wavy icon */}
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#E11D48] to-rose-500 flex items-center justify-center text-white shadow-lg shadow-rose-950/50 group-hover:scale-105 transition-transform">
-                <svg
-                  className="w-5 h-5 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M2 6c4-3 6-3 10 0s6 3 10 0" />
-                  <path d="M2 12c4-3 6-3 10 0s6 3 10 0" />
-                  <path d="M2 18c4-3 6-3 10 0s6 3 10 0" />
-                </svg>
+            {/* CraveWave Brand Logo (Previous Logo with Current Theme Color) */}
+            <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/60 group-hover:scale-105 transition-transform border border-white/10">
+                <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-400 transition-colors">
-                Crave<span className="text-[#E11D48]">Wave</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-300 transition-colors leading-none">
+                  Crave<span className="text-[#E11D48]">Wave</span>
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-rose-400 mt-1">
+                  Food Delivered Fast
+                </span>
+              </div>
             </Link>
 
             {/* Delivering To Pill */}
