@@ -35,6 +35,9 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const hideFooter = ['/login', '/signup'].includes(location.pathname);
+
   return (
     <AuthProvider>
       <WishlistProvider>
@@ -76,7 +79,7 @@ export default function App() {
               <MobileBottomNav />
 
               {/* Footer */}
-              <Footer />
+              {!hideFooter && <Footer />}
             </div>
           </OrderProvider>
         </CartProvider>
