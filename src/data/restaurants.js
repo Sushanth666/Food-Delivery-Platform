@@ -1,7 +1,7 @@
 export const RESTAURANTS = [
   {
     id: 'rest-1',
-    name: 'Paradise & Meghana Royal Biryani',
+    name: 'Paradise & Meghana Royal Biryani Hotel',
     slug: 'paradise-meghana-biryani',
     image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=1000&q=80',
     bannerImage: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1600&q=80',
@@ -12,7 +12,7 @@ export const RESTAURANTS = [
     priceTier: '₹₹',
     costForTwo: 450,
     isPureVeg: false,
-    cuisines: ['Biryani & Pulao', 'North Indian', 'Kebabs'],
+    cuisines: ['Biryani & Pulao', 'North Indian', 'Rolls & Burgers'],
     tag: 'Trending #1 in Bengaluru',
     isOpen: true,
     address: '100 Feet Road, HAL 2nd Stage, Indiranagar, Bengaluru, Karnataka - 560038',
@@ -107,7 +107,7 @@ export const RESTAURANTS = [
   },
   {
     id: 'rest-2',
-    name: 'Murugan Tiffin & Dosa Corner',
+    name: 'Murugan Tiffin & Dosa Corner Hotel',
     slug: 'murugan-tiffin-dosa',
     image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=1000&q=80',
     bannerImage: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1600&q=80',
@@ -294,7 +294,7 @@ export const RESTAURANTS = [
   },
   {
     id: 'rest-4',
-    name: "Haldiram's Sweets, Chaat & Thali",
+    name: "Haldiram's Sweets, Chaat & Thali Bhavan",
     slug: 'haldirams-sweets-chaat',
     image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1000&q=80',
     bannerImage: 'https://images.unsplash.com/photo-1505253758473-96b302ed1932?auto=format&fit=crop&w=1600&q=80',
@@ -309,7 +309,7 @@ export const RESTAURANTS = [
     tag: 'Delhi Favorite',
     isOpen: true,
     address: 'B-Block, Inner Circle, Connaught Place, New Delhi - 110001',
-    description: 'Indias most trusted pure veg sweets and chaat landmark. Famous for crispy puffed Chole Bhature, spicy Raj Kachori, and melt-in-mouth Rasgullas.',
+    description: 'India’s most trusted pure veg sweets and chaat landmark. Famous for crispy puffed Chole Bhature, spicy Raj Kachori, and melt-in-mouth Rasgullas.',
     menuCategories: [
       {
         id: 'cat-delhi-chaat',
@@ -513,6 +513,373 @@ export const RESTAURANTS = [
   },
   {
     id: 'rest-7',
+    name: 'Hotel Saravana Bhavan — Pure Veg Tiffin & Meals',
+    slug: 'hotel-saravana-bhavan',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=1000&q=80',
+    bannerImage: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1600&q=80',
+    rating: 4.9,
+    reviewCount: 5200,
+    deliveryTime: '20-30 min',
+    distance: '1.8 km',
+    priceTier: '₹₹',
+    costForTwo: 380,
+    isPureVeg: true,
+    cuisines: ['South Indian', 'Chai & Lassi', 'Mithai & Desserts'],
+    tag: 'Global Tamil Heritage',
+    isOpen: true,
+    address: 'Kennet Lane, Egmore, Chennai, Tamil Nadu - 600008',
+    description: 'Renowned worldwide for lavish South Indian thali meals, ghee mini podi idlis submerged in aromatic sambar, and crisp onion rava dosas.',
+    menuCategories: [
+      {
+        id: 'cat-saravana-meals',
+        name: '🍱 South Indian Executive Meals (Thali)',
+        items: [
+          {
+            id: 'item-701',
+            name: 'Grand South Indian Meals (Special Thali)',
+            description: 'A feast of Ponni boiled rice, Mor Kuzhambu, drumstick sambar, pepper rasam, potato poriyal, kootu, curd, appalam, sweet payasam, and pickle.',
+            price: 240,
+            originalPrice: 280,
+            image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
+            isVeg: true,
+            isBestseller: true,
+            rating: 4.9,
+            votes: 2400,
+            customizable: true,
+            customizationOptions: {
+              sizes: [
+                { name: 'Standard Thali', priceDiff: 0 },
+                { name: 'Special Feast with Extra Ghee & Sweet', priceDiff: 50 }
+              ],
+              addOns: [
+                { name: 'Ghee Drizzle Cup', price: 25 },
+                { name: 'Extra Appalam (2 pcs)', price: 15 },
+                { name: 'Elaneer Payasam Cup', price: 40 }
+              ],
+              spiceLevels: ['Traditional Tamil Spiced', 'Mild Brahmin Style']
+            }
+          },
+          {
+            id: 'item-702',
+            name: 'Ghee Mini Podi Idli (14 pcs in Sambar Bowl)',
+            description: 'Fourteen coin-sized button idlis soaked in piping hot lentil sambar, drizzled with pure ghee and sprinkled with spicy gun powder.',
+            price: 135,
+            image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
+            isVeg: true,
+            isBestseller: true,
+            rating: 5.0,
+            votes: 1820,
+            customizable: false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'rest-8',
+    name: 'Karim’s Historic Hotel Since 1913 — Jama Masjid',
+    slug: 'karims-historic-hotel',
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=80',
+    bannerImage: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1600&q=80',
+    rating: 4.9,
+    reviewCount: 4600,
+    deliveryTime: '30-40 min',
+    distance: '3.5 km',
+    priceTier: '₹₹₹',
+    costForTwo: 650,
+    isPureVeg: false,
+    cuisines: ['North Indian', 'Biryani & Pulao', 'Rolls & Burgers'],
+    tag: 'Royal Mughal Legacy',
+    isOpen: true,
+    address: '16 Gali Kababian, Jama Masjid, Old Delhi - 110006',
+    description: 'Direct descendants of the royal Mughal emperors’ head chefs. Legendary slow-cooked Mutton Rogan Josh, melt-in-mouth seekh kebabs, and tandoori raan.',
+    menuCategories: [
+      {
+        id: 'cat-karim-specials',
+        name: '👑 Royal Mughlai Curries & Kebabs',
+        items: [
+          {
+            id: 'item-801',
+            name: 'Karim’s Mutton Rogan Josh (Heritage)',
+            description: 'Tender baby mutton simmered in fragrant Kashmiri saffron, mawa, yogurt, and authentic Ratanjot red bark gravy.',
+            price: 420,
+            originalPrice: 480,
+            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+            isVeg: false,
+            isBestseller: true,
+            rating: 5.0,
+            votes: 2150,
+            customizable: true,
+            customizationOptions: {
+              sizes: [
+                { name: 'Half (2 Mutton pieces)', priceDiff: 0 },
+                { name: 'Full (4 Mutton pieces)', priceDiff: 240 }
+              ],
+              addOns: [
+                { name: 'Hot Butter Rumali Roti (2 pcs)', price: 40 },
+                { name: 'Special Mint Coriander Chutney', price: 20 }
+              ],
+              spiceLevels: ['Mughlai Aromatic', 'Old Delhi Spicy']
+            }
+          },
+          {
+            id: 'item-802',
+            name: 'Charcoal Mutton Seekh Kebab (4 pcs)',
+            description: 'Minced mutton infused with smoked cloves, ginger, mace, and green chilies, skewered and roasted over flaming charcoal pit.',
+            price: 320,
+            image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80',
+            isVeg: false,
+            isBestseller: true,
+            rating: 4.9,
+            votes: 1680,
+            customizable: false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'rest-9',
+    name: 'Bawarchi & Hotel Shadab — Royal Hyderabadi Darbar',
+    slug: 'bawarchi-hotel-shadab',
+    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=1000&q=80',
+    bannerImage: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1600&q=80',
+    rating: 4.9,
+    reviewCount: 5800,
+    deliveryTime: '25-35 min',
+    distance: '2.4 km',
+    priceTier: '₹₹',
+    costForTwo: 480,
+    isPureVeg: false,
+    cuisines: ['Biryani & Pulao', 'North Indian', 'Chai & Lassi'],
+    tag: 'Nizam of Hyderabad Choice',
+    isOpen: true,
+    address: 'High Court Road, Madina Circle, Charminar, Hyderabad, Telangana - 500002',
+    description: 'The golden culinary beacon of Hyderabad. Celebrated for slow-brewed Haleem in pure ghee, succulent Mutton Dum Biryani, and rich Double Ka Meetha.',
+    menuCategories: [
+      {
+        id: 'cat-shadab-biryani',
+        name: '🍚 Hyderabadi Handi Biryani & Haleem',
+        items: [
+          {
+            id: 'item-901',
+            name: 'Nizami Mutton Dum Biryani Special',
+            description: 'World-renowned Hyderabadi Kacchi Dum Biryani: marinated tender mutton and aged basmati sealed in clay pot with caramelized onions and saffron.',
+            price: 380,
+            originalPrice: 440,
+            image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80',
+            isVeg: false,
+            isBestseller: true,
+            rating: 5.0,
+            votes: 3100,
+            customizable: true,
+            customizationOptions: {
+              sizes: [
+                { name: 'Regular Handi', priceDiff: 0 },
+                { name: 'Special Jumbo Double Gosht', priceDiff: 220 }
+              ],
+              addOns: [
+                { name: 'Extra Mirchi Ka Salan Bowl', price: 30 },
+                { name: 'Kachumber Raita Bowl', price: 35 }
+              ],
+              spiceLevels: ['Nizam Mild Saffron', 'Traditional Hyderabadi Teekha']
+            }
+          },
+          {
+            id: 'item-902',
+            name: 'Pure Desi Ghee Hyderabadi Mutton Haleem',
+            description: 'Slow-simmered for 8 hours with broken wheat, mutton meat, lentils, bone marrow, pure cow ghee, topped with crispy fried onions and cashews.',
+            price: 290,
+            image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
+            isVeg: false,
+            isBestseller: true,
+            rating: 4.9,
+            votes: 1940,
+            customizable: false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'rest-10',
+    name: 'Vidyarthi Bhavan Heritage Hotel Since 1943',
+    slug: 'vidyarthi-bhavan-hotel',
+    image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1000&q=80',
+    bannerImage: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=1600&q=80',
+    rating: 4.9,
+    reviewCount: 6200,
+    deliveryTime: '15-25 min',
+    distance: '1.2 km',
+    priceTier: '₹',
+    costForTwo: 220,
+    isPureVeg: true,
+    cuisines: ['South Indian', 'Chai & Lassi'],
+    tag: 'Bengaluru Icon',
+    isOpen: true,
+    address: '32 Gandhi Bazaar Main Road, Basavanagudi, Bengaluru, Karnataka - 560004',
+    description: 'Bengaluru’s most cherished 80-year-old culinary landmark. Known for its thick, crispy, ghee-soaked Benne Masala Dosa that melts in your mouth.',
+    menuCategories: [
+      {
+        id: 'cat-vb-specials',
+        name: '🥞 Legendary Benne Dosa & Tiffin',
+        items: [
+          {
+            id: 'item-1001',
+            name: 'Vidyarthi Bhavan Special Benne Masala Dosa',
+            description: 'Thick yet ultra-crispy golden fermented crepe roasted in churned white butter (benne), layered with spicy red chutney and potato palya. Served with rich coconut chutney.',
+            price: 110,
+            originalPrice: 130,
+            image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=800&q=80',
+            isVeg: true,
+            isBestseller: true,
+            rating: 5.0,
+            votes: 4200,
+            customizable: true,
+            customizationOptions: {
+              sizes: [
+                { name: 'Standard Single Dosa', priceDiff: 0 },
+                { name: 'Double Dosa Combo', priceDiff: 95 }
+              ],
+              addOns: [
+                { name: 'Extra White Butter (Benne) Scoop', price: 20 },
+                { name: 'Extra Chutney Bowl', price: 15 }
+              ],
+              spiceLevels: ['Heritage Spiced']
+            }
+          },
+          {
+            id: 'item-1002',
+            name: 'Shavige Kesari Bath (Pineapple Saffron)',
+            description: 'Golden semolina dessert infused with pure ghee, saffron threads, roasted cashews, and raisins.',
+            price: 65,
+            image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=800&q=80',
+            isVeg: true,
+            isBestseller: true,
+            rating: 4.9,
+            votes: 1100,
+            customizable: false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'rest-11',
+    name: 'Rajdhani Thali & Gujarati Rasoi Hotel',
+    slug: 'rajdhani-thali-rasoi',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=1000&q=80',
+    bannerImage: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=1600&q=80',
+    rating: 4.8,
+    reviewCount: 3100,
+    deliveryTime: '25-35 min',
+    distance: '2.6 km',
+    priceTier: '₹₹',
+    costForTwo: 500,
+    isPureVeg: true,
+    cuisines: ['North Indian', 'Chaat & Street Food', 'Mithai & Desserts'],
+    tag: 'Royal Rajasthani Thali',
+    isOpen: true,
+    address: 'Level 2, Phoenix Marketcity, Whitefield, Bengaluru - 560048',
+    description: 'Majestic Rajasthani and Gujarati pure vegetarian feast. Dal Baati Churma, sweet Gujarati Kadhi, soft phulkas, dhoklas, and warm Malpuas with Rabri.',
+    menuCategories: [
+      {
+        id: 'cat-rajdhani-thali',
+        name: '👑 Royal Heritage Thali Boxes',
+        items: [
+          {
+            id: 'item-1101',
+            name: 'Grand Royal Rajasthani Thali Box',
+            description: 'Feast box containing authentic Dal Baati Churma, Gatta Curry, Paneer Hariyali, Gujarati Sweet Kadhi, 4 Ghee Phulkas, Steamed Rice, Dhokla, and Malpua Rabri.',
+            price: 340,
+            originalPrice: 390,
+            image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
+            isVeg: true,
+            isBestseller: true,
+            rating: 4.9,
+            votes: 1850,
+            customizable: true,
+            customizationOptions: {
+              sizes: [
+                { name: 'Standard Thali Box', priceDiff: 0 },
+                { name: 'King Maharaja Size Thali', priceDiff: 80 }
+              ],
+              addOns: [
+                { name: 'Extra Baati with Ghee (2 pcs)', price: 40 },
+                { name: 'Kesar Malpua Rabri (2 pcs)', price: 60 }
+              ],
+              spiceLevels: ['Traditional Sweet & Spiced', 'Spicy Marwari']
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'rest-12',
+    name: 'Kake Da Hotel & Dhaba Since 1931',
+    slug: 'kake-da-hotel-dhaba',
+    image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=1000&q=80',
+    bannerImage: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1600&q=80',
+    rating: 4.7,
+    reviewCount: 3750,
+    deliveryTime: '25-35 min',
+    distance: '2.0 km',
+    priceTier: '₹₹',
+    costForTwo: 420,
+    isPureVeg: false,
+    cuisines: ['North Indian', 'Biryani & Pulao', 'Pizza & Breads'],
+    tag: 'Old Delhi Dhaba Legend',
+    isOpen: true,
+    address: '67 Municipal Market, Outer Circle, Connaught Place, New Delhi - 110001',
+    description: 'Iconic 90-year-old Punjab dhaba landmark in Delhi. Renowned for its signature Dahi Meat, rich Saag Chicken, and crispy Tandoori Kulchas.',
+    menuCategories: [
+      {
+        id: 'cat-kake-mains',
+        name: '🥘 Kake Da Dhaba Curries',
+        items: [
+          {
+            id: 'item-1201',
+            name: 'Kake Da Famous Dahi Meat Special',
+            description: 'Legendary succulent mutton chunks slow-cooked in thick curd, whole garam masalas, pure ghee, and caramelized onions.',
+            price: 390,
+            originalPrice: 450,
+            image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80',
+            isVeg: false,
+            isBestseller: true,
+            rating: 4.9,
+            votes: 1950,
+            customizable: true,
+            customizationOptions: {
+              sizes: [
+                { name: 'Half Handi', priceDiff: 0 },
+                { name: 'Full Handi (4 pcs Mutton)', priceDiff: 210 }
+              ],
+              addOns: [
+                { name: 'Tandoori Roti with Butter (2 pcs)', price: 30 },
+                { name: 'Pickled Sirka Onions', price: 15 }
+              ],
+              spiceLevels: ['Dhaba Teekha', 'Extra Spicy Punjabi']
+            }
+          },
+          {
+            id: 'item-1202',
+            name: 'Amritsari Stuffed Aloo Pyaaz Kulcha with Chole',
+            description: 'Crisp flaky tandoor baked bread stuffed with spiced potatoes and onions, served with spicy chickpea curry and tamarind chutney.',
+            price: 160,
+            image: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=800&q=80',
+            isVeg: true,
+            isBestseller: true,
+            rating: 4.8,
+            votes: 890,
+            customizable: false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'rest-13',
     name: 'Mainland Indo-Chinese Wok',
     slug: 'mainland-indo-chinese',
     image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=1000&q=80',
@@ -535,7 +902,7 @@ export const RESTAURANTS = [
         name: '🍜 Wok Noodles & Fried Rice',
         items: [
           {
-            id: 'item-701',
+            id: 'item-1301',
             name: 'Spicy Schezwan Chicken Hakka Noodles',
             description: 'Wok-tossed noodles with shredded chicken, crunchy cabbage, carrots, and spring onions in house-made fiery red Schezwan chili garlic paste.',
             price: 230,
@@ -559,7 +926,7 @@ export const RESTAURANTS = [
             }
           },
           {
-            id: 'item-702',
+            id: 'item-1302',
             name: 'Crispy Paneer Chili Dry',
             description: 'Crispy fried cottage cheese tossed with diced onions, crunchy bell peppers, dark soy sauce, green chilies, and spring onion.',
             price: 210,
@@ -575,7 +942,7 @@ export const RESTAURANTS = [
     ]
   },
   {
-    id: 'rest-8',
+    id: 'rest-14',
     name: 'Ovenfresh Desi Artisan Pizza & Breads',
     slug: 'ovenfresh-desi-pizza',
     image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=1000&q=80',
@@ -598,7 +965,7 @@ export const RESTAURANTS = [
         name: '🍕 Desi Fusion Pizzas',
         items: [
           {
-            id: 'item-801',
+            id: 'item-1401',
             name: 'Tandoori Paneer Tikka Feast Pizza',
             description: 'Spiced tandoori paneer, red paprika, crisp capsicum, and golden corn on a 100% mozzarella cheese blend with herb tomato sauce.',
             price: 360,
@@ -623,7 +990,7 @@ export const RESTAURANTS = [
             }
           },
           {
-            id: 'item-802',
+            id: 'item-1402',
             name: 'Cheesy Stuffed Garlic Breadsticks',
             description: 'Freshly baked buttery garlic bread filled with sweet golden corn, pickled jalapeños, and creamy melted mozzarella.',
             price: 150,
