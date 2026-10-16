@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, ChevronLeft, ChevronRight, Sparkles, Tag } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useFilter } from '../../context/FilterContext';
 
@@ -8,12 +9,32 @@ export default function HeroBanner() {
   const { selectedCategory, setSelectedCategory } = useFilter();
   const [activeSlide, setActiveSlide] = useState(0);
   const [codeApplied, setCodeApplied] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const totalSlides = 3;
+
+  // Auto-play slideshow every 5.5s (pauses on mouse hover)
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % totalSlides);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [isPaused, totalSlides]);
 
   const handleOrderNow = (code = 'CRAVE50') => {
     applyCoupon(code);
     setCodeApplied(true);
     openCartDrawer();
     setTimeout(() => setCodeApplied(false), 3000);
+  };
+
+  const nextSlide = () => {
+    setActiveSlide((prev) => (prev + 1) % totalSlides);
+  };
+
+  const prevSlide = () => {
+    setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   };
 
   const pillRows = [
@@ -31,7 +52,11 @@ export default function HeroBanner() {
   ];
 
   return (
-    <div className="mb-10">
+    <div
+      className="mb-10 relative select-none"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       {/* Outer Panoramic Hero Frame */}
       <div className="relative overflow-hidden rounded-[28px] bg-[#0C0C11] border border-white/10 shadow-2xl shadow-rose-950/40 min-h-[380px] flex items-center">
         {/* Ambient Dark Ruby Waves on the right edge */}
@@ -60,122 +85,267 @@ export default function HeroBanner() {
           </svg>
         </div>
 
-        {/* Ambient background glow behind food */}
-        <div className="absolute left-[30%] top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-rose-600/10 blur-3xl pointer-events-none" />
+        {/* Ambient background glow */}
+        <div className="absolute left-[35%] top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-rose-600/15 blur-3xl pointer-events-none" />
 
-        {/* 3-Column Layout: Left Promo Card | Center Platter | Right Headlines */}
-        <div className="relative z-10 w-full px-5 sm:px-8 lg:px-10 py-6 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8">
-          {/* 1. Left: Floating Frosted Glass 50% OFF Card */}
-          <div className="w-full sm:w-60 lg:w-[245px] flex-shrink-0 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-5 sm:p-6 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden group">
-            {/* Subtle gloss reflection */}
-            <div className="absolute -top-14 -left-14 w-28 h-28 bg-white/15 rounded-full blur-xl pointer-events-none" />
+        {/* Animated Slide Container */}
+        <div className="relative z-10 w-full min-h-[380px] flex items-center">
+          <AnimatePresence mode="wait">
+            {/* ======================================================== */}
+            {/* SLIDE 1: 1st Image (FLAT 50% OFF Card & Welcome Offer) */}
+            {/* ======================================================== */}
+            {activeSlide === 0 && (
+              <motion.div
+                key="slide-50-off"
+                initial={{ opacity: 0, x: 25 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -25 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="w-full px-6 sm:px-12 lg:px-16 py-8 flex flex-col md:flex-row items-center justify-between gap-8"
+              >
+                {/* 1st Image Card: FLAT 50% OFF */}
+                <div className="w-full sm:w-[320px] md:w-[340px] flex-shrink-0 bg-[#14141C]/90 backdrop-blur-2xl border border-white/15 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden group">
+                  {/* Subtle gloss reflection */}
+                  <div className="absolute -top-14 -left-14 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
 
-            <span className="text-[11px] font-black uppercase tracking-widest text-gray-300">
-              FLAT
-            </span>
-            <div className="text-4xl sm:text-[44px] font-black text-white tracking-tight leading-none mt-1">
-              50% OFF
-            </div>
-            <p className="text-xs text-gray-200 font-medium mt-2 max-w-[150px] leading-relaxed">
-              On Your First Gourmet Order!
-            </p>
-            <div className="mt-3 text-[11px] font-semibold text-rose-300">
-              Use Code: <span className="font-extrabold text-white">CRAVE50</span>
-            </div>
+                  <span className="text-xs font-black uppercase tracking-widest text-gray-300">
+                    FLAT
+                  </span>
+                  <div className="text-5xl sm:text-6xl font-black text-white tracking-tight leading-none mt-1.5 font-display">
+                    50% OFF
+                  </div>
+                  <p className="text-sm text-gray-200 font-semibold mt-3 max-w-[220px] leading-relaxed">
+                    On Your First Gourmet Order!
+                  </p>
+                  <div className="mt-3.5 text-xs font-bold text-rose-300">
+                    Use Code: <span className="font-black text-white tracking-wider">CRAVE50</span>
+                  </div>
 
-            <button
-              type="button"
-              onClick={() => handleOrderNow('CRAVE50')}
-              className={`mt-4 px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-lg active:scale-95 flex items-center justify-center gap-1.5 ${
-                codeApplied || coupon?.code === 'CRAVE50'
-                  ? 'bg-emerald-600 text-white shadow-emerald-950/60'
-                  : 'bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-rose-950/70 hover:shadow-rose-900 hover:scale-103'
-              }`}
-            >
-              {codeApplied || coupon?.code === 'CRAVE50' ? (
-                <>
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  <span>APPLIED</span>
-                </>
-              ) : (
-                <span>ORDER NOW</span>
-              )}
-            </button>
-          </div>
-
-          {/* 2. Center: Gourmet Feast Platter sitting neatly in the middle */}
-          <div className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 lg:w-[320px] lg:h-[320px] flex items-center justify-center">
-            {/* Soft radial glow under the plate */}
-            <div className="absolute inset-0 rounded-full bg-rose-600/15 blur-2xl pointer-events-none" />
-
-            {/* Circular Plate with soft border and shadow */}
-            <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl shadow-black/90 border-2 border-white/10 group">
-              <img
-                src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=85"
-                alt="Kadai Butter Chicken Feast with Naan"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              {/* Subtle inner shadow for dish depth */}
-              <div className="absolute inset-0 rounded-full shadow-inner pointer-events-none" />
-            </div>
-          </div>
-
-          {/* 3. Right: Clean Headlines & Cuisine Pills on Dark Background */}
-          <div className="flex-1 lg:max-w-[460px] flex flex-col items-start text-left z-10">
-            <h1 className="text-2xl sm:text-3xl lg:text-[35px] font-black font-display text-white tracking-tight leading-tight whitespace-nowrap">
-              Gourmet Dining, Delivered.
-            </h1>
-            <p className="mt-1.5 text-xs sm:text-[13px] text-gray-300 font-medium leading-relaxed">
-              Experience Exquisite Flavors in the Comfort of Your Home.
-            </p>
-
-            {/* Pill Rows matching screenshot */}
-            <div className="mt-5 space-y-2.5 w-full">
-              {pillRows.map((row, rIdx) => (
-                <div key={rIdx} className="flex flex-wrap items-center gap-2">
-                  {row.map((item) => {
-                    const isActive =
-                      selectedCategory === item.id ||
-                      (item.id === 'all' && selectedCategory === 'all');
-
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setSelectedCategory(item.id)}
-                        className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
-                          isActive
-                            ? 'bg-[#E11D48] text-white font-bold shadow-md shadow-rose-950/60 scale-103'
-                            : 'bg-white/5 hover:bg-white/10 border border-white/15 text-gray-300 hover:text-white hover:border-rose-500/40'
-                        }`}
-                      >
-                        {item.flag && <span>{item.flag}</span>}
-                        {item.icon && <span>{item.icon}</span>}
-                        <span>{item.label}</span>
-                      </button>
-                    );
-                  })}
+                  <button
+                    type="button"
+                    onClick={() => handleOrderNow('CRAVE50')}
+                    className={`mt-5 w-full py-3 px-8 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${
+                      codeApplied || coupon?.code === 'CRAVE50'
+                        ? 'bg-emerald-600 text-white shadow-emerald-950/60'
+                        : 'bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-rose-950/80 hover:shadow-rose-900 hover:scale-102'
+                    }`}
+                  >
+                    {codeApplied || coupon?.code === 'CRAVE50' ? (
+                      <>
+                        <Check className="w-4 h-4 stroke-[3]" />
+                        <span>COUPON APPLIED</span>
+                      </>
+                    ) : (
+                      <span>ORDER NOW</span>
+                    )}
+                  </button>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* 4. Peeking Next Carousel Card on the far right edge (Desktop) */}
-          <div className="hidden 2xl:flex absolute -right-20 top-1/2 -translate-y-1/2 w-48 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-4 flex-col items-center text-center opacity-65 hover:opacity-100 transition-opacity pointer-events-auto">
-            <span className="text-[10px] font-black uppercase tracking-widest text-gray-300">
-              GET
-            </span>
-            <div className="text-2xl font-black text-white">30% OFF</div>
-            <p className="text-[10px] text-gray-300 mt-0.5">On Your Next Order</p>
-            <button
-              type="button"
-              onClick={() => handleOrderNow('TASTY20')}
-              className="mt-2.5 px-4 py-1 rounded-full bg-[#E11D48] text-white text-[10px] font-bold uppercase tracking-wider"
-            >
-              ORDER NOW
-            </button>
-          </div>
+                {/* Right Side Showcase for Slide 1 */}
+                <div className="flex-1 flex flex-col md:flex-row items-center justify-end gap-6 sm:gap-10">
+                  <div className="text-center md:text-left max-w-md">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-300 text-xs font-bold mb-3">
+                      <Sparkles className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
+                      <span>Welcome Special Offer</span>
+                    </div>
+                    <h2 className="text-2xl sm:text-4xl font-black font-display text-white tracking-tight leading-tight">
+                      Experience Royal Indian Flavors at Half Price
+                    </h2>
+                    <p className="mt-2 text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">
+                      Enjoy authentic handi biryanis, slow-cooked kadai curries, and tandoori starters with instant 50% discount.
+                    </p>
+                    <div className="mt-4 flex items-center gap-3 justify-center md:justify-start text-xs font-bold text-rose-300">
+                      <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl">
+                        ⚡ Free Fast Delivery
+                      </span>
+                      <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl">
+                        ★ 4.8+ Top Rated Chefs
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-2xl border-2 border-white/10 flex-shrink-0 group">
+                    <img
+                      src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=600&q=80"
+                      alt="Royal Hyderabadi Biryani"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ======================================================== */}
+            {/* SLIDE 2: 2nd Image (Gourmet Dining + Circular Platter)   */}
+            {/* ======================================================== */}
+            {activeSlide === 1 && (
+              <motion.div
+                key="slide-gourmet-dining"
+                initial={{ opacity: 0, x: 25 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -25 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="w-full px-6 sm:px-10 lg:px-14 py-8 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12"
+              >
+                {/* 2nd Image Left: Circular Kadai Platter with Naan */}
+                <div className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 lg:w-[320px] lg:h-[320px] flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full bg-rose-600/20 blur-2xl pointer-events-none" />
+                  <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl shadow-black/95 border-2 border-white/15 group">
+                    <img
+                      src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=85"
+                      alt="Kadai Butter Chicken Feast with Naan"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 rounded-full shadow-inner pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* 2nd Image Right: Headline & Cuisine Filter Pills */}
+                <div className="flex-1 max-w-xl flex flex-col items-start text-left z-10">
+                  <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black font-display text-white tracking-tight leading-tight">
+                    Gourmet Dining, Delivered.
+                  </h1>
+                  <p className="mt-2 text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">
+                    Experience Exquisite Flavors in the Comfort of Your Home.
+                  </p>
+
+                  {/* 2-Row Cuisine Pills matching Image 2 */}
+                  <div className="mt-6 space-y-3 w-full">
+                    {pillRows.map((row, rIdx) => (
+                      <div key={rIdx} className="flex flex-wrap items-center gap-2">
+                        {row.map((item) => {
+                          const isActive =
+                            selectedCategory === item.id ||
+                            (item.id === 'all' && selectedCategory === 'all');
+
+                          return (
+                            <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => setSelectedCategory(item.id)}
+                              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
+                                isActive
+                                  ? 'bg-[#E11D48] text-white font-bold shadow-md shadow-rose-950/60 scale-103 ring-2 ring-rose-500/30'
+                                  : 'bg-white/5 hover:bg-white/10 border border-white/15 text-gray-300 hover:text-white hover:border-rose-500/40'
+                              }`}
+                            >
+                              {item.flag && <span>{item.flag}</span>}
+                              {item.icon && <span>{item.icon}</span>}
+                              <span>{item.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ======================================================== */}
+            {/* SLIDE 3: 3rd Image (GET 30% OFF Card & Next Order Offer) */}
+            {/* ======================================================== */}
+            {activeSlide === 2 && (
+              <motion.div
+                key="slide-30-off"
+                initial={{ opacity: 0, x: 25 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -25 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="w-full px-6 sm:px-12 lg:px-16 py-8 flex flex-col md:flex-row items-center justify-between gap-8"
+              >
+                {/* 3rd Image Card: GET 30% OFF */}
+                <div className="w-full sm:w-[320px] md:w-[340px] flex-shrink-0 bg-[#14141C]/90 backdrop-blur-2xl border border-white/15 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden group">
+                  <div className="absolute -top-14 -left-14 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
+
+                  <span className="text-xs font-black uppercase tracking-widest text-gray-300">
+                    GET
+                  </span>
+                  <div className="text-5xl sm:text-6xl font-black text-white tracking-tight leading-none mt-1.5 font-display">
+                    30% OFF
+                  </div>
+                  <p className="text-sm text-gray-200 font-semibold mt-3 max-w-[220px] leading-relaxed">
+                    On Your Next Order!
+                  </p>
+                  <div className="mt-3.5 text-xs font-bold text-rose-300">
+                    Use Code: <span className="font-black text-white tracking-wider">TASTY30</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleOrderNow('TASTY30')}
+                    className={`mt-5 w-full py-3 px-8 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${
+                      codeApplied || coupon?.code === 'TASTY30'
+                        ? 'bg-emerald-600 text-white shadow-emerald-950/60'
+                        : 'bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-rose-950/80 hover:shadow-rose-900 hover:scale-102'
+                    }`}
+                  >
+                    {codeApplied || coupon?.code === 'TASTY30' ? (
+                      <>
+                        <Check className="w-4 h-4 stroke-[3]" />
+                        <span>COUPON APPLIED</span>
+                      </>
+                    ) : (
+                      <span>ORDER NOW</span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Right Side Showcase for Slide 3 */}
+                <div className="flex-1 flex flex-col md:flex-row items-center justify-end gap-6 sm:gap-10">
+                  <div className="text-center md:text-left max-w-md">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-300 text-xs font-bold mb-3">
+                      <Tag className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Everyday Foodie Savings</span>
+                    </div>
+                    <h2 className="text-2xl sm:text-4xl font-black font-display text-white tracking-tight leading-tight">
+                      Savor Handcrafted Starters & Desserts
+                    </h2>
+                    <p className="mt-2 text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">
+                      Treat yourself to sizzling Galouti kebabs, fresh paneer tikkas, and warm saffron Gulab Jamuns with flat 30% savings.
+                    </p>
+                    <div className="mt-4 flex items-center gap-3 justify-center md:justify-start text-xs font-bold text-rose-300">
+                      <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl">
+                        🏷️ Min Order ₹299
+                      </span>
+                      <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl">
+                        ⚡ Instant Discount
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-2xl border-2 border-white/10 flex-shrink-0 group">
+                    <img
+                      src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=600&q=80"
+                      alt="Tandoori Tikka Starters"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+
+        {/* Left Arrow Button */}
+        <button
+          type="button"
+          onClick={prevSlide}
+          className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/15 flex items-center justify-center backdrop-blur-md shadow-lg transition-all hover:scale-110 active:scale-95 cursor-pointer"
+          aria-label="Previous Slide"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+
+        {/* Right Arrow Button */}
+        <button
+          type="button"
+          onClick={nextSlide}
+          className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/15 flex items-center justify-center backdrop-blur-md shadow-lg transition-all hover:scale-110 active:scale-95 cursor-pointer"
+          aria-label="Next Slide"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Carousel Pagination Indicators */}
@@ -183,26 +353,32 @@ export default function HeroBanner() {
         <button
           type="button"
           onClick={() => setActiveSlide(0)}
-          className={`h-1.5 rounded-full transition-all duration-300 ${
-            activeSlide === 0 ? 'w-7 bg-[#E11D48]' : 'w-1.5 bg-gray-600 hover:bg-gray-400'
+          className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+            activeSlide === 0
+              ? 'w-8 bg-[#E11D48] shadow-md shadow-rose-950/60'
+              : 'w-2 bg-gray-700 hover:bg-gray-500'
           }`}
-          aria-label="Slide 1"
+          aria-label="Slide 1 (50% OFF)"
         />
         <button
           type="button"
           onClick={() => setActiveSlide(1)}
-          className={`h-1.5 rounded-full transition-all duration-300 ${
-            activeSlide === 1 ? 'w-7 bg-[#E11D48]' : 'w-1.5 bg-gray-600 hover:bg-gray-400'
+          className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+            activeSlide === 1
+              ? 'w-8 bg-[#E11D48] shadow-md shadow-rose-950/60'
+              : 'w-2 bg-gray-700 hover:bg-gray-500'
           }`}
-          aria-label="Slide 2"
+          aria-label="Slide 2 (Gourmet Dining)"
         />
         <button
           type="button"
           onClick={() => setActiveSlide(2)}
-          className={`h-1.5 rounded-full transition-all duration-300 ${
-            activeSlide === 2 ? 'w-7 bg-[#E11D48]' : 'w-1.5 bg-gray-600 hover:bg-gray-400'
+          className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+            activeSlide === 2
+              ? 'w-8 bg-[#E11D48] shadow-md shadow-rose-950/60'
+              : 'w-2 bg-gray-700 hover:bg-gray-500'
           }`}
-          aria-label="Slide 3"
+          aria-label="Slide 3 (30% OFF)"
         />
       </div>
     </div>
