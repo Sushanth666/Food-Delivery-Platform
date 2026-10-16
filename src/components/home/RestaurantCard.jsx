@@ -86,7 +86,7 @@ export default function RestaurantCard({ restaurant }) {
         {/* Footer Meta */}
         <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
           <span className="font-semibold text-gray-700">
-            ${restaurant.costForTwo} for two
+            ₹{restaurant.costForTwo} for two
           </span>
 
           <Link

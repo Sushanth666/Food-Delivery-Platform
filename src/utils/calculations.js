@@ -1,6 +1,6 @@
 export function calculateItemTotal(item) {
   let basePrice = item.price;
-  
+
   if (item.customization) {
     if (item.customization.sizePriceDiff) {
       basePrice += item.customization.sizePriceDiff;
@@ -34,15 +34,15 @@ export function calculateOrderBill(items = [], appliedCoupon = null) {
 
   const itemCount = items.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
-  // Delivery fee logic: standard $3.49, free if subtotal >= $35
-  let deliveryFee = subtotal >= 35 ? 0 : 3.49;
-  const platformFee = 1.49;
+  // Delivery fee logic for India: ₹35, free if subtotal >= ₹299
+  let deliveryFee = subtotal >= 299 ? 0 : 35;
+  const platformFee = 5;
 
   // Coupon discount computation
   let discount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrder || 0)) {
     if (appliedCoupon.discountType === 'percentage') {
-      const calcDiscount = (subtotal * appliedCoupon.discountValue) / 100;
+      const calcDiscount = Math.round((subtotal * appliedCoupon.discountValue) / 100);
       discount = Math.min(calcDiscount, appliedCoupon.maxDiscount || calcDiscount);
     } else if (appliedCoupon.discountType === 'flat') {
       discount = Math.min(appliedCoupon.discountValue, subtotal);
@@ -52,21 +52,19 @@ export function calculateOrderBill(items = [], appliedCoupon = null) {
     }
   }
 
-  // Tax calculation: 8% on discounted subtotal
+  // GST in India: 5% for restaurant orders
   const taxableSubtotal = Math.max(0, subtotal - discount);
-  const taxes = Number((taxableSubtotal * 0.08).toFixed(2));
+  const taxes = Math.round(taxableSubtotal * 0.05);
 
-  const total = Number(
-    Math.max(0, subtotal - discount + deliveryFee + platformFee + taxes).toFixed(2)
-  );
+  const total = Math.max(0, subtotal - discount + deliveryFee + platformFee + taxes);
 
   return {
-    subtotal: Number(subtotal.toFixed(2)),
-    discount: Number(discount.toFixed(2)),
-    deliveryFee: Number(deliveryFee.toFixed(2)),
-    platformFee: Number(platformFee.toFixed(2)),
-    taxes: Number(taxes.toFixed(2)),
-    total: Number(total.toFixed(2)),
+    subtotal: Math.round(subtotal),
+    discount: Math.round(discount),
+    deliveryFee: Math.round(deliveryFee),
+    platformFee: Math.round(platformFee),
+    taxes: Math.round(taxes),
+    total: Math.round(total),
     itemCount,
   };
 }

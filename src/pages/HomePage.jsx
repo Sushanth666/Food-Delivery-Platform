@@ -39,14 +39,15 @@ export default function HomePage() {
       // Category filter
       if (selectedCategory !== 'all') {
         const catMap = {
-          burgers: 'Burgers',
-          pizza: 'Pizza',
-          biryani: 'Biryani',
-          asian: 'Asian',
-          healthy: 'Healthy',
-          desserts: 'Desserts',
-          mexican: 'Mexican',
-          beverages: 'Beverages',
+          biryani: 'Biryani & Pulao',
+          'north-indian': 'North Indian',
+          'south-indian': 'South Indian',
+          chaat: 'Chaat & Street Food',
+          rolls: 'Rolls & Burgers',
+          chinese: 'Indo-Chinese',
+          pizza: 'Pizza & Breads',
+          desserts: 'Mithai & Desserts',
+          beverages: 'Chai & Lassi',
         };
         const targetCuisine = catMap[selectedCategory];
         if (

@@ -71,27 +71,27 @@ export default function Footer() {
             <ul className="space-y-2 text-xs">
               <li>
                 <span className="hover:text-brand-400 transition-colors cursor-pointer">
-                  Artisan Woodfired Pizza
+                  Hyderabadi & Awadhi Dum Biryani
                 </span>
               </li>
               <li>
                 <span className="hover:text-brand-400 transition-colors cursor-pointer">
-                  Charcoal Smashed Burgers
+                  South Indian Dosas & Filter Coffee
                 </span>
               </li>
               <li>
                 <span className="hover:text-brand-400 transition-colors cursor-pointer">
-                  Royal Dum Biryani
+                  Delhi Butter Chicken & Dal Makhani
                 </span>
               </li>
               <li>
                 <span className="hover:text-brand-400 transition-colors cursor-pointer">
-                  Kyoto Ramen & Sushi
+                  Mumbai Pav Bhaji & Street Chaat
                 </span>
               </li>
               <li>
                 <span className="hover:text-brand-400 transition-colors cursor-pointer">
-                  French Patisserie & Desserts
+                  Kolkata Kathi Rolls & Mithai
                 </span>
               </li>
             </ul>

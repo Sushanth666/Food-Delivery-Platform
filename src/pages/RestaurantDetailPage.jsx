@@ -162,7 +162,7 @@ export default function RestaurantDetailPage() {
                   <span>{restaurant.deliveryTime} Delivery</span>
                 </span>
                 <span className="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 font-bold">
-                  ${restaurant.costForTwo} for two
+                  ₹{restaurant.costForTwo} for two
                 </span>
               </div>
             </div>

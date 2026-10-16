@@ -27,7 +27,7 @@ export default function HeroBanner() {
         </h1>
 
         <p className="mt-3 text-sm sm:text-base text-white/90 font-medium max-w-lg leading-relaxed">
-          Discover top-rated culinary gems near you. From smoky artisanal burgers to slow-cooked Awadhi dum biryanis, delivered piping hot to your door in 30 minutes.
+          Discover top-rated culinary gems across India. From royal Hyderabadi dum biryanis and crispy butter masala dosas to sizzling Mumbai pav bhaji, delivered hot in 30 minutes.
         </p>
 
         {/* Promo Coupons Cards in Hero */}
@@ -39,16 +39,16 @@ export default function HeroBanner() {
               </div>
               <div>
                 <div className="text-xs font-black uppercase tracking-wider text-amber-200">
-                  CODE: WELCOME50
+                  CODE: INDIA50
                 </div>
                 <div className="text-sm font-extrabold text-white">
-                  50% OFF Up to $10
+                  50% OFF Up to ₹100
                 </div>
               </div>
             </div>
             <button
               type="button"
-              onClick={() => handleClaimOffer('WELCOME50')}
+              onClick={() => handleClaimOffer('INDIA50')}
               className="px-3 py-1.5 bg-white text-brand-600 rounded-xl text-xs font-bold hover:bg-amber-100 transition-colors shadow-sm"
             >
               Apply

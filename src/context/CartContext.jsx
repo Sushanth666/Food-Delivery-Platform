@@ -172,14 +172,14 @@ export function CartProvider({ children }) {
       (c) => c.code.toUpperCase() === code.trim().toUpperCase()
     );
     if (!coupon) {
-      return { success: false, message: 'Invalid coupon code. Try WELCOME50 or TASTY20' };
+      return { success: false, message: 'Invalid coupon code. Try INDIA50, TASTY20 or FREEDEL' };
     }
 
     const bill = calculateOrderBill(cartItems, null);
     if (bill.subtotal < coupon.minOrder) {
       return {
         success: false,
-        message: `Min order value of $${coupon.minOrder.toFixed(2)} required for code ${coupon.code}`,
+        message: `Min order value of ₹${coupon.minOrder} required for code ${coupon.code}`,
       };
     }
 

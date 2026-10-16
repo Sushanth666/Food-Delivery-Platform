@@ -6,28 +6,36 @@ const OrderContext = createContext(null);
 
 const MOCK_DRIVERS = [
   {
-    name: 'David Miller',
-    phone: '+1 (555) 782-9014',
+    name: 'Ramesh Kumar',
+    phone: '+91 98450 12345',
     rating: 4.9,
-    trips: 1420,
-    vehicle: 'Honda CB350 (Reg #CW-892)',
+    trips: 1840,
+    vehicle: 'TVS Apache 160 (KA-05-EX-4921)',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    name: 'Vikram Singh',
+    phone: '+91 98210 99887',
+    rating: 5.0,
+    trips: 920,
+    vehicle: 'Hero Splendor Plus (DL-03-CB-9081)',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+  },
+  {
+    name: 'Mohammed Zeeshan',
+    phone: '+91 97110 54321',
+    rating: 4.8,
+    trips: 2150,
+    vehicle: 'Ather 450X EV Scooter (MH-02-FK-3321)',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
   },
   {
-    name: 'Elena Rostova',
-    phone: '+1 (555) 321-7788',
-    rating: 5.0,
-    trips: 870,
-    vehicle: 'Ather 450X EV Scooter',
+    name: 'Pooja Patel',
+    phone: '+91 99800 66778',
+    rating: 4.9,
+    trips: 1320,
+    vehicle: 'Honda Activa 6G (KA-01-EQ-5544)',
     avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    name: 'Marcus Thorne',
-    phone: '+1 (555) 902-1433',
-    rating: 4.8,
-    trips: 2100,
-    vehicle: 'Yamaha Aerox 155',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
   },
 ];
 
@@ -72,9 +80,9 @@ export function OrderProvider({ children }) {
       bill: { ...bill },
       deliveryAddress,
       paymentMethod,
-      deliveryInstructions: deliveryInstructions || 'Leave at front door / bell once',
+      deliveryInstructions: deliveryInstructions || 'Leave at security gate / ring bell once',
       deliveryDriver: randomDriver,
-      estimatedDeliveryTime: '28-35 mins',
+      estimatedDeliveryTime: '25-35 mins',
     };
 
     setOrders((prev) => [newOrder, ...prev]);

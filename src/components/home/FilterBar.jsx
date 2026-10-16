@@ -35,7 +35,7 @@ export default function FilterBar() {
         </div>
         <input
           type="text"
-          placeholder="Search for restaurants, dishes, cuisines (e.g. Burger, Biryani, Truffle, Napoli)..."
+          placeholder="Search restaurants, dishes (e.g. Biryani, Masala Dosa, Butter Chicken, Chole Bhature, Pav Bhaji)..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full pl-12 pr-10 py-3.5 bg-gray-50 hover:bg-gray-100/70 focus:bg-white text-sm font-medium text-gray-900 rounded-2xl border border-gray-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all placeholder:text-gray-400"

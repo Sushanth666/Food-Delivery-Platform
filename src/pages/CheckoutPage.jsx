@@ -26,21 +26,21 @@ export default function CheckoutPage() {
 
   // Form State
   const [formData, setFormData] = useState({
-    fullName: 'Alex Vance',
-    phone: '555-382-9011',
-    street: '742 Evergreen Terrace, Apt 4B',
-    city: 'Downtown Metropolis',
-    zip: '10001',
-    instructions: 'Leave at front door, avoid ringing doorbell',
+    fullName: 'Rahul Sharma',
+    phone: '+91 98765 43210',
+    street: 'Flat 402, Sai Orchid Residency, 12th Main Road, 4th Block',
+    city: 'Koramangala, Bengaluru, Karnataka',
+    zip: '560034',
+    instructions: 'Leave with security / call upon arrival',
   });
 
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentMethod, setPaymentMethod] = useState('upi');
   const [cardData, setCardData] = useState({
     cardNumber: '4242 •••• •••• 4242',
     cardExpiry: '12/28',
     cardCvv: '883',
   });
-  const [upiId, setUpiId] = useState('alex@okaxis');
+  const [upiId, setUpiId] = useState('rahul@okhdfcbank');
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -66,13 +66,17 @@ export default function CheckoutPage() {
     const errs = {};
     if (!formData.fullName.trim()) errs.fullName = 'Full name is required';
     if (!formData.phone.trim()) {
-      errs.phone = 'Phone number is required';
-    } else if (formData.phone.replace(/\D/g, '').length < 7) {
-      errs.phone = 'Please enter a valid phone number';
+      errs.phone = 'Mobile number is required';
+    } else if (formData.phone.replace(/\D/g, '').length < 10) {
+      errs.phone = 'Please enter a valid 10-digit mobile number';
     }
     if (!formData.street.trim()) errs.street = 'Street address is required';
     if (!formData.city.trim()) errs.city = 'City is required';
-    if (!formData.zip.trim()) errs.zip = 'ZIP code is required';
+    if (!formData.zip.trim()) {
+      errs.zip = 'PIN code is required';
+    } else if (!/^\d{6}$/.test(formData.zip.trim())) {
+      errs.zip = 'Please enter a valid 6-digit Indian PIN code';
+    }
 
     if (paymentMethod === 'card') {
       if (!cardData.cardNumber.trim()) errs.cardNumber = 'Card number required';
@@ -80,7 +84,7 @@ export default function CheckoutPage() {
       if (!cardData.cardCvv.trim()) errs.cardCvv = 'CVV required';
     } else if (paymentMethod === 'upi') {
       if (!upiId.trim() || !upiId.includes('@')) {
-        errs.upiId = 'Valid UPI ID required (e.g. name@bank)';
+        errs.upiId = 'Valid UPI ID required (e.g. name@bank or number@paytm)';
       }
     }
 
@@ -95,10 +99,10 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     const paymentLabelMap = {
-      card: 'Credit / Debit Card',
+      card: 'Debit / Credit Card (RuPay/Visa)',
       upi: `Instant UPI (${upiId})`,
-      cod: 'Cash on Delivery (COD)',
-      netbanking: 'Net Banking (HDFC/Chase)',
+      cod: 'Cash on Delivery (Pay on Delivery)',
+      netbanking: 'Net Banking (SBI/HDFC/ICICI)',
     };
 
     setTimeout(() => {
@@ -240,7 +244,7 @@ export default function CheckoutPage() {
                     className={`w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border ${
                       errors.city ? 'border-rose-500 bg-rose-50/50' : 'border-gray-200'
                     } focus:outline-none focus:border-brand-500`}
-                    placeholder="Downtown Metropolis"
+                    placeholder="E.g. Bengaluru, Karnataka"
                   />
                   {errors.city && (
                     <span className="text-[11px] text-rose-600 mt-1 block">
@@ -251,10 +255,11 @@ export default function CheckoutPage() {
 
                 <div>
                   <label className="block text-xs font-bold text-gray-700 mb-1">
-                    ZIP / Postal Code *
+                    PIN Code (6 Digits) *
                   </label>
                   <input
                     type="text"
+                    maxLength={6}
                     value={formData.zip}
                     onChange={(e) =>
                       setFormData({ ...formData, zip: e.target.value })
@@ -262,7 +267,7 @@ export default function CheckoutPage() {
                     className={`w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border ${
                       errors.zip ? 'border-rose-500 bg-rose-50/50' : 'border-gray-200'
                     } focus:outline-none focus:border-brand-500`}
-                    placeholder="10001"
+                    placeholder="560034"
                   />
                   {errors.zip && (
                     <span className="text-[11px] text-rose-600 mt-1 block">
@@ -282,7 +287,7 @@ export default function CheckoutPage() {
                       setFormData({ ...formData, instructions: e.target.value })
                     }
                     className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500"
-                    placeholder="E.g. Call upon arrival, leave with doorman..."
+                    placeholder="E.g. Leave with building security, call upon reaching..."
                   />
                 </div>
               </div>
@@ -391,7 +396,7 @@ export default function CheckoutPage() {
                     type="text"
                     value={upiId}
                     onChange={(e) => setUpiId(e.target.value)}
-                    placeholder="e.g. yourname@oksbi"
+                    placeholder="e.g. rahul@okhdfcbank or 9876543210@paytm"
                     className="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-gray-200 bg-white focus:outline-none focus:border-brand-500"
                   />
                   {errors.upiId && (
@@ -404,13 +409,13 @@ export default function CheckoutPage() {
 
               {paymentMethod === 'cod' && (
                 <div className="p-4 bg-amber-50 rounded-2xl text-xs text-amber-900 border border-amber-200">
-                  <strong>Cash on Delivery:</strong> Please keep exact cash change ready upon delivery partner arrival.
+                  <strong>Cash on Delivery (Pay on Delivery):</strong> Keep exact cash ready or scan the delivery executive's UPI QR code upon arrival.
                 </div>
               )}
 
               {paymentMethod === 'netbanking' && (
                 <div className="p-4 bg-gray-50 rounded-2xl text-xs text-gray-700 border border-gray-200">
-                  You will be securely redirected to your bank portal after placing the order.
+                  Supports SBI, HDFC Bank, ICICI Bank, Axis Bank, Kotak, and all major Indian banking portals.
                 </div>
               )}
             </div>

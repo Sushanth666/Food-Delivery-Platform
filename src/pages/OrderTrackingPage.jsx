@@ -228,7 +228,7 @@ export default function OrderTrackingPage() {
                 </div>
                 <div className="bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-xs shadow-lg">
                   <span className="font-extrabold text-amber-300">
-                    {order.deliveryDriver?.name || 'Carlos Mendoza'}
+                    {order.deliveryDriver?.name || 'Ramesh Kumar'}
                   </span>
                   <div className="text-[10px] text-gray-300">
                     {currentStep === 5

@@ -20,14 +20,18 @@ export default function Navbar() {
   const { orders } = useOrders();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState('Downtown Metropolis, 5th Ave');
+  const [selectedCity, setSelectedCity] = useState('Koramangala, Bengaluru - 560034');
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
 
   const CITIES = [
-    'Downtown Metropolis, 5th Ave',
-    'Silicon Harbor Tech Park, Pier 7',
-    'Greenfield Heights, Block 4',
-    'Old University Quarter, Lane 12',
+    'Koramangala, Bengaluru - 560034',
+    'Indiranagar, Bengaluru - 560038',
+    'Connaught Place, New Delhi - 110001',
+    'Bandra West, Mumbai - 400050',
+    'Cyber City, Gurugram - 122002',
+    'T. Nagar, Chennai - 600017',
+    'Hitech City, Hyderabad - 500081',
+    'Park Street, Kolkata - 700016',
   ];
 
   return (
