@@ -316,8 +316,8 @@ export default function HeroBanner() {
 
                   <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-2xl border-2 border-white/10 flex-shrink-0 group">
                     <img
-                      src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=600&q=80"
-                      alt="Tandoori Tikka Starters"
+                      src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=600&q=80"
+                      alt="Tandoori Paneer Tikka Starters"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   </div>
