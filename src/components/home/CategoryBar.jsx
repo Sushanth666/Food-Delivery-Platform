@@ -23,11 +23,11 @@ export default function CategoryBar() {
       {/* Header with Title and Scroll Controls */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 uppercase tracking-widest">
-            <Flame className="w-3.5 h-3.5 fill-brand-500" />
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-400 uppercase tracking-widest">
+            <Flame className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
             <span>Craving Inspiration</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black font-display text-gray-900 tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight">
             What's On Your Mind?
           </h2>
         </div>
@@ -37,7 +37,7 @@ export default function CategoryBar() {
           <button
             type="button"
             onClick={() => scroll('left')}
-            className="w-8 h-8 rounded-full border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 hover:text-brand-600 shadow-xs transition-colors"
+            className="w-8 h-8 rounded-full border border-white/10 bg-[#15151B] hover:bg-[#1E1E26] flex items-center justify-center text-gray-400 hover:text-white transition-colors"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -45,7 +45,7 @@ export default function CategoryBar() {
           <button
             type="button"
             onClick={() => scroll('right')}
-            className="w-8 h-8 rounded-full border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 hover:text-brand-600 shadow-xs transition-colors"
+            className="w-8 h-8 rounded-full border border-white/10 bg-[#15151B] hover:bg-[#1E1E26] flex items-center justify-center text-gray-400 hover:text-white transition-colors"
             aria-label="Scroll right"
           >
             <ChevronRight className="w-4 h-4" />
@@ -67,8 +67,8 @@ export default function CategoryBar() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-2xl border transition-all duration-300 group active:scale-95 ${
                 isSelected
-                  ? 'bg-gradient-to-r from-brand-600 to-rose-600 border-transparent text-white shadow-lg shadow-brand-500/30 scale-105'
-                  : 'bg-white/80 backdrop-blur-md border-gray-200/90 text-gray-700 hover:border-brand-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5'
+                  ? 'bg-gradient-to-r from-brand-600 to-rose-600 border-transparent text-white shadow-lg shadow-rose-950/50 scale-105'
+                  : 'bg-[#15151B] border-white/10 text-gray-300 hover:border-brand-500/40 hover:bg-[#1E1E26] hover:-translate-y-0.5'
               }`}
             >
               {/* Category Icon Badge with Gradient Container */}
@@ -76,7 +76,7 @@ export default function CategoryBar() {
                 className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl transition-transform duration-300 group-hover:scale-110 shadow-xs ${
                   isSelected
                     ? 'bg-white/20 text-white'
-                    : 'bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100/80'
+                    : 'bg-white/5 border border-white/10'
                 }`}
               >
                 <span>{cat.icon}</span>
@@ -86,7 +86,7 @@ export default function CategoryBar() {
               <div className="text-left">
                 <div
                   className={`text-xs sm:text-sm font-extrabold whitespace-nowrap leading-snug ${
-                    isSelected ? 'text-white' : 'text-gray-900 group-hover:text-brand-600'
+                    isSelected ? 'text-white' : 'text-gray-200 group-hover:text-rose-400'
                   }`}
                 >
                   {cat.name}

@@ -19,10 +19,12 @@ import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import { AuthProvider } from './context/AuthContext';
+import { WishlistProvider } from './context/WishlistContext';
 import { FilterProvider } from './context/FilterContext';
 import { CartProvider } from './context/CartContext';
 import { OrderProvider } from './context/OrderContext';
 import { LocationProvider } from './context/LocationContext';
+import WishlistModal from './components/common/WishlistModal';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -35,14 +37,15 @@ function ScrollToTop() {
 export default function App() {
   return (
     <AuthProvider>
-      <LocationProvider>
-        <FilterProvider>
-          <CartProvider>
-            <OrderProvider>
-              <div className="min-h-screen flex flex-col bg-slate-50/70 bg-mesh text-gray-900 selection:bg-brand-500 selection:text-white">
-                <ScrollToTop />
-                {/* Global Navigation */}
-                <Navbar />
+      <WishlistProvider>
+        <LocationProvider>
+          <FilterProvider>
+            <CartProvider>
+              <OrderProvider>
+                <div className="min-h-screen flex flex-col bg-[#0B0B0E] bg-dark-luxury text-gray-100 selection:bg-brand-500 selection:text-white">
+                  <ScrollToTop />
+                  {/* Global Navigation */}
+                  <Navbar />
 
                 {/* Main Page Route Views */}
                 <div className="flex-1 flex flex-col">
@@ -67,6 +70,7 @@ export default function App() {
               <CartDrawer />
               <ConflictModal />
               <LocationModal />
+              <WishlistModal />
 
               {/* Mobile Bottom Bar */}
               <MobileBottomNav />
@@ -78,6 +82,7 @@ export default function App() {
         </CartProvider>
       </FilterProvider>
     </LocationProvider>
-  </AuthProvider>
+  </WishlistProvider>
+</AuthProvider>
   );
 }

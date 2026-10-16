@@ -1,5 +1,15 @@
 export const COUPONS = [
   {
+    code: 'CRAVE50',
+    title: 'FLAT 50% OFF Gourmet Welcome',
+    discountType: 'percentage',
+    discountValue: 50,
+    maxDiscount: 150,
+    minOrder: 199,
+    description: 'Flat 50% off on your first gourmet order with code CRAVE50',
+    tag: 'FLAT 50% OFF',
+  },
+  {
     code: 'INDIA50',
     title: '50% OFF up to ₹100',
     discountType: 'percentage',

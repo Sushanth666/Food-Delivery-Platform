@@ -1,302 +1,241 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
-  ShoppingBag,
+  Search,
   MapPin,
-  Clock,
-  ChevronDown,
-  Menu,
-  X,
-  UtensilsCrossed,
-  Crosshair,
-  Compass,
+  ChevronRight,
+  Heart,
+  ShoppingBag,
   User,
   LogOut,
+  Clock,
+  Compass,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
-import { useOrders } from '../../context/OrderContext';
+import { useWishlist } from '../../context/WishlistContext';
 import { useLocationContext } from '../../context/LocationContext';
-import { formatCurrency } from '../../utils/formatCurrency';
+import { useFilter } from '../../context/FilterContext';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
-  const { bill, openCartDrawer } = useCart();
-  const { orders } = useOrders();
+  const { cartItems, openCartDrawer } = useCart();
+  const { wishlistCount, openWishlist } = useWishlist();
   const { currentLocation, openLocationModal } = useLocationContext();
-  const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { searchTerm, setSearchTerm } = useFilter();
+  const navigate = useNavigate();
+
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  // Total quantity of items in cart
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Formatted location display matching screenshot
+  const displayLocation = currentLocation?.area
+    ? `${currentLocation.area.split(',')[0].trim()}, ${currentLocation.pincode || '10001'}`
+    : 'Downtown NY, 10001';
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-gray-100/80 shadow-2xs transition-all">
+    <header className="sticky top-0 z-40 bg-[#0B0B0E]/95 backdrop-blur-xl border-b border-white/10 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
-          {/* Left: Brand & Location */}
-          <div className="flex items-center gap-3 sm:gap-4 lg:gap-5 min-w-0">
-            <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-brand-500/25 group-hover:scale-105 transition-transform">
-                <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6" />
+        <div className="flex items-center justify-between h-20 gap-3 sm:gap-6">
+          {/* LEFT: Logo & Delivering To Pill */}
+          <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0">
+            {/* CraveWave Brand Logo matching reference */}
+            <Link to="/" className="flex items-center gap-2 group">
+              {/* Fluid wavy icon */}
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#E11D48] to-rose-500 flex items-center justify-center text-white shadow-lg shadow-rose-950/50 group-hover:scale-105 transition-transform">
+                <svg
+                  className="w-5 h-5 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M2 6c4-3 6-3 10 0s6 3 10 0" />
+                  <path d="M2 12c4-3 6-3 10 0s6 3 10 0" />
+                  <path d="M2 18c4-3 6-3 10 0s6 3 10 0" />
+                </svg>
               </div>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-black font-display tracking-tight bg-gradient-to-r from-gray-950 via-gray-800 to-brand-600 bg-clip-text text-transparent leading-none">
-                  CraveWave
-                </span>
-                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-brand-600 mt-1">
-                  Food Delivered Fast
-                </span>
-              </div>
+              <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-400 transition-colors">
+                Crave<span className="text-[#E11D48]">Wave</span>
+              </span>
             </Link>
 
-            {/* Subtle Divider */}
-            <div className="hidden sm:block h-6 w-px bg-gray-200 flex-shrink-0" />
-
-            {/* Location Selector (Desktop & Tablet) */}
-            <div className="hidden sm:flex items-center min-w-0">
-              <button
-                type="button"
-                onClick={openLocationModal}
-                className="flex items-center gap-2 text-xs font-semibold text-gray-700 bg-gray-50/90 hover:bg-brand-50/70 hover:text-brand-600 px-3.5 py-2 rounded-xl border border-gray-200/80 hover:border-brand-200 transition-all group max-w-[260px] lg:max-w-[320px]"
-                title="Change or detect delivery location"
-              >
-                <MapPin className="w-4 h-4 text-brand-600 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="truncate text-left">
-                  <strong className="font-bold text-gray-900 group-hover:text-brand-700">
-                    {currentLocation.area || 'Select Location'}
-                  </strong>
-                  <span className="text-gray-500 font-medium">
-                    , {currentLocation.city || 'India'}
-                  </span>
-                </span>
-                {currentLocation.isAutoDetected ? (
-                  <span className="px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1 flex-shrink-0">
-                    <Crosshair className="w-2.5 h-2.5 text-emerald-600" />
-                    <span>GPS</span>
-                  </span>
-                ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-brand-600 flex-shrink-0 transition-transform group-hover:translate-y-0.5" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Right: Navigation Links & Actions grouped cohesively */}
-          <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
-            {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-              <Link
-                to="/"
-                className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 ${
-                  location.pathname === '/'
-                    ? 'bg-brand-50 text-brand-600 font-bold'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                <Compass className="w-4 h-4" />
-                <span>Explore</span>
-              </Link>
-              <Link
-                to="/orders"
-                className={`relative px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
-                  location.pathname.startsWith('/order')
-                    ? 'bg-brand-50 text-brand-600 font-bold'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                <Clock className="w-4 h-4" />
-                <span>Orders</span>
-                {orders.length > 0 && (
-                  <span className="px-1.5 py-0.5 min-w-[20px] text-center bg-gray-200 text-gray-800 rounded-full text-xs font-bold leading-none">
-                    {orders.length}
-                  </span>
-                )}
-              </Link>
-              {/* User Account / Sign In */}
-              {isAuthenticated ? (
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-xs font-bold text-gray-800 bg-gray-50 hover:bg-brand-50 hover:text-brand-600 border border-gray-200/90 transition-all shadow-2xs group"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-brand-600 to-rose-500 text-white flex items-center justify-center text-[10px] font-black shadow-xs">
-                      {user.name.charAt(0).toUpperCase()}
-                    </div>
-                    <span className="max-w-[110px] truncate">{user.name.split(' ')[0]}</span>
-                    <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-brand-600" />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
-                      <div className="px-4 py-2.5 border-b border-gray-100">
-                        <p className="text-xs font-black text-gray-900 truncate">{user.name}</p>
-                        <p className="text-[11px] text-gray-500 truncate">{user.email || user.phone}</p>
-                      </div>
-                      <Link
-                        to="/orders"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-gray-700 hover:bg-brand-50 hover:text-brand-600 transition-colors"
-                      >
-                        <Clock className="w-3.5 h-3.5 text-gray-400" />
-                        <span>My Orders & History</span>
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          logout();
-                          setUserMenuOpen(false);
-                        }}
-                        className="w-full text-left flex items-center gap-2 px-4 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        <span>Sign Out</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Link
-                  to="/login"
-                  className="px-3 py-2 rounded-xl text-sm font-bold text-gray-700 hover:text-brand-600 hover:bg-gray-50 transition-all flex items-center gap-1.5"
-                >
-                  <User className="w-4 h-4 text-brand-600" />
-                  <span>Sign In</span>
-                </Link>
-              )}
-            </nav>
-
-            {/* Quick Mobile Location Pin Button */}
+            {/* Delivering To Pill matching screenshot */}
             <button
               type="button"
               onClick={openLocationModal}
-              className="sm:hidden flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-gray-100 text-gray-800 text-xs font-bold hover:bg-brand-50 hover:text-brand-600 transition-colors max-w-[130px] truncate"
+              className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-3.5 py-1.5 rounded-2xl text-left transition-all duration-200 group max-w-[200px] sm:max-w-[240px] md:max-w-[280px]"
+              title="Change Delivery Location"
             >
-              <MapPin className="w-3.5 h-3.5 text-brand-600 flex-shrink-0" />
-              <span className="truncate">{currentLocation.city || 'Location'}</span>
+              <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-3.5 h-3.5 text-white" />
+              </div>
+              <div className="flex flex-col min-w-0 pr-1">
+                <span className="text-[10px] text-gray-400 font-medium leading-none">
+                  Delivering to:
+                </span>
+                <span className="text-xs font-bold text-white truncate mt-0.5 leading-tight">
+                  {displayLocation}
+                </span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-auto" />
             </button>
+          </div>
 
-            {/* Cart Button */}
+          {/* CENTER: Search Bar matching screenshot */}
+          <div className="flex-1 max-w-xl mx-2 hidden sm:block">
+            <div className="relative flex items-center">
+              <Search className="w-4 h-4 text-gray-400 absolute left-4 pointer-events-none" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search gourmet cuisines, restaurants..."
+                className="w-full bg-[#16161D] hover:bg-[#1A1A22] focus:bg-[#1A1A22] text-white placeholder-gray-400 text-xs sm:text-sm pl-11 pr-4 py-2.5 rounded-full border border-white/10 focus:border-brand-500/60 focus:outline-none focus:ring-2 focus:ring-brand-500/20 transition-all shadow-inner"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 text-xs text-gray-400 hover:text-white px-1.5 py-0.5 rounded-full bg-white/10"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* RIGHT: Profile, Wishlist, Cart with Icon on top & text below */}
+          <div className="flex items-center gap-4 sm:gap-6 flex-shrink-0">
+            {/* 1. Profile Button */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  if (isAuthenticated) {
+                    setUserDropdownOpen(!userDropdownOpen);
+                  } else {
+                    navigate('/login');
+                  }
+                }}
+                className="flex flex-col items-center justify-center text-gray-300 hover:text-white transition-colors group cursor-pointer"
+                aria-label="Profile"
+              >
+                {isAuthenticated && user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-7 h-7 rounded-full object-cover border border-rose-500 shadow-sm"
+                  />
+                ) : (
+                  <div className="w-7 h-7 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/15 flex items-center justify-center text-white transition-colors">
+                    <User className="w-3.5 h-3.5" />
+                  </div>
+                )}
+                <span className="text-[10px] font-semibold text-gray-400 group-hover:text-gray-200 mt-1 leading-none">
+                  {isAuthenticated ? user.name.split(' ')[0] : 'Profile'}
+                </span>
+              </button>
+
+              {/* Profile Dropdown if logged in */}
+              {isAuthenticated && userDropdownOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setUserDropdownOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-3 w-56 bg-[#16161D] border border-white/10 rounded-2xl shadow-2xl z-50 p-2 text-white">
+                    <div className="px-3 py-2 border-b border-white/10 mb-1">
+                      <p className="text-xs font-bold text-white truncate">
+                        {user.name}
+                      </p>
+                      <p className="text-[10px] text-gray-400 truncate">
+                        {user.email || user.phone}
+                      </p>
+                    </div>
+                    <Link
+                      to="/orders"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                    >
+                      <Clock className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Order History</span>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logout();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-950/40 transition-colors mt-1"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Log Out</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* 2. Wishlist Button */}
             <button
-              id="navbar-cart-button"
               type="button"
-              onClick={openCartDrawer}
-              className="relative flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white font-bold text-sm shadow-md shadow-brand-500/25 transition-all hover:shadow-lg hover:shadow-brand-500/35 active:scale-95"
+              onClick={openWishlist}
+              className="relative flex flex-col items-center justify-center text-gray-300 hover:text-white transition-colors group cursor-pointer"
+              aria-label="Wishlist"
             >
               <div className="relative">
-                <ShoppingBag className="w-4 h-4" />
-                {bill.itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-white text-brand-600 font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-bounce-subtle">
-                    {bill.itemCount}
+                <Heart className="w-5 h-5 text-gray-300 group-hover:text-rose-400 transition-colors" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1.5 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                    {wishlistCount}
                   </span>
                 )}
               </div>
-              <span className="hidden sm:inline font-semibold">
-                {bill.itemCount > 0
-                  ? `${bill.itemCount} ${bill.itemCount === 1 ? 'item' : 'items'} • ${formatCurrency(
-                      bill.total
-                    )}`
-                  : 'Cart'}
+              <span className="text-[10px] font-semibold text-gray-400 group-hover:text-gray-200 mt-1 leading-none">
+                Wishlist
               </span>
-              <span className="sm:hidden font-semibold">Cart</span>
             </button>
 
-            {/* Mobile menu hamburger */}
+            {/* 3. Cart Button */}
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
-              aria-label="Toggle navigation menu"
+              onClick={openCartDrawer}
+              className="relative flex flex-col items-center justify-center text-gray-300 hover:text-white transition-colors group cursor-pointer"
+              aria-label="Cart"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <div className="relative">
+                <ShoppingBag className="w-5 h-5 text-gray-300 group-hover:text-rose-400 transition-colors" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1.5 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              <span className="text-[10px] font-semibold text-gray-400 group-hover:text-gray-200 mt-1 leading-none">
+                Cart
+              </span>
             </button>
           </div>
         </div>
 
-        {/* Mobile dropdown menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-100 py-3 space-y-2">
-            {/* User Profile / Login status in Mobile */}
-            {isAuthenticated ? (
-              <div className="px-4 py-2.5 rounded-xl bg-gray-50 flex items-center justify-between">
-                <div className="flex items-center gap-2.5 truncate">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-600 to-rose-500 text-white flex items-center justify-center text-xs font-black">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="truncate">
-                    <p className="text-xs font-black text-gray-900 truncate">{user.name}</p>
-                    <p className="text-[10px] text-gray-500 truncate">{user.email || user.phone}</p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    logout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-lg"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-2 px-1">
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 text-center rounded-xl bg-brand-50 text-brand-700 text-xs font-bold border border-brand-200"
-                >
-                  Log In
-                </Link>
-                <Link
-                  to="/signup"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 text-center rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 text-white text-xs font-bold shadow-xs"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
-
-            {/* Location in mobile drawer */}
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                openLocationModal();
-              }}
-              className="w-full text-left px-4 py-2.5 rounded-xl bg-brand-50/70 text-brand-800 text-xs font-bold flex items-center justify-between"
-            >
-              <div className="flex items-center gap-2 truncate">
-                <MapPin className="w-4 h-4 text-brand-600 flex-shrink-0" />
-                <span className="truncate">
-                  {currentLocation.formatted || `${currentLocation.area}, ${currentLocation.city}`}
-                </span>
-              </div>
-              <span className="text-[10px] text-brand-600 font-extrabold uppercase">
-                Change
-              </span>
-            </button>
-
-            <Link
-              to="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 rounded-lg"
-            >
-              Explore Restaurants
-            </Link>
-            <Link
-              to="/orders"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 rounded-lg"
-            >
-              <span>Order History & Tracking</span>
-              <span className="px-2 py-0.5 bg-brand-100 text-brand-700 rounded-full text-xs font-bold">
-                {orders.length}
-              </span>
-            </Link>
+        {/* Mobile Search input bar */}
+        <div className="pb-3 pt-1 block sm:hidden">
+          <div className="relative flex items-center">
+            <Search className="w-4 h-4 text-gray-400 absolute left-4 pointer-events-none" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search gourmet cuisines, restaurants..."
+              className="w-full bg-[#16161D] text-white placeholder-gray-400 text-xs pl-11 pr-4 py-2.5 rounded-full border border-white/10 focus:outline-none focus:border-brand-500/60"
+            />
           </div>
-        )}
+        </div>
       </div>
     </header>
   );

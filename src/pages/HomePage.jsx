@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import HeroBanner from '../components/home/HeroBanner';
+import FeaturedExquisiteCuisines from '../components/home/FeaturedExquisiteCuisines';
 import CategoryBar from '../components/home/CategoryBar';
 import FilterBar from '../components/home/FilterBar';
 import RestaurantCard from '../components/home/RestaurantCard';
@@ -48,6 +49,10 @@ export default function HomePage() {
           pizza: 'Pizza & Breads',
           desserts: 'Mithai & Desserts',
           beverages: 'Chai & Lassi',
+          italian: 'Pizza & Breads',
+          japanese: 'Indo-Chinese',
+          thai: 'Indo-Chinese',
+          healthy: 'South Indian',
         };
         const targetCuisine = catMap[selectedCategory];
         if (
@@ -102,8 +107,11 @@ export default function HomePage() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
-      {/* Hero with interactive coupon activations */}
+      {/* Flagship Hero Panoramic Banner matching reference */}
       <HeroBanner />
+
+      {/* Featured Exquisite Cuisines Row matching reference */}
+      <FeaturedExquisiteCuisines />
 
       {/* Food Category Carousel */}
       <CategoryBar />
@@ -114,14 +122,14 @@ export default function HomePage() {
       {/* Section Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black font-display text-gray-900 tracking-tight flex items-center gap-2">
-            <span>Restaurants Near You</span>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-50 text-brand-600 border border-brand-100 shadow-2xs">
+          <h2 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight flex items-center gap-2">
+            <span>All Authentic Restaurants</span>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-950/70 text-rose-300 border border-rose-800/50 shadow-2xs">
               {filteredRestaurants.length} available
             </span>
           </h2>
-          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
-            Handpicked eateries with exceptional food ratings and swift delivery
+          <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+            Handpicked gourmet eateries with exceptional ratings and swift express delivery
           </p>
         </div>
       </div>
@@ -134,20 +142,20 @@ export default function HomePage() {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-soft max-w-lg mx-auto my-8">
-          <div className="w-20 h-20 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mx-auto mb-4">
+        <div className="bg-[#14141A] rounded-3xl p-12 text-center border border-white/10 shadow-2xl max-w-lg mx-auto my-8">
+          <div className="w-20 h-20 rounded-full bg-rose-950/60 border border-rose-800/40 flex items-center justify-center text-rose-400 mx-auto mb-4">
             <Frown className="w-10 h-10" />
           </div>
-          <h3 className="text-lg font-bold text-gray-900">
+          <h3 className="text-lg font-bold text-white">
             No matching restaurants found
           </h3>
-          <p className="text-sm text-gray-500 mt-1 max-w-sm mx-auto">
+          <p className="text-sm text-gray-400 mt-1 max-w-sm mx-auto">
             Try adjusting your search criteria, dietary toggles, or filter settings to explore more places.
           </p>
           <button
             type="button"
             onClick={resetFilters}
-            className="mt-6 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-md shadow-brand-500/20 transition-all"
+            className="mt-6 px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs shadow-md shadow-brand-950/50 transition-all active:scale-95"
           >
             Clear All Filters
           </button>
