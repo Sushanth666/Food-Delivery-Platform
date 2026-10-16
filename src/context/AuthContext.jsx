@@ -37,6 +37,42 @@ export function AuthProvider({ children }) {
     }
   });
 
+  // Modal & Toast States
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState('login'); // 'login' | 'signup'
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (toastData) => {
+    setToast(toastData);
+  };
+
+  const hideToast = () => {
+    setToast(null);
+  };
+
+  const openLoginModal = () => {
+    setAuthModalTab('login');
+    setIsAuthModalOpen(true);
+  };
+
+  const openSignupModal = () => {
+    setAuthModalTab('signup');
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
+  const openLogoutModal = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const closeLogoutModal = () => {
+    setIsLogoutModalOpen(false);
+  };
+
   useEffect(() => {
     try {
       if (user) {
@@ -63,6 +99,11 @@ export function AuthProvider({ children }) {
       avatar: getIndianAvatarByName(derivedName || 'Sushanth Kumar'),
     };
     setUser(loggedUser);
+    showToast({
+      type: 'success',
+      title: 'Logged In Successfully!',
+      message: `Welcome back, ${loggedUser.name}! Explore India's top restaurants.`,
+    });
     return { success: true };
   };
 
@@ -75,6 +116,11 @@ export function AuthProvider({ children }) {
       avatar: getIndianAvatarByName('Rahul Sharma'),
     };
     setUser(loggedUser);
+    showToast({
+      type: 'success',
+      title: 'Phone Verified!',
+      message: `Welcome back, ${loggedUser.name}! Logged in successfully via mobile OTP.`,
+    });
     return { success: true };
   };
 
@@ -87,11 +133,21 @@ export function AuthProvider({ children }) {
       avatar: getIndianAvatarByName(name.trim()),
     };
     setUser(newUser);
+    showToast({
+      type: 'success',
+      title: 'Account Created Successfully!',
+      message: `Welcome to CraveWave, ${newUser.name}! Flat ₹100 welcome coupon applied.`,
+    });
     return { success: true };
   };
 
   const demoLogin = () => {
     setUser(DEMO_USER);
+    showToast({
+      type: 'success',
+      title: 'One-Click Demo Logged In!',
+      message: `Welcome, ${DEMO_USER.name}! Ready to order delicious dishes.`,
+    });
     return { success: true };
   };
 
@@ -108,11 +164,27 @@ export function AuthProvider({ children }) {
       }
       return updated;
     });
+    showToast({
+      type: 'success',
+      title: 'Profile Updated',
+      message: 'Your profile changes have been saved.',
+    });
     return { success: true };
   };
 
-  const logout = () => {
+  const confirmLogout = () => {
+    const name = user?.name || 'Foodie';
     setUser(null);
+    setIsLogoutModalOpen(false);
+    showToast({
+      type: 'info',
+      title: 'Logged Out',
+      message: `You have been safely signed out. See you soon, ${name}!`,
+    });
+  };
+
+  const logout = () => {
+    confirmLogout();
   };
 
   return (
@@ -126,6 +198,20 @@ export function AuthProvider({ children }) {
         demoLogin,
         updateProfile,
         logout,
+        // Modal & Toast Controls
+        isAuthModalOpen,
+        authModalTab,
+        setAuthModalTab,
+        openLoginModal,
+        openSignupModal,
+        closeAuthModal,
+        isLogoutModalOpen,
+        openLogoutModal,
+        closeLogoutModal,
+        confirmLogout,
+        toast,
+        showToast,
+        hideToast,
       }}
     >
       {children}

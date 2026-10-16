@@ -25,6 +25,9 @@ import { CartProvider } from './context/CartContext';
 import { OrderProvider } from './context/OrderContext';
 import { LocationProvider } from './context/LocationContext';
 import WishlistModal from './components/common/WishlistModal';
+import AuthModal from './components/common/AuthModal';
+import LogoutModal from './components/common/LogoutModal';
+import AuthToast from './components/common/AuthToast';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -74,6 +77,9 @@ export default function App() {
               <ConflictModal />
               <LocationModal />
               <WishlistModal />
+              <AuthModal />
+              <LogoutModal />
+              <AuthToast />
 
               {/* Mobile Bottom Bar */}
               <MobileBottomNav />

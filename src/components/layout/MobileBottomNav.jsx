@@ -8,7 +8,7 @@ import { getIndianAvatarByName } from '../../utils/indianAvatars';
 export default function MobileBottomNav() {
   const location = useLocation();
   const { bill, openCartDrawer } = useCart();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, openLoginModal } = useAuth();
 
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B0B0E]/95 backdrop-blur-xl border-t border-white/10 px-4 py-2 shadow-2xl">
@@ -62,13 +62,14 @@ export default function MobileBottomNav() {
             <span>{user.name.split(' ')[0]}</span>
           </Link>
         ) : (
-          <Link
-            to="/login"
-            className="flex flex-col items-center gap-1 text-[11px] font-bold py-1 text-gray-400 hover:text-white transition-colors"
+          <button
+            type="button"
+            onClick={openLoginModal}
+            className="flex flex-col items-center gap-1 text-[11px] font-bold py-1 text-gray-400 hover:text-white transition-colors cursor-pointer"
           >
             <User className="w-5 h-5" />
             <span>Sign In</span>
-          </Link>
+          </button>
         )}
       </div>
     </div>
