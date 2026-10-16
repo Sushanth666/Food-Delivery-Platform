@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronLeft, ChevronRight, Sparkles, Tag } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import { useFilter } from '../../context/FilterContext';
 
 export default function HeroBanner() {
   const { applyCoupon, openCartDrawer, coupon } = useCart();
-  const { selectedCategory, setSelectedCategory } = useFilter();
   const [activeSlide, setActiveSlide] = useState(0);
   const [codeApplied, setCodeApplied] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -37,19 +35,7 @@ export default function HeroBanner() {
     setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  const pillRows = [
-    [
-      { id: 'all', label: 'All' },
-      { id: 'north-indian', label: 'North Indian', flag: '🇮🇳' },
-      { id: 'italian', label: 'Premium Italian' },
-      { id: 'healthy', label: 'Healthy', icon: '🥗' },
-    ],
-    [
-      { id: 'japanese', label: 'Japanese Sushi' },
-      { id: 'thai', label: 'Thai' },
-      { id: 'desserts', label: 'Desserts, Healthy' },
-    ],
-  ];
+
 
   return (
     <div
@@ -200,44 +186,14 @@ export default function HeroBanner() {
                   </div>
                 </div>
 
-                {/* 2nd Image Right: Headline & Cuisine Filter Pills */}
+                {/* 2nd Image Right: Headline & Description */}
                 <div className="flex-1 max-w-xl flex flex-col items-start text-left z-10">
                   <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black font-display text-white tracking-tight leading-tight">
                     Gourmet Dining, Delivered.
                   </h1>
-                  <p className="mt-2 text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">
+                  <p className="mt-3 text-sm sm:text-base text-gray-300 font-medium leading-relaxed">
                     Experience Exquisite Flavors in the Comfort of Your Home.
                   </p>
-
-                  {/* 2-Row Cuisine Pills matching Image 2 */}
-                  <div className="mt-6 space-y-3 w-full">
-                    {pillRows.map((row, rIdx) => (
-                      <div key={rIdx} className="flex flex-wrap items-center gap-2">
-                        {row.map((item) => {
-                          const isActive =
-                            selectedCategory === item.id ||
-                            (item.id === 'all' && selectedCategory === 'all');
-
-                          return (
-                            <button
-                              key={item.id}
-                              type="button"
-                              onClick={() => setSelectedCategory(item.id)}
-                              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
-                                isActive
-                                  ? 'bg-[#E11D48] text-white font-bold shadow-md shadow-rose-950/60 scale-103 ring-2 ring-rose-500/30'
-                                  : 'bg-white/5 hover:bg-white/10 border border-white/15 text-gray-300 hover:text-white hover:border-rose-500/40'
-                              }`}
-                            >
-                              {item.flag && <span>{item.flag}</span>}
-                              {item.icon && <span>{item.icon}</span>}
-                              <span>{item.label}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </motion.div>
             )}
