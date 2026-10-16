@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ChevronLeft, ChevronRight, Sparkles, Tag } from 'lucide-react';
+import { Check, Sparkles, Tag } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export default function HeroBanner() {
@@ -27,13 +27,7 @@ export default function HeroBanner() {
     setTimeout(() => setCodeApplied(false), 3000);
   };
 
-  const nextSlide = () => {
-    setActiveSlide((prev) => (prev + 1) % totalSlides);
-  };
 
-  const prevSlide = () => {
-    setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  };
 
 
 
@@ -78,9 +72,46 @@ export default function HeroBanner() {
         <div className="relative z-10 w-full min-h-[380px] flex items-center">
           <AnimatePresence mode="wait">
             {/* ======================================================== */}
-            {/* SLIDE 1: 1st Image (FLAT 50% OFF Card & Welcome Offer) */}
+            {/* SLIDE 1: (Gourmet Dining + Circular Kadai Platter)       */}
             {/* ======================================================== */}
             {activeSlide === 0 && (
+              <motion.div
+                key="slide-gourmet-dining"
+                initial={{ opacity: 0, x: 25 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -25 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="w-full px-6 sm:px-10 lg:px-14 py-8 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12"
+              >
+                {/* Image Left: Circular Kadai Platter with Naan */}
+                <div className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 lg:w-[320px] lg:h-[320px] flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full bg-rose-600/20 blur-2xl pointer-events-none" />
+                  <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl shadow-black/95 border-2 border-white/15 group">
+                    <img
+                      src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=85"
+                      alt="Kadai Butter Chicken Feast with Naan"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 rounded-full shadow-inner pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Image Right: Headline & Description */}
+                <div className="flex-1 max-w-xl flex flex-col items-start text-left z-10">
+                  <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black font-display text-white tracking-tight leading-tight">
+                    Gourmet Dining, Delivered.
+                  </h1>
+                  <p className="mt-3 text-sm sm:text-base text-gray-300 font-medium leading-relaxed">
+                    Experience Exquisite Flavors in the Comfort of Your Home.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ======================================================== */}
+            {/* SLIDE 2: (FLAT 50% OFF Card & Welcome Offer)            */}
+            {/* ======================================================== */}
+            {activeSlide === 1 && (
               <motion.div
                 key="slide-50-off"
                 initial={{ opacity: 0, x: 25 }}
@@ -89,9 +120,8 @@ export default function HeroBanner() {
                 transition={{ duration: 0.35, ease: 'easeOut' }}
                 className="w-full px-6 sm:px-12 lg:px-16 py-8 flex flex-col md:flex-row items-center justify-between gap-8"
               >
-                {/* 1st Image Card: FLAT 50% OFF */}
+                {/* Card: FLAT 50% OFF */}
                 <div className="w-full sm:w-[320px] md:w-[340px] flex-shrink-0 bg-[#14141C]/90 backdrop-blur-2xl border border-white/15 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden group">
-                  {/* Subtle gloss reflection */}
                   <div className="absolute -top-14 -left-14 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
 
                   <span className="text-xs font-black uppercase tracking-widest text-gray-300">
@@ -127,7 +157,7 @@ export default function HeroBanner() {
                   </button>
                 </div>
 
-                {/* Right Side Showcase for Slide 1 */}
+                {/* Right Side Showcase for Slide 2 */}
                 <div className="flex-1 flex flex-col md:flex-row items-center justify-end gap-6 sm:gap-10">
                   <div className="text-center md:text-left max-w-md">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-300 text-xs font-bold mb-3">
@@ -157,43 +187,6 @@ export default function HeroBanner() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* ======================================================== */}
-            {/* SLIDE 2: 2nd Image (Gourmet Dining + Circular Platter)   */}
-            {/* ======================================================== */}
-            {activeSlide === 1 && (
-              <motion.div
-                key="slide-gourmet-dining"
-                initial={{ opacity: 0, x: 25 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -25 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="w-full px-6 sm:px-10 lg:px-14 py-8 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12"
-              >
-                {/* 2nd Image Left: Circular Kadai Platter with Naan */}
-                <div className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 lg:w-[320px] lg:h-[320px] flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full bg-rose-600/20 blur-2xl pointer-events-none" />
-                  <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl shadow-black/95 border-2 border-white/15 group">
-                    <img
-                      src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=85"
-                      alt="Kadai Butter Chicken Feast with Naan"
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-                    <div className="absolute inset-0 rounded-full shadow-inner pointer-events-none" />
-                  </div>
-                </div>
-
-                {/* 2nd Image Right: Headline & Description */}
-                <div className="flex-1 max-w-xl flex flex-col items-start text-left z-10">
-                  <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black font-display text-white tracking-tight leading-tight">
-                    Gourmet Dining, Delivered.
-                  </h1>
-                  <p className="mt-3 text-sm sm:text-base text-gray-300 font-medium leading-relaxed">
-                    Experience Exquisite Flavors in the Comfort of Your Home.
-                  </p>
                 </div>
               </motion.div>
             )}
@@ -283,25 +276,6 @@ export default function HeroBanner() {
           </AnimatePresence>
         </div>
 
-        {/* Left Arrow Button */}
-        <button
-          type="button"
-          onClick={prevSlide}
-          className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/15 flex items-center justify-center backdrop-blur-md shadow-lg transition-all hover:scale-110 active:scale-95 cursor-pointer"
-          aria-label="Previous Slide"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-
-        {/* Right Arrow Button */}
-        <button
-          type="button"
-          onClick={nextSlide}
-          className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/15 flex items-center justify-center backdrop-blur-md shadow-lg transition-all hover:scale-110 active:scale-95 cursor-pointer"
-          aria-label="Next Slide"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
       </div>
 
       {/* Carousel Pagination Indicators */}
@@ -314,7 +288,7 @@ export default function HeroBanner() {
               ? 'w-8 bg-[#E11D48] shadow-md shadow-rose-950/60'
               : 'w-2 bg-gray-700 hover:bg-gray-500'
           }`}
-          aria-label="Slide 1 (50% OFF)"
+          aria-label="Slide 1 (Gourmet Dining)"
         />
         <button
           type="button"
@@ -324,7 +298,7 @@ export default function HeroBanner() {
               ? 'w-8 bg-[#E11D48] shadow-md shadow-rose-950/60'
               : 'w-2 bg-gray-700 hover:bg-gray-500'
           }`}
-          aria-label="Slide 2 (Gourmet Dining)"
+          aria-label="Slide 2 (50% OFF)"
         />
         <button
           type="button"
