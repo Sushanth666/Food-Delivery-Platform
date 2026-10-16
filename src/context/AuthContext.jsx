@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getIndianAvatarByName } from '../utils/indianAvatars';
 
 const AuthContext = createContext();
 
@@ -8,7 +7,6 @@ const DEMO_USER = {
   name: 'Sushanth',
   email: 'sushanth@example.com',
   phone: '+91 98765 43210',
-  avatar: getIndianAvatarByName('Sushanth Kumar'), // Authentic Indian man photo
   savedAddresses: [
     {
       id: 'addr-1',
@@ -27,10 +25,6 @@ export function AuthProvider({ children }) {
       const stored = localStorage.getItem('cravewave_user');
       if (!stored) return null;
       const parsed = JSON.parse(stored);
-      // Ensure avatar matches name gender (fix legacy cached female photo)
-      if (parsed?.name) {
-        parsed.avatar = getIndianAvatarByName(parsed.name);
-      }
       return parsed;
     } catch {
       return null;
@@ -96,7 +90,6 @@ export function AuthProvider({ children }) {
       name: derivedName || 'Sushanth Kumar',
       email,
       phone: '+91 98765 43210',
-      avatar: getIndianAvatarByName(derivedName || 'Sushanth Kumar'),
     };
     setUser(loggedUser);
     showToast({
@@ -113,7 +106,6 @@ export function AuthProvider({ children }) {
       name: 'Rahul Sharma',
       email: 'user@cravewave.in',
       phone: phone.startsWith('+91') ? phone : `+91 ${phone}`,
-      avatar: getIndianAvatarByName('Rahul Sharma'),
     };
     setUser(loggedUser);
     showToast({
@@ -130,7 +122,6 @@ export function AuthProvider({ children }) {
       name: name.trim(),
       email,
       phone: phone.startsWith('+91') ? phone : `+91 ${phone}`,
-      avatar: getIndianAvatarByName(name.trim()),
     };
     setUser(newUser);
     showToast({
@@ -154,15 +145,10 @@ export function AuthProvider({ children }) {
   const updateProfile = (updatedFields) => {
     setUser((prev) => {
       if (!prev) return null;
-      const updated = {
+      return {
         ...prev,
         ...updatedFields,
       };
-      // If user changed name and didn't manually pick an avatar, update avatar to match gender
-      if (updatedFields.name && !updatedFields.avatar && !prev.customAvatarSelected) {
-        updated.avatar = getIndianAvatarByName(updatedFields.name.trim());
-      }
-      return updated;
     });
     showToast({
       type: 'success',

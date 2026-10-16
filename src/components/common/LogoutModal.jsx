@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, X, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { getIndianAvatarByName } from '../../utils/indianAvatars';
+import UserAvatar from './UserAvatar';
 
 export default function LogoutModal() {
   const { user, isLogoutModalOpen, closeLogoutModal, confirmLogout } = useAuth();
@@ -60,11 +60,7 @@ export default function LogoutModal() {
           {/* Current User Card */}
           {user && (
             <div className="flex items-center gap-3 p-3 bg-white/[0.04] border border-white/10 rounded-2xl mb-6">
-              <img
-                src={user.avatar || getIndianAvatarByName(user.name)}
-                alt={user.name}
-                className="w-10 h-10 rounded-xl object-cover border border-rose-500 shadow-xs"
-              />
+              <UserAvatar name={user.name} size="md" />
               <div className="flex-1 min-w-0 text-left">
                 <p className="text-xs font-bold text-white truncate">{user.name}</p>
                 <p className="text-[11px] text-gray-400 truncate">{user.email || user.phone}</p>

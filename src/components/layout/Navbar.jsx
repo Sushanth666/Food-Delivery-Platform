@@ -18,8 +18,8 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { useFilter } from '../../context/FilterContext';
-import { getIndianAvatarByName } from '../../utils/indianAvatars';
 import EditProfileModal from '../common/EditProfileModal';
+import UserAvatar from '../common/UserAvatar';
 
 export default function Navbar() {
   const { user, isAuthenticated, openLoginModal, openLogoutModal } = useAuth();
@@ -158,17 +158,7 @@ export default function Navbar() {
                   className="flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer group"
                   aria-label="Profile"
                 >
-                  {user?.avatar ? (
-                    <img
-                      src={user.avatar}
-                      alt={user.name}
-                      className="w-5 h-5 rounded-full object-cover border border-rose-500 shadow-xs"
-                    />
-                  ) : (
-                    <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-brand-600 to-rose-500 text-white flex items-center justify-center text-[10px] font-black">
-                      {user.name.charAt(0).toUpperCase()}
-                    </div>
-                  )}
+                  <UserAvatar name={user.name} size="xs" />
                   <span className="text-xs font-bold text-gray-200 group-hover:text-white max-w-[85px] truncate">
                     {user.name.split(' ')[0]}
                   </span>
@@ -197,11 +187,7 @@ export default function Navbar() {
                     {/* User Profile Header with Avatar */}
                     <div className="flex items-center gap-3 px-2.5 py-2.5 border-b border-white/10 mb-1.5 bg-white/[0.02] rounded-xl">
                       <div className="relative flex-shrink-0">
-                        <img
-                          src={user.avatar || getIndianAvatarByName(user.name)}
-                          alt={user.name}
-                          className="w-10 h-10 rounded-xl object-cover border-2 border-rose-500 shadow-md shadow-rose-950/60"
-                        />
+                        <UserAvatar name={user.name} size="lg" />
                         <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#14141C] rounded-full" />
                       </div>
                       <div className="flex-1 min-w-0">

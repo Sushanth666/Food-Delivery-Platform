@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, Clock, User } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import { getIndianAvatarByName } from '../../utils/indianAvatars';
+import UserAvatar from '../common/UserAvatar';
 
 export default function MobileBottomNav() {
   const location = useLocation();
@@ -54,11 +54,7 @@ export default function MobileBottomNav() {
             to="/orders"
             className="flex flex-col items-center gap-1 text-[11px] font-bold py-1 text-gray-400 hover:text-white transition-colors"
           >
-            <img
-              src={user.avatar || getIndianAvatarByName(user.name)}
-              alt={user.name}
-              className="w-5 h-5 rounded-full object-cover border border-rose-500 shadow-xs"
-            />
+            <UserAvatar name={user.name} size="xs" />
             <span>{user.name.split(' ')[0]}</span>
           </Link>
         ) : (
