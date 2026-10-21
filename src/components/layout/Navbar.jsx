@@ -67,20 +67,20 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 bg-[#0B0B0E]/95 backdrop-blur-xl border-b border-white/10 transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-3 sm:gap-6">
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20 gap-3 sm:gap-4 md:gap-5">
           {/* LEFT: Logo & Delivering To Pill */}
-          <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0">
-            {/* CraveWave Brand Logo (Previous Logo with Current Theme Color) */}
-            <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/60 group-hover:scale-105 transition-transform border border-white/10">
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            {/* CraveWave Brand Logo */}
+            <Link to="/" className="flex items-center gap-2.5 group shrink-0">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/60 group-hover:scale-105 transition-transform border border-white/10 shrink-0">
                 <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-300 transition-colors leading-none">
+              <div className="flex flex-col justify-center">
+                <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-300 transition-colors leading-tight">
                   Crave<span className="text-[#E11D48]">Wave</span>
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-rose-400 mt-1">
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-rose-400 leading-none">
                   Food Delivered Fast
                 </span>
               </div>
@@ -90,13 +90,13 @@ export default function Navbar() {
             <button
               type="button"
               onClick={openLocationModal}
-              className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-3.5 py-1.5 rounded-2xl text-left transition-all duration-200 group max-w-[200px] sm:max-w-[240px] md:max-w-[280px]"
+              className="h-11 flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-3 sm:px-3.5 rounded-2xl text-left transition-all duration-200 group max-w-[170px] sm:max-w-[210px] md:max-w-[250px] shrink-0 cursor-pointer"
               title="Change Delivery Location"
             >
-              <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+              <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
                 <MapPin className="w-3.5 h-3.5 text-white" />
               </div>
-              <div className="flex flex-col min-w-0 pr-1">
+              <div className="flex flex-col min-w-0 pr-1 justify-center">
                 <span className="text-[10px] text-gray-400 font-medium leading-none">
                   Delivering to:
                 </span>
@@ -104,17 +104,17 @@ export default function Navbar() {
                   {displayLocation}
                 </span>
               </div>
-              <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-auto" />
+              <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-auto" />
             </button>
           </div>
 
           {/* CENTER: Enhanced Expandable Search Trigger Pill */}
-          <div className="flex-1 max-w-md mx-2 hidden sm:block">
+          <div className="flex-1 max-w-sm lg:max-w-md mx-2 sm:mx-3 hidden md:block">
             <button
               id="navbar-search-btn"
               type="button"
               onClick={() => setIsSearchModalOpen(true)}
-              className="w-full group flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 hover:border-rose-500/50 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full transition-all duration-200 shadow-inner hover:shadow-lg hover:shadow-rose-950/40 cursor-pointer text-left"
+              className="h-11 w-full group flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 hover:border-rose-500/50 px-4 rounded-2xl transition-all duration-200 shadow-inner hover:shadow-lg hover:shadow-rose-950/40 cursor-pointer text-left"
               title="Search dishes, restaurants, cuisines (⌘K / Ctrl+K)"
             >
               <div className="flex items-center gap-2.5 min-w-0">
@@ -131,20 +131,20 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* RIGHT: Actions with Cart and Sign In places exchanged */}
-          <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
-            {/* 1. CART BUTTON (Now on the Left) */}
+          {/* RIGHT: Action Buttons */}
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            {/* 1. CART BUTTON */}
             <button
               id="navbar-cart-button"
               type="button"
               onClick={openCartDrawer}
-              className="relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer group"
+              className="h-11 relative flex items-center gap-2 px-3.5 sm:px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0"
               aria-label="Cart"
             >
-              <div className="relative">
+              <div className="relative flex items-center justify-center">
                 <ShoppingBag className="w-4 h-4 text-white" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2.5 bg-white text-[#E11D48] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
+                  <span className="absolute -top-2.5 -right-2.5 bg-white text-[#E11D48] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
                     {cartCount}
                   </span>
                 )}
@@ -156,7 +156,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={openGoldModal}
-              className={`relative flex items-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-2xl border transition-all cursor-pointer group ${
+              className={`h-11 relative flex items-center gap-1.5 px-3 rounded-2xl border transition-all cursor-pointer shrink-0 ${
                 isGoldMember
                   ? 'bg-gradient-to-r from-amber-950/60 via-yellow-950/40 to-amber-950/60 border-amber-500/40 text-amber-300 hover:border-amber-400 shadow-md shadow-amber-950/40'
                   : 'bg-amber-950/20 hover:bg-amber-950/40 border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-white'
@@ -168,7 +168,7 @@ export default function Navbar() {
                 {isGoldMember ? 'GOLD VIP' : 'Join Gold'}
               </span>
               {walletCoins > 0 && (
-                <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-extrabold bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30">
+                <span className="hidden 2xl:inline-flex items-center gap-1 text-[10px] font-extrabold bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30">
                   <Coins className="w-2.5 h-2.5" />
                   <span>{walletCoins}</span>
                 </span>
@@ -179,60 +179,60 @@ export default function Navbar() {
             <button
               type="button"
               onClick={openRewardsHub}
-              className="relative flex items-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer group shadow-xs"
+              className="h-11 relative flex items-center gap-1.5 px-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer shadow-xs shrink-0"
               title="Open CraveCoins & Rewards Hub"
             >
-              <Coins className="w-4 h-4 text-amber-400 group-hover:rotate-12 transition-transform" />
-              <span className="text-xs font-black tracking-wide hidden sm:inline">
+              <Coins className="w-4 h-4 text-amber-400 hover:rotate-12 transition-transform" />
+              <span className="text-xs font-black tracking-wide hidden xl:inline">
                 Rewards
               </span>
             </button>
 
-            {/* 2. WISHLIST BUTTON (Center) */}
+            {/* 2. WISHLIST BUTTON */}
             <button
               type="button"
               onClick={openWishlist}
-              className="relative flex items-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all cursor-pointer group"
+              className="h-11 relative flex items-center gap-1.5 px-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all cursor-pointer shrink-0"
               aria-label="Wishlist"
               title="View Wishlist"
             >
-              <div className="relative">
-                <Heart className="w-4 h-4 text-gray-300 group-hover:text-rose-400 transition-colors" />
+              <div className="relative flex items-center justify-center">
+                <Heart className="w-4 h-4 text-gray-300 hover:text-rose-400 transition-colors" />
                 {wishlistCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center shadow-xs">
                     {wishlistCount}
                   </span>
                 )}
               </div>
-              <span className="text-xs font-semibold text-gray-300 group-hover:text-white hidden md:inline">
+              <span className="text-xs font-semibold text-gray-300 hover:text-white hidden 2xl:inline">
                 Wishlist
               </span>
             </button>
 
-            {/* 3. SIGN IN / PROFILE BUTTON (Now on the Right) */}
-            <div className="relative">
+            {/* 3. SIGN IN / PROFILE BUTTON */}
+            <div className="relative shrink-0">
               {isAuthenticated ? (
                 <button
                   id="user-profile-btn"
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer group"
+                  className="h-11 flex items-center gap-2 px-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer shrink-0"
                   aria-label="Profile"
                 >
                   <UserAvatar name={user.name} size="xs" />
-                  <span className="text-xs font-bold text-gray-200 group-hover:text-white max-w-[85px] truncate">
+                  <span className="text-xs font-bold text-gray-200 hover:text-white max-w-[85px] truncate">
                     {user.name.split(' ')[0]}
                   </span>
-                  <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-transform" />
+                  <ChevronDown className="w-3.5 h-3.5 text-gray-400 hover:text-white transition-transform" />
                 </button>
               ) : (
                 <button
                   id="navbar-signin-btn"
                   type="button"
                   onClick={openLoginModal}
-                  className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer group"
+                  className="h-11 flex items-center gap-2 px-3.5 sm:px-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
                 >
-                  <User className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
+                  <User className="w-4 h-4 text-rose-400 hover:scale-110 transition-transform" />
                   <span className="text-xs sm:text-sm font-bold">Sign In</span>
                 </button>
               )}
@@ -346,11 +346,11 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Search button */}
-        <div className="pb-3 pt-1 block sm:hidden">
+        <div className="pb-3.5 pt-1 block md:hidden">
           <button
             type="button"
             onClick={() => setIsSearchModalOpen(true)}
-            className="w-full flex items-center justify-between gap-3 bg-[#16161D] border border-white/10 px-4 py-2.5 rounded-full text-left cursor-pointer"
+            className="h-11 w-full flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 px-4 rounded-2xl text-left cursor-pointer transition-colors"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <Search className="w-4 h-4 text-rose-400 shrink-0" />
