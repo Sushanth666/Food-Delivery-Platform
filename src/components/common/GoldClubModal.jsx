@@ -44,26 +44,31 @@ export default function GoldClubModal() {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-lg bg-[#14121A] text-white rounded-3xl shadow-2xl shadow-amber-950/40 overflow-hidden z-10 border border-amber-500/30 flex flex-col"
+          className="relative w-full max-w-lg bg-[#14121A] text-white rounded-3xl shadow-2xl shadow-amber-950/40 overflow-hidden z-10 border border-amber-500/30 flex flex-col max-h-[90vh] my-auto"
         >
-          {/* Top Banner with Crown & Gold Shimmer */}
-          <div className="relative p-6 sm:p-8 bg-gradient-to-br from-amber-950/70 via-[#1C1624] to-black border-b border-amber-500/20 text-center overflow-hidden">
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-rose-600/20 rounded-full blur-3xl pointer-events-none" />
+          {/* Always-Visible Persistent Close Button */}
+          <button
+            type="button"
+            onClick={closeGoldModal}
+            className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/80 hover:bg-black border border-white/25 hover:border-amber-400 text-white flex items-center justify-center transition-all cursor-pointer shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95"
+            title="Close modal"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5 stroke-[2.5]" />
+          </button>
 
-            <button
-              type="button"
-              onClick={closeGoldModal}
-              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
+          {/* Scrollable Body Content */}
+          <div className="overflow-y-auto flex-1 overscroll-contain">
+            {/* Top Banner with Crown & Gold Shimmer */}
+            <div className="relative p-6 sm:p-8 bg-gradient-to-br from-amber-950/70 via-[#1C1624] to-black border-b border-amber-500/20 text-center overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-rose-600/20 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-200 p-0.5 mx-auto mb-3 shadow-lg shadow-amber-950/80">
-              <div className="w-full h-full rounded-[14px] bg-[#16121D] flex items-center justify-center">
-                <Crown className="w-8 h-8 text-amber-400 fill-amber-400/20 animate-pulse" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-200 p-0.5 mx-auto mb-3 shadow-lg shadow-amber-950/80">
+                <div className="w-full h-full rounded-[14px] bg-[#16121D] flex items-center justify-center">
+                  <Crown className="w-8 h-8 text-amber-400 fill-amber-400/20 animate-pulse" />
+                </div>
               </div>
-            </div>
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-black uppercase tracking-wider mb-2">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -178,26 +183,36 @@ export default function GoldClubModal() {
               </div>
             </div>
           </div>
+          {/* End of Scrollable Body Content */}
+          </div>
 
-          {/* Footer Action Button */}
-          <div className="p-5 border-t border-amber-500/20 bg-[#100E16] flex items-center gap-3">
+          {/* Footer Action Buttons */}
+          <div className="p-4 sm:p-5 border-t border-amber-500/20 bg-[#100E16] flex items-center gap-3">
+            <button
+              type="button"
+              onClick={closeGoldModal}
+              className="px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shrink-0"
+            >
+              Close
+            </button>
+
             <button
               type="button"
               disabled={isProcessing}
               onClick={handleAction}
-              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-sm uppercase tracking-wider shadow-xl shadow-amber-950/60 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+              className="flex-1 py-3.5 px-4 sm:px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-amber-950/60 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
             >
               {isProcessing ? (
                 <span>Processing...</span>
               ) : isGoldMember ? (
                 <>
                   <Check className="w-4 h-4 text-black" />
-                  <span>Gold Active • Tap to Toggle/Pause</span>
+                  <span>Gold Active • Tap to Toggle</span>
                 </>
               ) : (
                 <>
                   <Crown className="w-4 h-4 text-black" />
-                  <span>Join CraveWave Gold VIP Now</span>
+                  <span>Join Gold VIP Now</span>
                 </>
               )}
             </button>
