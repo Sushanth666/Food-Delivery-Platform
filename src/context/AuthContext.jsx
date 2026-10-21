@@ -7,6 +7,8 @@ const DEMO_USER = {
   name: 'Sushanth',
   email: 'sushanth@example.com',
   phone: '+91 98765 43210',
+  isGoldMember: true,
+  walletCoins: 450,
   savedAddresses: [
     {
       id: 'addr-1',
@@ -23,11 +25,16 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
       const stored = localStorage.getItem('cravewave_user');
-      if (!stored) return null;
+      if (!stored) return DEMO_USER;
       const parsed = JSON.parse(stored);
-      return parsed;
+      return {
+        ...DEMO_USER,
+        ...parsed,
+        isGoldMember: parsed.isGoldMember !== undefined ? parsed.isGoldMember : true,
+        walletCoins: parsed.walletCoins !== undefined ? parsed.walletCoins : 450,
+      };
     } catch {
-      return null;
+      return DEMO_USER;
     }
   });
 
@@ -35,6 +42,7 @@ export function AuthProvider({ children }) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState('login'); // 'login' | 'signup'
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isGoldModalOpen, setIsGoldModalOpen] = useState(false);
   const [toast, setToast] = useState(null);
 
   const showToast = (toastData) => {
@@ -173,6 +181,46 @@ export function AuthProvider({ children }) {
     confirmLogout();
   };
 
+  const openGoldModal = () => setIsGoldModalOpen(true);
+  const closeGoldModal = () => setIsGoldModalOpen(false);
+
+  const toggleGoldMembership = () => {
+    setUser((prev) => {
+      if (!prev) return null;
+      const nextStatus = !prev.isGoldMember;
+      showToast({
+        type: 'success',
+        title: nextStatus ? '👑 CraveWave Gold VIP Activated!' : 'CraveWave Gold Deactivated',
+        message: nextStatus
+          ? 'Enjoy Unlimited Free Delivery and 10% Extra Off on all orders!'
+          : 'Membership paused. You can reactivate anytime.',
+      });
+      return {
+        ...prev,
+        isGoldMember: nextStatus,
+      };
+    });
+  };
+
+  const redeemCoins = (amount) => {
+    if (!user || (user.walletCoins || 0) < amount) return false;
+    setUser((prev) => ({
+      ...prev,
+      walletCoins: Math.max(0, (prev.walletCoins || 0) - amount),
+    }));
+    return true;
+  };
+
+  const addCoins = (amount) => {
+    setUser((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        walletCoins: (prev.walletCoins || 0) + amount,
+      };
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -184,6 +232,15 @@ export function AuthProvider({ children }) {
         demoLogin,
         updateProfile,
         logout,
+        // CraveWave Gold & Wallet Coins
+        isGoldMember: Boolean(user?.isGoldMember),
+        walletCoins: user?.walletCoins || 0,
+        isGoldModalOpen,
+        openGoldModal,
+        closeGoldModal,
+        toggleGoldMembership,
+        redeemCoins,
+        addCoins,
         // Modal & Toast Controls
         isAuthModalOpen,
         authModalTab,

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getLocalStorage, setLocalStorage } from '../utils/storage';
 import { calculateOrderBill } from '../utils/calculations';
 import { COUPONS } from '../data/coupons';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext(null);
 
@@ -13,7 +14,10 @@ export function CartProvider({ children }) {
   const [appliedCoupon, setAppliedCoupon] = useState(() =>
     getLocalStorage('cw_cart_coupon', null)
   );
+  const [isCoinsApplied, setIsCoinsApplied] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+
+  const { isGoldMember, walletCoins } = useAuth();
   const [conflictModal, setConflictModal] = useState({
     isOpen: false,
     pendingRestaurant: null,
@@ -217,7 +221,11 @@ export function CartProvider({ children }) {
     setIsCartDrawerOpen(true);
   };
 
-  const bill = calculateOrderBill(cartItems, appliedCoupon);
+  const bill = calculateOrderBill(cartItems, appliedCoupon, {
+    isGold: isGoldMember,
+    isCoinsApplied,
+    userCoins: walletCoins,
+  });
 
   return (
     <CartContext.Provider
@@ -228,6 +236,9 @@ export function CartProvider({ children }) {
         bill,
         isCartDrawerOpen,
         conflictModal,
+        isCoinsApplied,
+        setIsCoinsApplied,
+        toggleCoinsUsage: () => setIsCoinsApplied((prev) => !prev),
         setIsCartDrawerOpen,
         openCartDrawer: () => setIsCartDrawerOpen(true),
         closeCartDrawer: () => setIsCartDrawerOpen(false),

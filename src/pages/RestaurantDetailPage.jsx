@@ -20,6 +20,7 @@ import { formatCurrency } from '../utils/formatCurrency';
 import DietaryBadge from '../components/common/DietaryBadge';
 import RatingPill from '../components/common/RatingPill';
 import ItemCustomizerModal from '../components/restaurant/ItemCustomizerModal';
+import DishNutritionBadge from '../components/common/DishNutritionBadge';
 
 export default function RestaurantDetailPage() {
   const { slug } = useParams();
@@ -370,11 +371,14 @@ export default function RestaurantDetailPage() {
                           <p className="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">
                             {item.description}
                           </p>
+
+                          {/* Nutrition Macro Pills & Dietary Badges */}
+                          <DishNutritionBadge dish={item} compact={true} />
                         </div>
 
                         {/* Rating if present */}
                         {item.rating && (
-                          <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400 font-semibold">
+                          <div className="mt-2.5 flex items-center gap-1.5 text-xs text-gray-400 font-semibold">
                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                             <span className="text-white font-bold">{item.rating}</span>
                             <span className="text-gray-500">({item.votes} votes)</span>

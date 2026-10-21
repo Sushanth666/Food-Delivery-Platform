@@ -12,11 +12,16 @@ import {
   Sparkles,
   Check,
   Percent,
+  Crown,
+  Coins,
+  Users,
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import { formatCurrency } from '../../utils/formatCurrency';
 import DietaryBadge from '../common/DietaryBadge';
 import { COUPONS } from '../../data/coupons';
+import GroupOrderModal from './GroupOrderModal';
 
 export default function CartDrawer() {
   const {
@@ -31,11 +36,15 @@ export default function CartDrawer() {
     appliedCoupon,
     applyCoupon,
     removeCoupon,
+    isCoinsApplied,
+    toggleCoinsUsage,
   } = useCart();
 
+  const { isGoldMember, walletCoins, openGoldModal } = useAuth();
   const navigate = useNavigate();
   const [couponInput, setCouponInput] = useState('');
   const [couponFeedback, setCouponFeedback] = useState(null);
+  const [isGroupOrderOpen, setIsGroupOrderOpen] = useState(false);
 
   const handleApplyCoupon = (codeToApply) => {
     const code = codeToApply || couponInput;
@@ -141,6 +150,57 @@ export default function CartDrawer() {
                 </div>
               ) : (
                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                  {/* Group Order Collaboration Bar */}
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-purple-950/60 via-[#191522] to-rose-950/40 border border-purple-500/30 flex items-center justify-between gap-3 shadow-md">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-300">
+                        <Users className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-black text-white">Ordering with friends?</p>
+                        <p className="text-[10px] text-gray-300">Share cart link & split bill automatically</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsGroupOrderOpen(true)}
+                      className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer shrink-0"
+                    >
+                      Group Order
+                    </button>
+                  </div>
+
+                  {/* CraveWave Gold VIP Status Card */}
+                  <div
+                    onClick={openGoldModal}
+                    className={`p-3.5 rounded-2xl border flex items-center justify-between gap-3 cursor-pointer transition-all ${
+                      isGoldMember
+                        ? 'bg-gradient-to-r from-amber-950/60 via-yellow-950/30 to-black/60 border-amber-500/40 shadow-sm'
+                        : 'bg-[#181620] hover:bg-[#1E1C28] border-white/10'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                        <Crown className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-xs font-black text-white">
+                            {isGoldMember ? 'CraveWave Gold Active' : 'Join CraveWave Gold VIP'}
+                          </p>
+                          <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
+                            {isGoldMember ? 'FREE Delivery' : 'Save ₹35'}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-gray-400 mt-0.5">
+                          {isGoldMember
+                            ? 'Unlimited FREE express delivery & 10% extra off applied'
+                            : 'Unlimited free delivery & 10% off every order. Tap to activate.'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Items List */}
                   <div className="space-y-4">
                     <div className="text-xs font-bold uppercase tracking-wider text-gray-400">
@@ -306,6 +366,47 @@ export default function CartDrawer() {
                     )}
                   </div>
 
+                  {/* CraveWave Loyalty Coins Redemption Card */}
+                  {walletCoins > 0 && (
+                    <div
+                      onClick={toggleCoinsUsage}
+                      className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
+                        isCoinsApplied
+                          ? 'bg-amber-950/40 border-amber-500/50 shadow-md'
+                          : 'bg-[#181622] hover:bg-[#1E1C2B] border-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
+                            isCoinsApplied
+                              ? 'bg-amber-500 border-amber-400 text-black'
+                              : 'border-gray-500 bg-white/5'
+                          }`}
+                        >
+                          {isCoinsApplied && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs font-black text-white flex items-center gap-1">
+                              <Coins className="w-3.5 h-3.5 text-amber-400" />
+                              Redeem CraveWave Coins
+                            </span>
+                            <span className="text-[10px] font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.2 rounded">
+                              {walletCoins} available
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-gray-400 mt-0.5">
+                            Apply coins to save up to ₹100 instant cash discount
+                          </p>
+                        </div>
+                      </div>
+                      <span className="text-xs font-black text-amber-400">
+                        {isCoinsApplied ? `-₹${bill.coinsDiscount}` : 'Redeem'}
+                      </span>
+                    </div>
+                  )}
+
                   {/* Bill Breakdown */}
                   <div className="pt-2 border-t border-white/10 space-y-2">
                     <div className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
@@ -323,11 +424,34 @@ export default function CartDrawer() {
                       </div>
                     )}
 
+                    {bill.goldDiscount > 0 && (
+                      <div className="flex justify-between text-xs text-amber-400 font-semibold">
+                        <span className="flex items-center gap-1">
+                          <Crown className="w-3 h-3 text-amber-400" />
+                          CraveWave Gold 10% VIP Off
+                        </span>
+                        <span>-{formatCurrency(bill.goldDiscount)}</span>
+                      </div>
+                    )}
+
+                    {bill.coinsDiscount > 0 && (
+                      <div className="flex justify-between text-xs text-amber-300 font-semibold">
+                        <span className="flex items-center gap-1">
+                          <Coins className="w-3 h-3 text-amber-400" />
+                          CraveWave Coins Redeemed
+                        </span>
+                        <span>-{formatCurrency(bill.coinsDiscount)}</span>
+                      </div>
+                    )}
+
                     <div className="flex justify-between text-xs text-gray-400">
                       <span>Delivery Fee</span>
                       <span>
                         {bill.deliveryFee === 0 ? (
-                          <span className="text-emerald-400 font-bold">FREE</span>
+                          <span className="text-emerald-400 font-bold flex items-center gap-1">
+                            {isGoldMember && <Crown className="w-3 h-3 text-amber-400" />}
+                            FREE {isGoldMember && <span className="line-through text-gray-500 text-[10px]">₹35</span>}
+                          </span>
                         ) : (
                           <span className="text-gray-200">{formatCurrency(bill.deliveryFee)}</span>
                         )}
@@ -340,7 +464,7 @@ export default function CartDrawer() {
                     </div>
 
                     <div className="flex justify-between text-xs text-gray-400">
-                      <span>GST & Taxes (8%)</span>
+                      <span>GST & Restaurant Taxes (5%)</span>
                       <span className="text-gray-200">{formatCurrency(bill.taxes)}</span>
                     </div>
 
@@ -383,6 +507,12 @@ export default function CartDrawer() {
           </div>
         </div>
       )}
+
+      {/* Group Order & Bill Splitting Collaborative Modal */}
+      <GroupOrderModal
+        isOpen={isGroupOrderOpen}
+        onClose={() => setIsGroupOrderOpen(false)}
+      />
     </AnimatePresence>
   );
 }

@@ -19,6 +19,7 @@ import { useOrders } from '../context/OrderContext';
 import { ORDER_STATUS_STEPS } from '../data/mockOrders';
 import { formatCurrency } from '../utils/formatCurrency';
 import { getIndianAvatarByName } from '../utils/indianAvatars';
+import DeliveryChatDrawer from '../components/tracking/DeliveryChatDrawer';
 
 export default function OrderTrackingPage() {
   const { orderId } = useParams();
@@ -29,6 +30,7 @@ export default function OrderTrackingPage() {
 
   // Auto progression simulation (advance status every 15s if desired)
   const [autoAdvance, setAutoAdvance] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     if (!autoAdvance || !order || currentStep >= 5) return;
@@ -289,10 +291,19 @@ export default function OrderTrackingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setIsChatOpen(true)}
+                    className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-rose-400" />
+                    <span>Chat with Rider</span>
+                  </button>
+
                   <a
                     href={`tel:${order.deliveryDriver.phone}`}
-                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-md shadow-rose-950/50"
                   >
                     <Phone className="w-3.5 h-3.5" />
                     <span>Call Rider</span>
@@ -406,6 +417,22 @@ export default function OrderTrackingPage() {
           </div>
         </div>
       </div>
+
+      {/* Real-time Delivery Partner Chat Drawer */}
+      {order.deliveryDriver && (
+        <DeliveryChatDrawer
+          isOpen={isChatOpen}
+          onClose={() => setIsChatOpen(false)}
+          driver={{
+            ...order.deliveryDriver,
+            avatar: getIndianAvatarByName(
+              order.deliveryDriver.name,
+              order.deliveryDriver.gender
+            ),
+          }}
+          restaurantName={order.restaurantName}
+        />
+      )}
     </div>
   );
 }

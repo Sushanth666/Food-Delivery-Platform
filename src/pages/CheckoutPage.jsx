@@ -14,18 +14,30 @@ import {
   AlertCircle,
   Lock,
   Crosshair,
+  Crown,
+  Coins,
+  Check,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useOrders } from '../context/OrderContext';
 import { useLocationContext } from '../context/LocationContext';
+import { useAuth } from '../context/AuthContext';
 import { formatCurrency } from '../utils/formatCurrency';
 import confetti from 'canvas-confetti';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { cartItems, currentRestaurant, bill, clearCart } = useCart();
+  const {
+    cartItems,
+    currentRestaurant,
+    bill,
+    clearCart,
+    isCoinsApplied,
+    toggleCoinsUsage,
+  } = useCart();
   const { placeOrder } = useOrders();
   const { currentLocation, openLocationModal } = useLocationContext();
+  const { isGoldMember, walletCoins, redeemCoins } = useAuth();
 
   // Form State
   const [formData, setFormData] = useState({
@@ -133,6 +145,9 @@ export default function CheckoutPage() {
       const order = placeOrder(orderPayload);
 
       try {
+        if (bill.coinsRedeemed > 0) {
+          redeemCoins(bill.coinsRedeemed);
+        }
         confetti({
           particleCount: 100,
           spread: 70,
@@ -506,6 +521,50 @@ export default function CheckoutPage() {
                   ))}
                 </div>
 
+                {/* Gold VIP Benefits Ribbon */}
+                {isGoldMember && (
+                  <div className="p-3 rounded-2xl bg-gradient-to-r from-amber-950/60 to-black/60 border border-amber-500/30 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <Crown className="w-4 h-4 text-amber-400 fill-amber-400/20" />
+                      <span className="font-bold text-amber-300">CraveWave Gold VIP Applied</span>
+                    </div>
+                    <span className="text-[10px] font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full">
+                      Free Delivery + 10% Off
+                    </span>
+                  </div>
+                )}
+
+                {/* Coins Redemption Switch */}
+                {walletCoins > 0 && (
+                  <div
+                    onClick={toggleCoinsUsage}
+                    className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
+                      isCoinsApplied
+                        ? 'bg-amber-950/40 border-amber-500/50'
+                        : 'bg-[#1A1A22] hover:bg-[#20202B] border-white/10'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                          isCoinsApplied
+                            ? 'bg-amber-500 border-amber-400 text-black'
+                            : 'border-gray-500 bg-white/5'
+                        }`}
+                      >
+                        {isCoinsApplied && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                      <span className="text-xs font-bold text-gray-200 flex items-center gap-1">
+                        <Coins className="w-3.5 h-3.5 text-amber-400" />
+                        Use CraveWave Coins ({walletCoins} available)
+                      </span>
+                    </div>
+                    <span className="text-xs font-extrabold text-amber-400">
+                      {isCoinsApplied ? `-₹${bill.coinsDiscount}` : 'Redeem'}
+                    </span>
+                  </div>
+                )}
+
                 {/* Bill Details */}
                 <div className="pt-3 border-t border-white/10 space-y-2 text-xs text-gray-400">
                   <div className="flex justify-between">
@@ -514,15 +573,36 @@ export default function CheckoutPage() {
                   </div>
                   {bill.discount > 0 && (
                     <div className="flex justify-between text-emerald-400 font-bold">
-                      <span>Discount</span>
+                      <span>Coupon Discount</span>
                       <span>-{formatCurrency(bill.discount)}</span>
+                    </div>
+                  )}
+                  {bill.goldDiscount > 0 && (
+                    <div className="flex justify-between text-amber-400 font-bold">
+                      <span className="flex items-center gap-1">
+                        <Crown className="w-3 h-3 text-amber-400" />
+                        Gold VIP 10% Discount
+                      </span>
+                      <span>-{formatCurrency(bill.goldDiscount)}</span>
+                    </div>
+                  )}
+                  {bill.coinsDiscount > 0 && (
+                    <div className="flex justify-between text-amber-300 font-bold">
+                      <span className="flex items-center gap-1">
+                        <Coins className="w-3 h-3 text-amber-400" />
+                        Coins Redeemed
+                      </span>
+                      <span>-{formatCurrency(bill.coinsDiscount)}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <span>Delivery Fee</span>
                     <span>
                       {bill.deliveryFee === 0 ? (
-                        <span className="text-emerald-400 font-bold">FREE</span>
+                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                          {isGoldMember && <Crown className="w-3 h-3 text-amber-400" />}
+                          FREE {isGoldMember && <span className="line-through text-gray-500 text-[10px]">₹35</span>}
+                        </span>
                       ) : (
                         <span className="text-gray-200">{formatCurrency(bill.deliveryFee)}</span>
                       )}
@@ -533,7 +613,7 @@ export default function CheckoutPage() {
                     <span className="text-gray-200">{formatCurrency(bill.platformFee)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Taxes (8%)</span>
+                    <span>GST & Restaurant Taxes (5%)</span>
                     <span className="text-gray-200">{formatCurrency(bill.taxes)}</span>
                   </div>
 

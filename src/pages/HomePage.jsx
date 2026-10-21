@@ -1,12 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import HeroBanner from '../components/home/HeroBanner';
 import FeaturedExquisiteCuisines from '../components/home/FeaturedExquisiteCuisines';
 import CategoryBar from '../components/home/CategoryBar';
 import FilterBar from '../components/home/FilterBar';
 import RestaurantCard from '../components/home/RestaurantCard';
+import CravingWheelModal from '../components/home/CravingWheelModal';
 import { RESTAURANTS } from '../data/restaurants';
 import { useFilter } from '../context/FilterContext';
-import { Utensils, Frown, Sparkles } from 'lucide-react';
+import { Utensils, Frown, Sparkles, Dices } from 'lucide-react';
 
 export default function HomePage() {
   const {
@@ -22,6 +23,8 @@ export default function HomePage() {
     sortBy,
     resetFilters,
   } = useFilter();
+
+  const [isWheelOpen, setIsWheelOpen] = useState(false);
 
   const filteredRestaurants = useMemo(() => {
     return RESTAURANTS.filter((rest) => {
@@ -141,6 +144,41 @@ export default function HomePage() {
       {/* Featured Exquisite Cuisines Row matching reference */}
       <FeaturedExquisiteCuisines />
 
+      {/* Gamified Craving Roulette Interactive Banner */}
+      <section className="my-6 relative overflow-hidden rounded-3xl bg-gradient-to-r from-rose-950/80 via-[#1B141D] to-purple-950/70 border border-rose-500/30 p-5 sm:p-7 shadow-xl shadow-rose-950/30">
+        <div className="absolute -right-12 -top-12 w-48 h-48 bg-rose-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4 text-center md:text-left">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-rose-500 to-purple-600 p-0.5 shadow-lg shadow-rose-950/60 shrink-0 animate-pulse">
+              <div className="w-full h-full rounded-[14px] bg-[#141018] flex items-center justify-center text-3xl sm:text-4xl">
+                🎰
+              </div>
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-bold uppercase tracking-wider mb-2">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>Can't Decide What to Eat?</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white font-display tracking-tight">
+                Spin the Crave Roulette Wheel
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-300 mt-1 max-w-xl">
+                Let fate pick your dinner from 30+ regional cuisines or win surprise FLAT 50% discount coupons instantly!
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsWheelOpen(true)}
+            className="w-full md:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 via-brand-500 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-black text-sm tracking-wide shadow-xl shadow-rose-900/50 flex items-center justify-center gap-2.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+          >
+            <Dices className="w-5 h-5 text-amber-200" />
+            <span>Spin Now & Win</span>
+          </button>
+        </div>
+      </section>
+
       {/* Food Category Carousel */}
       <CategoryBar />
 
@@ -189,6 +227,25 @@ export default function HomePage() {
           </button>
         </div>
       )}
+
+      {/* Floating Quick Spin Trigger Button (Bottom-Right, subtle & glowing) */}
+      <div className="fixed bottom-6 right-6 z-40 hidden sm:block">
+        <button
+          type="button"
+          onClick={() => setIsWheelOpen(true)}
+          className="group relative flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-rose-600 via-brand-600 to-amber-500 text-white font-bold text-xs uppercase tracking-wider shadow-2xl shadow-rose-900/80 border border-white/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+        >
+          <span className="text-lg group-hover:rotate-180 transition-transform duration-500">🎰</span>
+          <span>Spin Craving Wheel</span>
+          <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping" />
+        </button>
+      </div>
+
+      {/* Craving Wheel Interactive Modal */}
+      <CravingWheelModal
+        isOpen={isWheelOpen}
+        onClose={() => setIsWheelOpen(false)}
+      />
     </main>
   );
 }

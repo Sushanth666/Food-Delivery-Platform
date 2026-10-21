@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, Plus, Minus, Sparkles, ChefHat } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatCurrency';
 import DietaryBadge from '../common/DietaryBadge';
+import DishNutritionBadge from '../common/DishNutritionBadge';
 
 export default function ItemCustomizerModal({
   isOpen,
@@ -109,6 +110,9 @@ export default function ItemCustomizerModal({
 
           {/* Scrollable Body */}
           <div className="p-6 overflow-y-auto space-y-6">
+            {/* Nutritional & Dietary Breakdown */}
+            <DishNutritionBadge dish={item} compact={false} />
+
             {/* Sizes / Portions */}
             {sizes.length > 0 && (
               <div>

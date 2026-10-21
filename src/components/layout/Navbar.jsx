@@ -12,6 +12,8 @@ import {
   Clock,
   ChevronDown,
   UtensilsCrossed,
+  Crown,
+  Coins,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
@@ -22,7 +24,15 @@ import EditProfileModal from '../common/EditProfileModal';
 import UserAvatar from '../common/UserAvatar';
 
 export default function Navbar() {
-  const { user, isAuthenticated, openLoginModal, openLogoutModal } = useAuth();
+  const {
+    user,
+    isAuthenticated,
+    isGoldMember,
+    walletCoins,
+    openGoldModal,
+    openLoginModal,
+    openLogoutModal,
+  } = useAuth();
   const { cartItems, openCartDrawer } = useCart();
   const { wishlistCount, openWishlist } = useWishlist();
   const { currentLocation, openLocationModal } = useLocationContext();
@@ -125,6 +135,29 @@ export default function Navbar() {
                 )}
               </div>
               <span className="font-extrabold text-xs sm:text-sm">Cart</span>
+            </button>
+
+            {/* CraveWave Gold VIP Membership Pill */}
+            <button
+              type="button"
+              onClick={openGoldModal}
+              className={`relative flex items-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-2xl border transition-all cursor-pointer group ${
+                isGoldMember
+                  ? 'bg-gradient-to-r from-amber-950/60 via-yellow-950/40 to-amber-950/60 border-amber-500/40 text-amber-300 hover:border-amber-400 shadow-md shadow-amber-950/40'
+                  : 'bg-white/5 hover:bg-white/10 border-white/10 text-gray-300 hover:text-white'
+              }`}
+              title="CraveWave Gold VIP Club"
+            >
+              <Crown className={`w-4 h-4 ${isGoldMember ? 'text-amber-400 fill-amber-400/30 animate-pulse' : 'text-gray-400'}`} />
+              <span className="text-xs font-black tracking-wide hidden lg:inline">
+                {isGoldMember ? 'GOLD VIP' : 'Join Gold'}
+              </span>
+              {walletCoins > 0 && (
+                <span className="hidden xl:inline-flex items-center gap-1 text-[10px] font-extrabold bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30">
+                  <Coins className="w-2.5 h-2.5" />
+                  <span>{walletCoins}</span>
+                </span>
+              )}
             </button>
 
             {/* 2. WISHLIST BUTTON (Center) */}
