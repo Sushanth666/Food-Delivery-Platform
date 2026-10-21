@@ -70,17 +70,17 @@ export default function Navbar() {
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-3 sm:gap-4 md:gap-5">
           {/* LEFT: Logo & Delivering To Pill */}
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             {/* CraveWave Brand Logo */}
-            <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/60 group-hover:scale-105 transition-transform border border-white/10 shrink-0">
+            <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/60 group-hover:scale-105 transition-transform border border-white/10 shrink-0">
                 <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-300 transition-colors leading-tight">
+                <span className="text-lg sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-300 transition-colors leading-tight">
                   Crave<span className="text-[#E11D48]">Wave</span>
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-rose-400 leading-none">
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-rose-400 leading-none hidden sm:block">
                   Food Delivered Fast
                 </span>
               </div>
@@ -90,14 +90,14 @@ export default function Navbar() {
             <button
               type="button"
               onClick={openLocationModal}
-              className="h-11 flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-3 sm:px-3.5 rounded-2xl text-left transition-all duration-200 group max-w-[170px] sm:max-w-[210px] md:max-w-[250px] shrink-0 cursor-pointer"
+              className="h-10 sm:h-11 flex items-center gap-1.5 sm:gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl text-left transition-all duration-200 group max-w-[130px] sm:max-w-[200px] md:max-w-[240px] shrink-0 cursor-pointer"
               title="Change Delivery Location"
             >
-              <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
                 <MapPin className="w-3.5 h-3.5 text-white" />
               </div>
               <div className="flex flex-col min-w-0 pr-1 justify-center">
-                <span className="text-[10px] text-gray-400 font-medium leading-none">
+                <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium leading-none">
                   Delivering to:
                 </span>
                 <span className="text-xs font-bold text-white truncate mt-0.5 leading-tight">
@@ -108,8 +108,8 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* CENTER: Enhanced Expandable Search Trigger Pill */}
-          <div className="flex-1 max-w-sm lg:max-w-md mx-2 sm:mx-3 hidden md:block">
+          {/* CENTER: Enhanced Expandable Search Trigger Pill (Desktop only) */}
+          <div className="flex-1 max-w-sm lg:max-w-md mx-2 sm:mx-3 hidden lg:block">
             <button
               id="navbar-search-btn"
               type="button"
@@ -124,7 +124,7 @@ export default function Navbar() {
                 </span>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-bold text-gray-400 bg-white/5 border border-white/10 rounded-md group-hover:border-rose-500/40 group-hover:text-rose-300 transition-colors">
+                <kbd className="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-bold text-gray-400 bg-white/5 border border-white/10 rounded-md group-hover:border-rose-500/40 group-hover:text-rose-300 transition-colors">
                   ⌘K
                 </kbd>
               </div>
@@ -132,13 +132,13 @@ export default function Navbar() {
           </div>
 
           {/* RIGHT: Action Buttons */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* 1. CART BUTTON */}
             <button
               id="navbar-cart-button"
               type="button"
               onClick={openCartDrawer}
-              className="h-11 relative flex items-center gap-2 px-3.5 sm:px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0"
+              className="h-10 sm:h-11 relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0"
               aria-label="Cart"
             >
               <div className="relative flex items-center justify-center">
@@ -149,14 +149,14 @@ export default function Navbar() {
                   </span>
                 )}
               </div>
-              <span className="font-extrabold text-xs sm:text-sm">Cart</span>
+              <span className="font-extrabold text-xs sm:text-sm hidden sm:inline">Cart</span>
             </button>
 
-            {/* CraveWave Gold VIP Membership Pill */}
+            {/* CraveWave Gold VIP Membership Pill (Tablet & Desktop) */}
             <button
               type="button"
               onClick={openGoldModal}
-              className={`h-11 relative flex items-center gap-1.5 px-3 rounded-2xl border transition-all cursor-pointer shrink-0 ${
+              className={`h-11 relative hidden md:flex items-center gap-1.5 px-3 rounded-2xl border transition-all cursor-pointer shrink-0 ${
                 isGoldMember
                   ? 'bg-gradient-to-r from-amber-950/60 via-yellow-950/40 to-amber-950/60 border-amber-500/40 text-amber-300 hover:border-amber-400 shadow-md shadow-amber-950/40'
                   : 'bg-amber-950/20 hover:bg-amber-950/40 border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-white'
@@ -175,11 +175,11 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* 🪙 CraveCoins Rewards Hub Button */}
+            {/* 🪙 CraveCoins Rewards Hub Button (Tablet & Desktop) */}
             <button
               type="button"
               onClick={openRewardsHub}
-              className="h-11 relative flex items-center gap-1.5 px-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer shadow-xs shrink-0"
+              className="h-11 relative hidden md:flex items-center gap-1.5 px-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer shadow-xs shrink-0"
               title="Open CraveCoins & Rewards Hub"
             >
               <Coins className="w-4 h-4 text-amber-400 hover:rotate-12 transition-transform" />
@@ -188,11 +188,11 @@ export default function Navbar() {
               </span>
             </button>
 
-            {/* 2. WISHLIST BUTTON */}
+            {/* 2. WISHLIST BUTTON (Desktop Only) */}
             <button
               type="button"
               onClick={openWishlist}
-              className="h-11 relative flex items-center gap-1.5 px-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all cursor-pointer shrink-0"
+              className="h-11 relative hidden xl:flex items-center gap-1.5 px-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all cursor-pointer shrink-0"
               aria-label="Wishlist"
               title="View Wishlist"
             >
@@ -216,11 +216,11 @@ export default function Navbar() {
                   id="user-profile-btn"
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="h-11 flex items-center gap-2 px-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer shrink-0"
+                  className="h-10 sm:h-11 flex items-center gap-2 px-2.5 sm:px-3 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer shrink-0"
                   aria-label="Profile"
                 >
                   <UserAvatar name={user.name} size="xs" />
-                  <span className="text-xs font-bold text-gray-200 hover:text-white max-w-[85px] truncate">
+                  <span className="text-xs font-bold text-gray-200 hover:text-white max-w-[65px] sm:max-w-[85px] truncate">
                     {user.name.split(' ')[0]}
                   </span>
                   <ChevronDown className="w-3.5 h-3.5 text-gray-400 hover:text-white transition-transform" />
@@ -230,7 +230,7 @@ export default function Navbar() {
                   id="navbar-signin-btn"
                   type="button"
                   onClick={openLoginModal}
-                  className="h-11 flex items-center gap-2 px-3.5 sm:px-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
+                  className="h-10 sm:h-11 flex items-center gap-2 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
                 >
                   <User className="w-4 h-4 text-rose-400 hover:scale-110 transition-transform" />
                   <span className="text-xs sm:text-sm font-bold">Sign In</span>
@@ -345,22 +345,24 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Search button */}
-        <div className="pb-3.5 pt-1 block md:hidden">
+        {/* Mobile & Tablet Search button */}
+        <div className="pb-3.5 pt-1 block lg:hidden">
           <button
             type="button"
             onClick={() => setIsSearchModalOpen(true)}
-            className="h-11 w-full flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 px-4 rounded-2xl text-left cursor-pointer transition-colors"
+            className="h-11 w-full flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 px-4 rounded-2xl text-left cursor-pointer transition-colors shadow-inner"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <Search className="w-4 h-4 text-rose-400 shrink-0" />
               <span className="text-xs text-gray-400 truncate font-medium">
-                {searchTerm ? `"${searchTerm}"` : 'Search gourmet cuisines, restaurants...'}
+                {searchTerm ? `"${searchTerm}"` : 'Search dishes, restaurants, cuisines...'}
               </span>
             </div>
-            <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md shrink-0">
-              Search
-            </span>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded-md">
+                Search
+              </span>
+            </div>
           </button>
         </div>
       </div>
