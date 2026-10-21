@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 /**
@@ -50,35 +50,44 @@ export const AVATAR_THEMES = [
     name: 'Electric Pink',
     gradient: 'from-fuchsia-600 via-pink-600 to-rose-600',
     border: 'border-pink-400/40',
-    glow: 'shadow-pink-950/50',
+    glow: 'shadow-fuchsia-950/50',
     preview: 'from-fuchsia-500 to-pink-600',
   },
 ];
 
 /**
- * UserAvatar component that displays the first letter of the user's name
- * in a luxury gradient badge with customizable theme colors.
+ * UserAvatar component that displays:
+ * 1. Uploaded custom profile picture (if available)
+ * 2. OR dynamic first letter of the user's name in a luxury gradient badge.
  */
 export default function UserAvatar({
   name = 'User',
+  imageSrc,
   size = 'md',
   theme,
   shape = 'squircle', // 'squircle' | 'circle'
   className = '',
   border = true,
 }) {
+  const [imageError, setImageError] = useState(false);
+
   let userAvatarTheme = null;
   let userAvatarShape = null;
+  let userAvatarImage = null;
+
   try {
     const auth = useAuth();
     userAvatarTheme = auth?.user?.avatarTheme;
     userAvatarShape = auth?.user?.avatarShape;
+    userAvatarImage = auth?.user?.avatarImage || null;
   } catch {
     // If rendered outside AuthProvider
     userAvatarTheme = null;
     userAvatarShape = null;
+    userAvatarImage = null;
   }
 
+  const effectiveImage = imageSrc !== undefined ? imageSrc : userAvatarImage;
   const activeThemeId = theme || userAvatarTheme || 'crimson';
   const activeShape = shape || userAvatarShape || 'squircle';
   const currentTheme =
@@ -110,12 +119,23 @@ export default function UserAvatar({
     ? `border ${currentTheme.border} shadow-md ${currentTheme.glow}`
     : '';
 
+  const hasPhoto = Boolean(effectiveImage) && !imageError;
+
   return (
     <div
-      className={`relative inline-flex items-center justify-center font-black font-display text-white bg-gradient-to-tr ${currentTheme.gradient} select-none flex-shrink-0 transition-all duration-300 ${shapeClasses} ${selectedSize} ${borderClass} ${className}`}
+      className={`relative inline-flex items-center justify-center overflow-hidden font-black font-display text-white bg-gradient-to-tr ${currentTheme.gradient} select-none flex-shrink-0 transition-all duration-300 ${shapeClasses} ${selectedSize} ${borderClass} ${className}`}
       aria-label={`Avatar for ${name}`}
     >
-      <span className="leading-none drop-shadow-xs">{initial}</span>
+      {hasPhoto ? (
+        <img
+          src={effectiveImage}
+          alt={name}
+          onError={() => setImageError(true)}
+          className="w-full h-full object-cover object-center"
+        />
+      ) : (
+        <span className="leading-none drop-shadow-xs">{initial}</span>
+      )}
     </div>
   );
 }

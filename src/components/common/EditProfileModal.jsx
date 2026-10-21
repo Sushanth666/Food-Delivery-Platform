@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -12,12 +12,17 @@ import {
   Sparkles,
   Check,
   Palette,
+  Camera,
+  Upload,
+  Trash2,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import UserAvatar, { AVATAR_THEMES } from './UserAvatar';
 
 export default function EditProfileModal({ isOpen, onClose }) {
   const { user, updateProfile } = useAuth();
+  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -28,8 +33,11 @@ export default function EditProfileModal({ isOpen, onClose }) {
     pincode: '560034',
   });
 
+  const [avatarType, setAvatarType] = useState('initial'); // 'initial' | 'custom'
+  const [customImage, setCustomImage] = useState(null);
   const [avatarTheme, setAvatarTheme] = useState('crimson');
   const [avatarShape, setAvatarShape] = useState('squircle');
+  const [uploadError, setUploadError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -50,10 +58,49 @@ export default function EditProfileModal({ isOpen, onClose }) {
       });
       setAvatarTheme(user.avatarTheme || 'crimson');
       setAvatarShape(user.avatarShape || 'squircle');
+      if (user.avatarImage) {
+        setAvatarType('custom');
+        setCustomImage(user.avatarImage);
+      } else {
+        setAvatarType('initial');
+        setCustomImage(null);
+      }
+      setUploadError('');
       setSaveSuccess(false);
       setErrorMessage('');
     }
   }, [user, isOpen]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Please choose a valid image file (PNG, JPG, WebP).');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('Image size exceeds 5MB limit. Please select a smaller photo.');
+      return;
+    }
+
+    setUploadError('');
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setCustomImage(event.target.result);
+      setAvatarType('custom');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveImage = () => {
+    setCustomImage(null);
+    setAvatarType('initial');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   if (!isOpen || !user) return null;
 
@@ -70,6 +117,8 @@ export default function EditProfileModal({ isOpen, onClose }) {
       phone: formData.phone.trim(),
       avatarTheme,
       avatarShape,
+      avatarType,
+      avatarImage: avatarType === 'custom' ? customImage : null,
       savedAddresses: [
         {
           id: 'addr-primary',
@@ -157,23 +206,72 @@ export default function EditProfileModal({ isOpen, onClose }) {
                   </div>
                 )}
 
-                {/* Profile Picture Feature Section (Dynamic First Letter Badge) */}
+                {/* Profile Picture Feature Section (First Letter Badge or Custom Uploaded Photo) */}
                 <div className="bg-[#1A1A24] border border-white/10 rounded-2xl p-5 space-y-4">
-                  <div className="flex items-center justify-between">
+                  {/* Section Title & Mode Tabs */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <span className="text-xs font-bold uppercase tracking-wider text-rose-400 block">
                       Profile Picture
                     </span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-rose-950/70 text-rose-300 border border-rose-500/30 text-[10px] font-semibold flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-rose-400" />
-                      Dynamic First Letter
-                    </span>
+
+                    {/* Mode Tabs: Initial vs Upload */}
+                    <div className="inline-flex items-center p-1 rounded-xl bg-black/50 border border-white/10 self-start sm:self-auto">
+                      <button
+                        type="button"
+                        onClick={() => setAvatarType('initial')}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          avatarType === 'initial'
+                            ? 'bg-gradient-to-r from-brand-600 to-rose-600 text-white shadow-md shadow-rose-950/60'
+                            : 'text-gray-400 hover:text-white'
+                        }`}
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>First Letter Badge</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAvatarType('custom');
+                          if (!customImage && fileInputRef.current) {
+                            fileInputRef.current.click();
+                          }
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          avatarType === 'custom'
+                            ? 'bg-gradient-to-r from-brand-600 to-rose-600 text-white shadow-md shadow-rose-950/60'
+                            : 'text-gray-400 hover:text-white'
+                        }`}
+                      >
+                        <Camera className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                      </button>
+                    </div>
                   </div>
 
+                  {/* Hidden File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg, image/webp"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+
+                  {/* Upload Error Banner */}
+                  {uploadError && (
+                    <div className="p-2.5 rounded-xl bg-rose-950/70 border border-rose-500/30 text-rose-300 text-xs font-semibold">
+                      {uploadError}
+                    </div>
+                  )}
+
+                  {/* Main Avatar Row */}
                   <div className="flex flex-col sm:flex-row items-center gap-5">
-                    {/* Live Initial Badge Preview */}
+                    {/* Live Preview Avatar */}
                     <div className="relative flex-shrink-0 group">
                       <UserAvatar
                         name={formData.name || 'User'}
+                        imageSrc={avatarType === 'custom' ? customImage : null}
                         size="2xl"
                         theme={avatarTheme}
                         shape={avatarShape}
@@ -181,15 +279,28 @@ export default function EditProfileModal({ isOpen, onClose }) {
                       <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-[#14141C] rounded-full shadow-xs" />
                     </div>
 
-                    {/* Feature Details & Shape Toggle */}
-                    <div className="flex-1 w-full text-center sm:text-left space-y-2">
+                    {/* Controls Column */}
+                    <div className="flex-1 w-full text-center sm:text-left space-y-3">
+                      {/* Top Label & Shape Toggle */}
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
-                          <h4 className="text-sm font-bold text-white">
-                            First Letter Profile Avatar
+                          <h4 className="text-sm font-bold text-white flex items-center justify-center sm:justify-start gap-1.5">
+                            {avatarType === 'custom' && customImage ? (
+                              <>
+                                <ImageIcon className="w-4 h-4 text-rose-400" />
+                                <span>Custom Photo Profile</span>
+                              </>
+                            ) : (
+                              <>
+                                <Sparkles className="w-4 h-4 text-rose-400" />
+                                <span>First Letter Profile Avatar</span>
+                              </>
+                            )}
                           </h4>
                           <p className="text-xs text-gray-400">
-                            Letter updates dynamically with your name
+                            {avatarType === 'custom' && customImage
+                              ? 'Your uploaded photo is displayed across the platform'
+                              : 'Letter updates dynamically with your full name'}
                           </p>
                         </div>
 
@@ -204,7 +315,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
                                 : 'text-gray-400 hover:text-white'
                             }`}
                           >
-                            Modern Squircle
+                            Squircle
                           </button>
                           <button
                             type="button"
@@ -215,46 +326,76 @@ export default function EditProfileModal({ isOpen, onClose }) {
                                 : 'text-gray-400 hover:text-white'
                             }`}
                           >
-                            Circle Minimal
+                            Circle
                           </button>
                         </div>
                       </div>
 
-                      {/* Theme Palette Swatches */}
-                      <div className="pt-2 border-t border-white/10">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-[11px] font-semibold text-gray-300 flex items-center gap-1.5">
-                            <Palette className="w-3.5 h-3.5 text-rose-400" />
-                            Avatar Theme Colors:
-                          </span>
-                          <span className="text-[11px] font-bold text-rose-300">
-                            {AVATAR_THEMES.find((t) => t.id === avatarTheme)?.name || 'Default'}
-                          </span>
-                        </div>
+                      {/* Mode-Specific Content */}
+                      {avatarType === 'custom' ? (
+                        /* Custom Image Upload Controls */
+                        <div className="pt-2 border-t border-white/10 flex flex-wrap items-center gap-2.5 justify-center sm:justify-start">
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white text-xs font-black flex items-center gap-2 shadow-md shadow-rose-950/50 transition-all active:scale-95 cursor-pointer"
+                          >
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>{customImage ? 'Change Image' : 'Select Photo from Device'}</span>
+                          </button>
 
-                        <div className="grid grid-cols-6 gap-2">
-                          {AVATAR_THEMES.map((thm) => {
-                            const isSelected = avatarTheme === thm.id;
-                            return (
-                              <button
-                                key={thm.id}
-                                type="button"
-                                onClick={() => setAvatarTheme(thm.id)}
-                                title={thm.name}
-                                className={`relative h-8 rounded-xl bg-gradient-to-tr ${thm.preview} flex items-center justify-center transition-all cursor-pointer ${
-                                  isSelected
-                                    ? 'ring-2 ring-white scale-105 shadow-md shadow-black/80'
-                                    : 'opacity-70 hover:opacity-100 hover:scale-102 border border-white/20'
-                                }`}
-                              >
-                                {isSelected && (
-                                  <Check className="w-3.5 h-3.5 text-white stroke-[3] drop-shadow-xs" />
-                                )}
-                              </button>
-                            );
-                          })}
+                          {customImage && (
+                            <button
+                              type="button"
+                              onClick={handleRemoveImage}
+                              className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-rose-950/60 border border-white/10 hover:border-rose-500/40 text-gray-300 hover:text-rose-300 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                              <span>Remove & Use Initial</span>
+                            </button>
+                          )}
+
+                          <span className="text-[11px] text-gray-500 block w-full sm:w-auto">
+                            Supports PNG, JPG, WebP up to 5MB
+                          </span>
                         </div>
-                      </div>
+                      ) : (
+                        /* Initial Avatar Theme Palette */
+                        <div className="pt-2 border-t border-white/10">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-[11px] font-semibold text-gray-300 flex items-center gap-1.5">
+                              <Palette className="w-3.5 h-3.5 text-rose-400" />
+                              Avatar Theme Colors:
+                            </span>
+                            <span className="text-[11px] font-bold text-rose-300">
+                              {AVATAR_THEMES.find((t) => t.id === avatarTheme)?.name || 'Default'}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-6 gap-2">
+                            {AVATAR_THEMES.map((thm) => {
+                              const isSelected = avatarTheme === thm.id;
+                              return (
+                                <button
+                                  key={thm.id}
+                                  type="button"
+                                  onClick={() => setAvatarTheme(thm.id)}
+                                  title={thm.name}
+                                  className={`relative h-8 rounded-xl bg-gradient-to-tr ${thm.preview} flex items-center justify-center transition-all cursor-pointer ${
+                                    isSelected
+                                      ? 'ring-2 ring-white scale-105 shadow-md shadow-black/80'
+                                      : 'opacity-70 hover:opacity-100 hover:scale-102 border border-white/20'
+                                  }`}
+                                >
+                                  {isSelected && (
+                                    <Check className="w-3.5 h-3.5 text-white stroke-[3] drop-shadow-xs" />
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
