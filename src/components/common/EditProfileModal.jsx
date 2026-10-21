@@ -20,11 +20,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import UserAvatar, { AVATAR_THEMES } from './UserAvatar';
+import CustomColorPickerModal from './CustomColorPickerModal';
 
 export default function EditProfileModal({ isOpen, onClose }) {
   const { user, updateProfile } = useAuth();
   const fileInputRef = useRef(null);
-  const customColorInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -39,6 +39,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
   const [customImage, setCustomImage] = useState(null);
   const [avatarTheme, setAvatarTheme] = useState('crimson');
   const [customColor, setCustomColor] = useState('#EC4899');
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [avatarShape, setAvatarShape] = useState('squircle');
   const [uploadError, setUploadError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -368,18 +369,6 @@ export default function EditProfileModal({ isOpen, onClose }) {
                       ) : (
                         /* Initial Avatar Theme Palette */
                         <div className="pt-2 border-t border-white/10">
-                          {/* Hidden Color Picker Input */}
-                          <input
-                            ref={customColorInputRef}
-                            type="color"
-                            value={customColor}
-                            onChange={(e) => {
-                              setCustomColor(e.target.value);
-                              setAvatarTheme('custom');
-                            }}
-                            className="hidden"
-                          />
-
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-[11px] font-semibold text-gray-300 flex items-center gap-1.5">
                               <Palette className="w-3.5 h-3.5 text-rose-400" />
@@ -412,7 +401,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
                                   onClick={() => {
                                     setAvatarTheme(thm.id);
                                     if (isCustom) {
-                                      customColorInputRef.current?.click();
+                                      setIsColorPickerOpen(true);
                                     }
                                   }}
                                   title={isCustom ? 'Pick your favourite colour' : thm.name}
@@ -446,7 +435,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
                                 <div
                                   className="w-7 h-7 rounded-lg border-2 border-white/30 shadow-md flex-shrink-0 cursor-pointer transition-transform hover:scale-105 active:scale-95"
                                   style={{ backgroundColor: customColor }}
-                                  onClick={() => customColorInputRef.current?.click()}
+                                  onClick={() => setIsColorPickerOpen(true)}
                                   title="Click to change favourite colour"
                                 />
                                 <div className="text-left">
@@ -464,7 +453,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
 
                               <button
                                 type="button"
-                                onClick={() => customColorInputRef.current?.click()}
+                                onClick={() => setIsColorPickerOpen(true)}
                                 className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                               >
                                 <Pipette className="w-3.5 h-3.5 text-rose-400" />
@@ -609,6 +598,17 @@ export default function EditProfileModal({ isOpen, onClose }) {
               </div>
             </form>
           </motion.div>
+
+          {/* Custom Luxury Colour Palette Modal with Dedicated Close Button */}
+          <CustomColorPickerModal
+            isOpen={isColorPickerOpen}
+            initialColor={customColor}
+            onClose={() => setIsColorPickerOpen(false)}
+            onSelectColor={(hex) => {
+              setCustomColor(hex);
+              setAvatarTheme('custom');
+            }}
+          />
         </div>
       )}
     </AnimatePresence>,
