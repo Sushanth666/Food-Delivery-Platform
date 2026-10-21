@@ -14,7 +14,7 @@ const DEMO_USER = {
     {
       id: 'addr-1',
       tag: 'Home',
-      line: 'Flat 402, Royal Residency, Avinashi Road',
+      line: '1/547E,Srinivasa nagar,Near golden sports club,,',
       city: 'Tiruppur',
       state: 'Tamil Nadu',
       pincode: '641602',

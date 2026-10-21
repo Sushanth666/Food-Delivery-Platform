@@ -1,22 +1,249 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Award, ArrowRight, RotateCw, Utensils, Check, Store } from 'lucide-react';
+import { X, Sparkles, ArrowRight, RotateCw, Store, Shuffle, Gift } from 'lucide-react';
 import { useFilter } from '../../context/FilterContext';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 
-const WHEEL_ITEMS = [
-  { id: 'biryani', label: 'Hyderabadi Biryani', icon: '🍚', color: '#E11D48', type: 'category', topRestSlug: 'paradise-meghana-biryani', topRestName: 'Paradise & Meghana Biryani' },
-  { id: 'north-indian', label: 'Butter Naan & Paneer', icon: '🥘', color: '#881337', type: 'category', topRestSlug: 'punjabi-dhaba-amritsar', topRestName: 'Pind Punjab Heritage Dhaba' },
-  { id: 'pizza', label: 'Woodfired Pizza', icon: '🍕', color: '#D97706', type: 'category', topRestSlug: 'toscano-italian-trattoria', topRestName: 'Toscano Pizzeria' },
-  { id: 'rolls', label: 'Kolkata Kathi Roll', icon: '🌯', color: '#059669', type: 'category', topRestSlug: 'paradise-meghana-biryani', topRestName: 'Paradise & Meghana Royal' },
-  { id: 'chinese', label: 'Spicy Hakka Noodles', icon: '🍜', color: '#2563EB', type: 'category', topRestSlug: 'mainland-dragon-wok', topRestName: 'Mainland Dragon Wok' },
-  { id: 'chaat', label: 'Crispy Pani Puri', icon: '🥟', color: '#7C3AED', type: 'category', topRestSlug: 'chandni-chowk-chaat-bhavan', topRestName: 'Chandni Chowk Chaat' },
-  { id: 'desserts', label: 'Gulab Jamun & Kulfi', icon: '🍨', color: '#DB2777', type: 'category', topRestSlug: 'anand-sweets-delights', topRestName: 'Anand Mithai & Desserts' },
-  { id: 'coupon', label: 'FLAT 50% Coupon', icon: '🎟️', color: '#DC2626', type: 'coupon' },
+// Master pool of authentic Indian & global dishes across diverse categories
+const MASTER_DISH_POOL = [
+  {
+    id: 'biryani',
+    label: 'Hyderabadi Dum Biryani',
+    shortLabel: 'BIRYANI',
+    icon: '🍚',
+    color: '#E11D48',
+    type: 'category',
+    topRestSlug: 'paradise-meghana-biryani',
+    topRestName: 'Paradise & Meghana Royal',
+  },
+  {
+    id: 'biryani',
+    label: 'Thalappakatti Biryani',
+    shortLabel: 'DINDIGUL',
+    icon: '🍗',
+    color: '#BE123C',
+    type: 'category',
+    topRestSlug: 'dindigul-thalappakatti-biryani',
+    topRestName: 'Dindigul Thalappakatti',
+  },
+  {
+    id: 'north-indian',
+    label: 'Butter Naan & Dal Makhani',
+    shortLabel: 'DAL MAKHAN',
+    icon: '🥘',
+    color: '#991B1B',
+    type: 'category',
+    topRestSlug: 'moti-mahal-gulati',
+    topRestName: 'Moti Mahal Delux',
+  },
+  {
+    id: 'north-indian',
+    label: 'Shahi Paneer & Kulcha',
+    shortLabel: 'PANEER',
+    icon: '🫓',
+    color: '#B45309',
+    type: 'category',
+    topRestSlug: 'punjab-grill-pind-balluchi',
+    topRestName: 'Punjab Grill Dhaba',
+  },
+  {
+    id: 'south-indian',
+    label: 'Ghee Roast Masala Dosa',
+    shortLabel: 'DOSA',
+    icon: '🥞',
+    color: '#CA8A04',
+    type: 'category',
+    topRestSlug: 'rameshwaram-cafe-bengaluru',
+    topRestName: 'Rameshwaram Cafe',
+  },
+  {
+    id: 'south-indian',
+    label: 'Steamed Podi Idli & Vada',
+    shortLabel: 'IDLI VADA',
+    icon: '🥟',
+    color: '#65A30D',
+    type: 'category',
+    topRestSlug: 'murugan-idli-a2b',
+    topRestName: 'Murugan Idli Bhavan',
+  },
+  {
+    id: 'chaat',
+    label: 'Mumbai Butter Pav Bhaji',
+    shortLabel: 'PAV BHAJI',
+    icon: '🍛',
+    color: '#EA580C',
+    type: 'category',
+    topRestSlug: 'sardar-pav-bhaji-bademiya',
+    topRestName: 'Sardar Pav Bhaji',
+  },
+  {
+    id: 'chaat',
+    label: 'Crispy Pani Puri Platter',
+    shortLabel: 'PANI PURI',
+    icon: '🥟',
+    color: '#7C3AED',
+    type: 'category',
+    topRestSlug: 'bikanervala-haldirams',
+    topRestName: "Bikanervala Sweets & Chaat",
+  },
+  {
+    id: 'rolls',
+    label: 'Kolkata Kathi Roll',
+    shortLabel: 'KATHI ROLL',
+    icon: '🌯',
+    color: '#059669',
+    type: 'category',
+    topRestSlug: 'chowringhee-arsalan-kolkata',
+    topRestName: 'Chowringhee Kolkata',
+  },
+  {
+    id: 'rolls',
+    label: 'Mumbai Vada Pav & Frankie',
+    shortLabel: 'VADA PAV',
+    icon: '🍔',
+    color: '#16A34A',
+    type: 'category',
+    topRestSlug: 'goli-vada-pav-tibbs-frankie',
+    topRestName: "Goli Vada Pav & Frankie",
+  },
+  {
+    id: 'chinese',
+    label: 'Steamed Darjeeling Momos',
+    shortLabel: 'MOMOS',
+    icon: '🥟',
+    color: '#0284C7',
+    type: 'category',
+    topRestSlug: 'mainland-china-wow-momo',
+    topRestName: 'Wow! Momo Indo-Chinese',
+  },
+  {
+    id: 'chinese',
+    label: 'Spicy Hakka Noodles',
+    shortLabel: 'NOODLES',
+    icon: '🍜',
+    color: '#2563EB',
+    type: 'category',
+    topRestSlug: 'chowman-indo-chinese',
+    topRestName: 'Chowman Chinese Kitchen',
+  },
+  {
+    id: 'pizza',
+    label: 'Cheesy Woodfired Pizza',
+    shortLabel: 'PIZZA',
+    icon: '🍕',
+    color: '#D97706',
+    type: 'category',
+    topRestSlug: 'moti-mahal-gulati',
+    topRestName: 'Moti Mahal Pizzeria',
+  },
+  {
+    id: 'desserts',
+    label: 'Warm Gulab Jamun & Rabdi',
+    shortLabel: 'GULAB JAMUN',
+    icon: '🍨',
+    color: '#DB2777',
+    type: 'category',
+    topRestSlug: 'chhappan-bhog-mithai-mahal',
+    topRestName: 'Chhappan Bhog Mithai',
+  },
+  {
+    id: 'desserts',
+    label: 'Artisanal Malai Kulfi',
+    shortLabel: 'KULFI',
+    icon: '🍧',
+    color: '#9333EA',
+    type: 'category',
+    topRestSlug: 'naturals-ice-cream-kulfi',
+    topRestName: 'Naturals Artisanal Kulfi',
+  },
+  {
+    id: 'beverages',
+    label: 'Creamy Kesar Mango Lassi',
+    shortLabel: 'MANGO LASSI',
+    icon: '🥭',
+    color: '#F59E0B',
+    type: 'category',
+    topRestSlug: 'keventers-lassi-shop',
+    topRestName: 'Keventers & Lassi Shop',
+  },
+  {
+    id: 'beverages',
+    label: 'Kadak Kulhad Masala Chai',
+    shortLabel: 'KULHAD CHAI',
+    icon: '☕',
+    color: '#78350F',
+    type: 'category',
+    topRestSlug: 'chai-point-kulhad-chai',
+    topRestName: 'Chai Point Heritage',
+  },
 ];
+
+// Rewards & Coupons Pool
+const COUPON_REWARDS = [
+  {
+    id: 'coupon-crave50',
+    label: 'FLAT 50% OFF Coupon',
+    shortLabel: '50% OFF',
+    icon: '🎟️',
+    color: '#DC2626',
+    type: 'coupon',
+    couponCode: 'CRAVE50',
+  },
+  {
+    id: 'coupon-freedel',
+    label: 'FREE Delivery Pass',
+    shortLabel: 'FREE DEL',
+    icon: '🚀',
+    color: '#0D9488',
+    type: 'coupon',
+    couponCode: 'FREEDEL',
+  },
+  {
+    id: 'coupon-feast100',
+    label: 'Flat ₹100 OFF Treat',
+    shortLabel: '₹100 OFF',
+    icon: '💰',
+    color: '#4F46E5',
+    type: 'coupon',
+    couponCode: 'FEAST100',
+  },
+];
+
+// Helper to assemble 8 randomized items (7 distinct dishes + 1 reward)
+function generateShuffledWheelItems() {
+  const chosenCoupon = COUPON_REWARDS[Math.floor(Math.random() * COUPON_REWARDS.length)];
+
+  // Shuffle master dishes pool
+  const shuffled = [...MASTER_DISH_POOL].sort(() => 0.5 - Math.random());
+
+  // Pick 7 distinct categories if possible to keep maximum culinary variety
+  const pickedDishes = [];
+  const seenCategories = new Set();
+
+  for (const item of shuffled) {
+    if (!seenCategories.has(item.id) && pickedDishes.length < 7) {
+      pickedDishes.push(item);
+      seenCategories.add(item.id);
+    }
+  }
+
+  // If less than 7, fill from remaining
+  for (const item of shuffled) {
+    if (pickedDishes.length < 7 && !pickedDishes.some((d) => d.label === item.label)) {
+      pickedDishes.push(item);
+    }
+  }
+
+  // Combine dishes and coupon, and position coupon randomly
+  const combined = [...pickedDishes];
+  const couponInsertIndex = Math.floor(Math.random() * 8);
+  combined.splice(couponInsertIndex, 0, chosenCoupon);
+
+  return combined;
+}
 
 export default function CravingWheelModal({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -24,32 +251,61 @@ export default function CravingWheelModal({ isOpen, onClose }) {
   const { applyCoupon, openCartDrawer } = useCart();
   const { showToast } = useAuth();
 
+  const [wheelItems, setWheelItems] = useState(() => generateShuffledWheelItems());
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const [winner, setWinner] = useState(null);
 
+  // Shuffle dishes when modal is opened fresh
+  useEffect(() => {
+    if (isOpen) {
+      setWinner(null);
+      setWheelItems(generateShuffledWheelItems());
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  const shuffleDishes = () => {
+    if (isSpinning) return;
+    setWinner(null);
+    setWheelItems(generateShuffledWheelItems());
+    if (showToast) {
+      showToast({
+        type: 'info',
+        title: '🎲 Fresh Dishes Loaded!',
+        message: 'The wheel has been randomized with 8 new mouth-watering delicacies.',
+      });
+    }
+  };
 
   const spinWheel = () => {
     if (isSpinning) return;
     setIsSpinning(true);
     setWinner(null);
 
-    // Random slice (0 to 7)
-    const randomIndex = Math.floor(Math.random() * WHEEL_ITEMS.length);
-    const sliceAngle = 360 / WHEEL_ITEMS.length;
+    // Pick random slice from current 8 items
+    const randomIndex = Math.floor(Math.random() * wheelItems.length);
+    const sliceAngle = 360 / wheelItems.length;
 
-    // Minimum 5 full rotations + landing angle
-    const extraRotations = 360 * (5 + Math.floor(Math.random() * 3));
-    // Center of target slice aligned with top pointer (270 deg or 0 deg offset)
+    // Target slice center aligned with 12 o'clock pointer
     const targetSliceRotation = 360 - (randomIndex * sliceAngle + sliceAngle / 2);
-    const totalNewRotation = rotation + extraRotations + (targetSliceRotation - (rotation % 360));
+    const currentAngle = rotation % 360;
+
+    let angleDiff = targetSliceRotation - currentAngle;
+    while (angleDiff <= 0) {
+      angleDiff += 360;
+    }
+
+    // Minimum 5 full rotations + difference to land on target
+    const extraRotations = 360 * (5 + Math.floor(Math.random() * 2));
+    const totalNewRotation = rotation + extraRotations + angleDiff;
 
     setRotation(totalNewRotation);
 
     setTimeout(() => {
       setIsSpinning(false);
-      setWinner(WHEEL_ITEMS[randomIndex]);
+      setWinner(wheelItems[randomIndex]);
     }, 4200);
   };
 
@@ -61,13 +317,14 @@ export default function CravingWheelModal({ isOpen, onClose }) {
     if (!winner) return;
 
     if (winner.type === 'coupon') {
-      applyCoupon('CRAVE50');
+      const code = winner.couponCode || 'CRAVE50';
+      applyCoupon(code);
       openCartDrawer();
       if (showToast) {
         showToast({
           type: 'success',
-          title: '🎟️ FLAT 50% Coupon Applied!',
-          message: 'Code CRAVE50 has been applied to your cart!',
+          title: `🎟️ ${winner.label} Applied!`,
+          message: `Code ${code} has been applied to your cart!`,
         });
       }
     } else {
@@ -100,7 +357,7 @@ export default function CravingWheelModal({ isOpen, onClose }) {
     onClose();
   };
 
-  const sliceAngle = 360 / WHEEL_ITEMS.length;
+  const sliceAngle = 360 / wheelItems.length;
 
   return createPortal(
     <AnimatePresence>
@@ -136,23 +393,38 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                 </div>
               </div>
 
-              {!isSpinning && (
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
+              {/* Action buttons: Shuffle dishes + Close */}
+              <div className="flex items-center gap-2">
+                {!isSpinning && (
+                  <button
+                    type="button"
+                    onClick={shuffleDishes}
+                    title="Shuffle dishes on wheel"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-bold transition-all cursor-pointer active:scale-95"
+                  >
+                    <Shuffle className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="hidden sm:inline">Shuffle</span>
+                  </button>
+                )}
+
+                {!isSpinning && (
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Wheel Canvas Container */}
             <div className="relative w-72 h-72 sm:w-80 sm:h-80 mx-auto my-2 flex items-center justify-center select-none">
-              {/* Top Pointer Indicator */}
-              <div className="absolute -top-3 z-30 flex flex-col items-center">
-                <div className="w-6 h-7 bg-amber-400 border-2 border-white rounded-b-lg shadow-xl shadow-amber-500/50 clip-triangle" />
-                <div className="w-2.5 h-2.5 rounded-full bg-white shadow-xs -mt-1" />
+              {/* Sleek Roulette Pointer Indicator at 12 o'clock */}
+              <div className="absolute -top-3.5 z-30 flex flex-col items-center pointer-events-none filter drop-shadow-[0_4px_10px_rgba(245,158,11,0.6)]">
+                <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[20px] border-t-amber-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-white ring-2 ring-amber-400 shadow-md -mt-1" />
               </div>
 
               {/* Ambient Glow */}
@@ -172,7 +444,7 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                 className="w-full h-full rounded-full overflow-hidden relative shadow-inner"
               >
                 <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
-                  {WHEEL_ITEMS.map((item, index) => {
+                  {wheelItems.map((item, index) => {
                     const startAngle = index * sliceAngle;
                     const endAngle = (index + 1) * sliceAngle;
 
@@ -185,7 +457,7 @@ export default function CravingWheelModal({ isOpen, onClose }) {
 
                     return (
                       <path
-                        key={item.id}
+                        key={`${item.id}-${index}`}
                         d={pathData}
                         fill={item.color}
                         stroke="#14141C"
@@ -196,11 +468,11 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                 </svg>
 
                 {/* Slice Icons & Labels Overlay */}
-                {WHEEL_ITEMS.map((item, index) => {
+                {wheelItems.map((item, index) => {
                   const angle = index * sliceAngle + sliceAngle / 2;
                   return (
                     <div
-                      key={item.id}
+                      key={`${item.id}-label-${index}`}
                       style={{
                         position: 'absolute',
                         top: '50%',
@@ -211,7 +483,7 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                     >
                       <span className="text-base sm:text-lg drop-shadow-md">{item.icon}</span>
                       <span className="text-[8px] sm:text-[9px] font-black uppercase text-white tracking-wider max-w-[50px] leading-tight drop-shadow-md">
-                        {item.type === 'coupon' ? '50% OFF' : item.label.split(' ')[0]}
+                        {item.shortLabel || (item.type === 'coupon' ? 'COUPON' : item.label.split(' ')[0])}
                       </span>
                     </div>
                   );
@@ -246,16 +518,23 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                     <span>{winner.icon}</span>
                     <span>{winner.label}</span>
                   </div>
+
+                  {/* Primary Explore / Claim Button */}
                   <button
                     id="explore-wheel-winner-btn"
                     type="button"
                     onClick={handleClaimWinner}
                     className="mt-3 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-rose-950/50 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
                   >
-                    <span>{winner.type === 'coupon' ? 'Claim 50% OFF Coupon' : `Explore ${winner.label}`}</span>
+                    <span>
+                      {winner.type === 'coupon'
+                        ? `Claim ${winner.couponCode || '50% OFF'} Coupon`
+                        : `Explore ${winner.label}`}
+                    </span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
 
+                  {/* Secondary direct restaurant shortcut if available */}
                   {winner.topRestSlug && (
                     <button
                       type="button"
@@ -269,13 +548,43 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                       <span>Or jump straight to {winner.topRestName} →</span>
                     </button>
                   )}
+
+                  {/* Spin Again or Shuffle options */}
+                  <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-center gap-4 text-xs font-semibold text-gray-400">
+                    <button
+                      type="button"
+                      onClick={spinWheel}
+                      disabled={isSpinning}
+                      className="hover:text-amber-300 flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <RotateCw className="w-3 h-3 text-amber-400" />
+                      <span>Spin Again</span>
+                    </button>
+                    <span className="text-white/20">•</span>
+                    <button
+                      type="button"
+                      onClick={shuffleDishes}
+                      disabled={isSpinning}
+                      className="hover:text-amber-300 flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Shuffle className="w-3 h-3 text-amber-400" />
+                      <span>Shuffle Dishes</span>
+                    </button>
+                  </div>
                 </motion.div>
               ) : (
-                <p className="text-xs text-gray-400 font-medium">
-                  {isSpinning
-                    ? 'Spinning through delicious flavours... get ready!'
-                    : 'Click SPIN in the center to randomly pick your crave!'}
-                </p>
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <p className="text-xs text-gray-400 font-medium">
+                    {isSpinning
+                      ? 'Spinning through delicious flavours... get ready!'
+                      : 'Click SPIN in the center to randomly pick your crave!'}
+                  </p>
+                  {!isSpinning && (
+                    <p className="text-[11px] text-amber-400/80">
+                      Want different dishes? Click <span className="underline font-bold cursor-pointer" onClick={shuffleDishes}>Shuffle</span> anytime!
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </motion.div>
