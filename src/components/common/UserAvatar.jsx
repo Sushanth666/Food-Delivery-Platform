@@ -2,7 +2,23 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 /**
+ * Utility to calculate a darker gradient stop from any hex color.
+ */
+function hexToDarker(hex, percent = 35) {
+  if (!hex || typeof hex !== 'string') return '#1A1A24';
+  const cleanHex = hex.replace('#', '');
+  const fullHex = cleanHex.length === 3 ? cleanHex.split('').map((c) => c + c).join('') : cleanHex;
+  const num = parseInt(fullHex, 16);
+  if (isNaN(num)) return '#1A1A24';
+  const r = Math.max(0, Math.floor(((num >> 16) & 255) * (1 - percent / 100)));
+  const g = Math.max(0, Math.floor(((num >> 8) & 255) * (1 - percent / 100)));
+  const b = Math.max(0, Math.floor((num & 255) * (1 - percent / 100)));
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+/**
  * Curated luxury gradient themes for the First-Letter Profile Badge.
+ * The 6th (last) option is the Custom Colour Palette where the user selects their favourite colour.
  */
 export const AVATAR_THEMES = [
   {
@@ -46,25 +62,24 @@ export const AVATAR_THEMES = [
     preview: 'from-cyan-400 to-blue-600',
   },
   {
-    id: 'magenta',
-    name: 'Electric Pink',
-    gradient: 'from-fuchsia-600 via-pink-600 to-rose-600',
-    border: 'border-pink-400/40',
-    glow: 'shadow-fuchsia-950/50',
-    preview: 'from-fuchsia-500 to-pink-600',
+    id: 'custom',
+    name: 'Custom Colour',
+    isCustom: true,
+    preview: 'from-pink-500 via-purple-500 to-amber-400',
   },
 ];
 
 /**
  * UserAvatar component that displays:
  * 1. Uploaded custom profile picture (if available)
- * 2. OR dynamic first letter of the user's name in a luxury gradient badge.
+ * 2. OR dynamic first letter of the user's name in a luxury gradient badge (with custom color support).
  */
 export default function UserAvatar({
   name = 'User',
   imageSrc,
   size = 'md',
   theme,
+  customColor,
   shape = 'squircle', // 'squircle' | 'circle'
   className = '',
   border = true,
@@ -74,22 +89,28 @@ export default function UserAvatar({
   let userAvatarTheme = null;
   let userAvatarShape = null;
   let userAvatarImage = null;
+  let userAvatarCustomColor = null;
 
   try {
     const auth = useAuth();
     userAvatarTheme = auth?.user?.avatarTheme;
     userAvatarShape = auth?.user?.avatarShape;
     userAvatarImage = auth?.user?.avatarImage || null;
+    userAvatarCustomColor = auth?.user?.avatarCustomColor || null;
   } catch {
     // If rendered outside AuthProvider
     userAvatarTheme = null;
     userAvatarShape = null;
     userAvatarImage = null;
+    userAvatarCustomColor = null;
   }
 
   const effectiveImage = imageSrc !== undefined ? imageSrc : userAvatarImage;
   const activeThemeId = theme || userAvatarTheme || 'crimson';
   const activeShape = shape || userAvatarShape || 'squircle';
+  const activeCustomColor = customColor || userAvatarCustomColor || '#EC4899';
+
+  const isCustomTheme = activeThemeId === 'custom';
   const currentTheme =
     AVATAR_THEMES.find((t) => t.id === activeThemeId) || AVATAR_THEMES[0];
 
@@ -115,15 +136,33 @@ export default function UserAvatar({
       : 'rounded-xl';
 
   const selectedSize = sizeClasses[size] || sizeClasses.md;
-  const borderClass = border
-    ? `border ${currentTheme.border} shadow-md ${currentTheme.glow}`
-    : '';
+
+  // Custom styling when user selects their favourite custom colour
+  const customInlineStyle = isCustomTheme
+    ? {
+        background: `linear-gradient(135deg, ${activeCustomColor}, ${hexToDarker(activeCustomColor, 35)})`,
+        borderColor: border ? `${activeCustomColor}88` : undefined,
+        boxShadow: border ? `0 4px 20px ${activeCustomColor}45` : undefined,
+      }
+    : undefined;
+
+  const borderClass =
+    border && !isCustomTheme
+      ? `border ${currentTheme.border} shadow-md ${currentTheme.glow}`
+      : border && isCustomTheme
+      ? 'border'
+      : '';
+
+  const backgroundClass = isCustomTheme
+    ? ''
+    : `bg-gradient-to-tr ${currentTheme.gradient}`;
 
   const hasPhoto = Boolean(effectiveImage) && !imageError;
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center overflow-hidden font-black font-display text-white bg-gradient-to-tr ${currentTheme.gradient} select-none flex-shrink-0 transition-all duration-300 ${shapeClasses} ${selectedSize} ${borderClass} ${className}`}
+      style={customInlineStyle}
+      className={`relative inline-flex items-center justify-center overflow-hidden font-black font-display text-white ${backgroundClass} select-none flex-shrink-0 transition-all duration-300 ${shapeClasses} ${selectedSize} ${borderClass} ${className}`}
       aria-label={`Avatar for ${name}`}
     >
       {hasPhoto ? (

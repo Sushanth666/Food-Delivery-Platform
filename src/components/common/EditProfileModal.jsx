@@ -16,6 +16,7 @@ import {
   Upload,
   Trash2,
   Image as ImageIcon,
+  Pipette,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import UserAvatar, { AVATAR_THEMES } from './UserAvatar';
@@ -23,6 +24,7 @@ import UserAvatar, { AVATAR_THEMES } from './UserAvatar';
 export default function EditProfileModal({ isOpen, onClose }) {
   const { user, updateProfile } = useAuth();
   const fileInputRef = useRef(null);
+  const customColorInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -36,6 +38,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
   const [avatarType, setAvatarType] = useState('initial'); // 'initial' | 'custom'
   const [customImage, setCustomImage] = useState(null);
   const [avatarTheme, setAvatarTheme] = useState('crimson');
+  const [customColor, setCustomColor] = useState('#EC4899');
   const [avatarShape, setAvatarShape] = useState('squircle');
   const [uploadError, setUploadError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -57,6 +60,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
         pincode: primaryAddress.pincode || primaryAddress.zip || '641602',
       });
       setAvatarTheme(user.avatarTheme || 'crimson');
+      setCustomColor(user.avatarCustomColor || '#EC4899');
       setAvatarShape(user.avatarShape || 'squircle');
       if (user.avatarImage) {
         setAvatarType('custom');
@@ -116,6 +120,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
       email: formData.email.trim(),
       phone: formData.phone.trim(),
       avatarTheme,
+      avatarCustomColor: customColor,
       avatarShape,
       avatarType,
       avatarImage: avatarType === 'custom' ? customImage : null,
@@ -274,6 +279,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
                         imageSrc={avatarType === 'custom' ? customImage : null}
                         size="2xl"
                         theme={avatarTheme}
+                        customColor={customColor}
                         shape={avatarShape}
                       />
                       <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-[#14141C] rounded-full shadow-xs" />
@@ -362,38 +368,110 @@ export default function EditProfileModal({ isOpen, onClose }) {
                       ) : (
                         /* Initial Avatar Theme Palette */
                         <div className="pt-2 border-t border-white/10">
+                          {/* Hidden Color Picker Input */}
+                          <input
+                            ref={customColorInputRef}
+                            type="color"
+                            value={customColor}
+                            onChange={(e) => {
+                              setCustomColor(e.target.value);
+                              setAvatarTheme('custom');
+                            }}
+                            className="hidden"
+                          />
+
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-[11px] font-semibold text-gray-300 flex items-center gap-1.5">
                               <Palette className="w-3.5 h-3.5 text-rose-400" />
                               Avatar Theme Colors:
                             </span>
-                            <span className="text-[11px] font-bold text-rose-300">
-                              {AVATAR_THEMES.find((t) => t.id === avatarTheme)?.name || 'Default'}
-                            </span>
+                            {avatarTheme === 'custom' ? (
+                              <span className="flex items-center gap-1.5 text-[11px] font-bold text-rose-300">
+                                <span
+                                  className="w-2.5 h-2.5 rounded-full border border-white/30"
+                                  style={{ backgroundColor: customColor }}
+                                />
+                                <span>Custom ({customColor.toUpperCase()})</span>
+                              </span>
+                            ) : (
+                              <span className="text-[11px] font-bold text-rose-300">
+                                {AVATAR_THEMES.find((t) => t.id === avatarTheme)?.name || 'Default'}
+                              </span>
+                            )}
                           </div>
 
                           <div className="grid grid-cols-6 gap-2">
                             {AVATAR_THEMES.map((thm) => {
                               const isSelected = avatarTheme === thm.id;
+                              const isCustom = thm.isCustom;
+
                               return (
                                 <button
                                   key={thm.id}
                                   type="button"
-                                  onClick={() => setAvatarTheme(thm.id)}
-                                  title={thm.name}
-                                  className={`relative h-8 rounded-xl bg-gradient-to-tr ${thm.preview} flex items-center justify-center transition-all cursor-pointer ${
+                                  onClick={() => {
+                                    setAvatarTheme(thm.id);
+                                    if (isCustom) {
+                                      customColorInputRef.current?.click();
+                                    }
+                                  }}
+                                  title={isCustom ? 'Pick your favourite colour' : thm.name}
+                                  style={
+                                    isCustom && isSelected
+                                      ? { backgroundColor: customColor }
+                                      : undefined
+                                  }
+                                  className={`relative h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
                                     isSelected
                                       ? 'ring-2 ring-white scale-105 shadow-md shadow-black/80'
-                                      : 'opacity-70 hover:opacity-100 hover:scale-102 border border-white/20'
+                                      : isCustom
+                                      ? 'bg-gradient-to-tr from-pink-500 via-purple-500 to-amber-400 opacity-80 hover:opacity-100 hover:scale-102 border border-white/20'
+                                      : `bg-gradient-to-tr ${thm.preview} opacity-70 hover:opacity-100 hover:scale-102 border border-white/20`
                                   }`}
                                 >
-                                  {isSelected && (
+                                  {isSelected ? (
                                     <Check className="w-3.5 h-3.5 text-white stroke-[3] drop-shadow-xs" />
-                                  )}
+                                  ) : isCustom ? (
+                                    <Pipette className="w-3.5 h-3.5 text-white drop-shadow-xs" />
+                                  ) : null}
                                 </button>
                               );
                             })}
                           </div>
+
+                          {/* Interactive Favourite Colour Customizer Bar */}
+                          {avatarTheme === 'custom' && (
+                            <div className="mt-3 p-2.5 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between gap-3 animate-fadeIn">
+                              <div className="flex items-center gap-2.5">
+                                <div
+                                  className="w-7 h-7 rounded-lg border-2 border-white/30 shadow-md flex-shrink-0 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                                  style={{ backgroundColor: customColor }}
+                                  onClick={() => customColorInputRef.current?.click()}
+                                  title="Click to change favourite colour"
+                                />
+                                <div className="text-left">
+                                  <div className="text-[11px] font-bold text-white flex items-center gap-1.5">
+                                    <span>Favourite Colour:</span>
+                                    <span className="font-mono text-rose-300 font-bold uppercase">
+                                      {customColor}
+                                    </span>
+                                  </div>
+                                  <p className="text-[10px] text-gray-400">
+                                    Click swatch or button to open full color palette
+                                  </p>
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => customColorInputRef.current?.click()}
+                                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                              >
+                                <Pipette className="w-3.5 h-3.5 text-rose-400" />
+                                <span>Pick Colour</span>
+                              </button>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
