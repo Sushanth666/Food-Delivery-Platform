@@ -14,6 +14,9 @@ import {
   UtensilsCrossed,
   Crown,
   Coins,
+  Bell,
+  Dices,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
@@ -23,6 +26,8 @@ import { useFilter } from '../../context/FilterContext';
 import EditProfileModal from '../common/EditProfileModal';
 import UserAvatar from '../common/UserAvatar';
 import EnhancedSearchModal from '../search/EnhancedSearchModal';
+import CravingWheelModal from '../home/CravingWheelModal';
+import OffersNotificationsModal from '../common/OffersNotificationsModal';
 
 export default function Navbar() {
   const {
@@ -44,6 +49,8 @@ export default function Navbar() {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [isWheelOpen, setIsWheelOpen] = useState(false);
+  const [isOffersOpen, setIsOffersOpen] = useState(false);
 
   // Global ⌘K / Ctrl+K keyboard shortcut to open enhanced search anywhere
   useEffect(() => {
@@ -133,12 +140,41 @@ export default function Navbar() {
 
           {/* RIGHT: Action Buttons */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            {/* 1. CART BUTTON */}
+            {/* MOBILE & TABLET ONLY: 1. Craving Roulette Wheel (🎰 Spin & Win) */}
+            <button
+              id="navbar-mobile-roulette-btn"
+              type="button"
+              onClick={() => setIsWheelOpen(true)}
+              className="h-10 sm:h-11 flex lg:hidden items-center gap-1.5 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-950/80 via-rose-950/60 to-amber-950/60 hover:from-purple-900 hover:to-amber-900 border border-amber-500/30 hover:border-amber-400 text-white shadow-md shadow-rose-950/40 transition-all active:scale-95 cursor-pointer shrink-0 group"
+              title="Spin the Craving Roulette Wheel"
+            >
+              <span className="text-base sm:text-lg group-hover:rotate-180 transition-transform duration-500">🎰</span>
+              <span className="text-xs font-black tracking-wide text-amber-200 hidden sm:inline">Spin & Win</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping hidden sm:block" />
+            </button>
+
+            {/* MOBILE & TABLET ONLY: 2. Offers & Notifications (🔔 Deals) */}
+            <button
+              id="navbar-mobile-offers-btn"
+              type="button"
+              onClick={() => setIsOffersOpen(true)}
+              className="h-10 sm:h-11 relative flex lg:hidden items-center gap-1.5 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-rose-500/40 text-gray-200 hover:text-white transition-all active:scale-95 cursor-pointer shadow-xs shrink-0"
+              title="Offers & Live Deals"
+            >
+              <div className="relative flex items-center justify-center">
+                <Bell className="w-4 h-4 text-rose-400" />
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500" />
+              </div>
+              <span className="text-xs font-bold text-gray-200 hidden sm:inline">Offers</span>
+            </button>
+
+            {/* DESKTOP ONLY: 1. CART BUTTON */}
             <button
               id="navbar-cart-button"
               type="button"
               onClick={openCartDrawer}
-              className="h-10 sm:h-11 relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0"
+              className="h-11 relative hidden lg:flex items-center gap-2 px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0"
               aria-label="Cart"
             >
               <div className="relative flex items-center justify-center">
@@ -149,14 +185,14 @@ export default function Navbar() {
                   </span>
                 )}
               </div>
-              <span className="font-extrabold text-xs sm:text-sm hidden sm:inline">Cart</span>
+              <span className="font-extrabold text-sm">Cart</span>
             </button>
 
-            {/* CraveWave Gold VIP Membership Pill (Tablet & Desktop) */}
+            {/* DESKTOP ONLY: CraveWave Gold VIP Membership Pill */}
             <button
               type="button"
               onClick={openGoldModal}
-              className={`h-11 relative hidden md:flex items-center gap-1.5 px-3 rounded-2xl border transition-all cursor-pointer shrink-0 ${
+              className={`h-11 relative hidden lg:flex items-center gap-1.5 px-3 rounded-2xl border transition-all cursor-pointer shrink-0 ${
                 isGoldMember
                   ? 'bg-gradient-to-r from-amber-950/60 via-yellow-950/40 to-amber-950/60 border-amber-500/40 text-amber-300 hover:border-amber-400 shadow-md shadow-amber-950/40'
                   : 'bg-amber-950/20 hover:bg-amber-950/40 border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-white'
@@ -175,11 +211,11 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* 🪙 CraveCoins Rewards Hub Button (Tablet & Desktop) */}
+            {/* DESKTOP ONLY: CraveCoins Rewards Hub Button */}
             <button
               type="button"
               onClick={openRewardsHub}
-              className="h-11 relative hidden md:flex items-center gap-1.5 px-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer shadow-xs shrink-0"
+              className="h-11 relative hidden lg:flex items-center gap-1.5 px-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer shadow-xs shrink-0"
               title="Open CraveCoins & Rewards Hub"
             >
               <Coins className="w-4 h-4 text-amber-400 hover:rotate-12 transition-transform" />
@@ -188,7 +224,7 @@ export default function Navbar() {
               </span>
             </button>
 
-            {/* 2. WISHLIST BUTTON (Desktop Only) */}
+            {/* DESKTOP ONLY: WISHLIST BUTTON */}
             <button
               type="button"
               onClick={openWishlist}
@@ -209,18 +245,18 @@ export default function Navbar() {
               </span>
             </button>
 
-            {/* 3. SIGN IN / PROFILE BUTTON */}
-            <div className="relative shrink-0">
+            {/* DESKTOP ONLY: SIGN IN / PROFILE BUTTON */}
+            <div className="relative shrink-0 hidden lg:block">
               {isAuthenticated ? (
                 <button
                   id="user-profile-btn"
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="h-10 sm:h-11 flex items-center gap-2 px-2.5 sm:px-3 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer shrink-0"
+                  className="h-11 flex items-center gap-2 px-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer shrink-0"
                   aria-label="Profile"
                 >
                   <UserAvatar name={user.name} size="xs" />
-                  <span className="text-xs font-bold text-gray-200 hover:text-white max-w-[65px] sm:max-w-[85px] truncate">
+                  <span className="text-xs font-bold text-gray-200 hover:text-white max-w-[85px] truncate">
                     {user.name.split(' ')[0]}
                   </span>
                   <ChevronDown className="w-3.5 h-3.5 text-gray-400 hover:text-white transition-transform" />
@@ -230,10 +266,10 @@ export default function Navbar() {
                   id="navbar-signin-btn"
                   type="button"
                   onClick={openLoginModal}
-                  className="h-10 sm:h-11 flex items-center gap-2 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
+                  className="h-11 flex items-center gap-2 px-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-sm transition-all shadow-xs cursor-pointer shrink-0"
                 >
                   <User className="w-4 h-4 text-rose-400 hover:scale-110 transition-transform" />
-                  <span className="text-xs sm:text-sm font-bold">Sign In</span>
+                  <span className="text-sm font-bold">Sign In</span>
                 </button>
               )}
 
@@ -378,6 +414,18 @@ export default function Navbar() {
         isOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
         initialQuery={searchTerm}
+      />
+
+      {/* Craving Roulette Wheel Modal */}
+      <CravingWheelModal
+        isOpen={isWheelOpen}
+        onClose={() => setIsWheelOpen(false)}
+      />
+
+      {/* Offers & Notifications Deals Modal */}
+      <OffersNotificationsModal
+        isOpen={isOffersOpen}
+        onClose={() => setIsOffersOpen(false)}
       />
     </header>
   );
