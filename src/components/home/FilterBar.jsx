@@ -38,6 +38,8 @@ export default function FilterBar() {
     setSortBy,
     resetFilters,
     hasActiveFilters,
+    is15MinRushOnly,
+    toggle15MinRush,
   } = useFilter();
 
   return (
@@ -148,6 +150,24 @@ export default function FilterBar() {
               }`}
             />
             <span>Rating 4.0+</span>
+          </button>
+
+          {/* ⚡ CraveExpress 15-Min Rush Button */}
+          <button
+            type="button"
+            onClick={toggle15MinRush}
+            className={`px-3.5 py-2 rounded-xl text-xs font-black border flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${
+              is15MinRushOnly
+                ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-black border-amber-300 shadow-lg shadow-amber-500/30 ring-2 ring-amber-400/40'
+                : 'bg-[#1C1C24] border-amber-500/30 text-amber-300 hover:border-amber-400 hover:text-white'
+            }`}
+          >
+            <Zap
+              className={`w-3.5 h-3.5 ${
+                is15MinRushOnly ? 'fill-black text-black' : 'text-amber-400 fill-amber-400'
+              }`}
+            />
+            <span>⚡ 15-Min Rush</span>
           </button>
 
           {/* 4. Fast Express Delivery (< 30 min) */}

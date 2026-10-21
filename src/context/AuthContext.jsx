@@ -14,7 +14,7 @@ const DEMO_USER = {
     {
       id: 'addr-1',
       tag: 'Home',
-      line: '1/547E,Srinivasa nagar,Near golden sports club,,',
+      line: '1/547E,Srinivasa nagar,Near golden sports club,Velliyankadu(South)',
       city: 'Tiruppur',
       state: 'Tamil Nadu',
       pincode: '641602',
@@ -45,7 +45,57 @@ export function AuthProvider({ children }) {
   const [authModalTab, setAuthModalTab] = useState('login'); // 'login' | 'signup'
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isGoldModalOpen, setIsGoldModalOpen] = useState(false);
+  const [isRewardsHubOpen, setIsRewardsHubOpen] = useState(false);
+  const [activeScratchCard, setActiveScratchCard] = useState(null);
   const [toast, setToast] = useState(null);
+
+  // Gamified Scratch Cards
+  const [scratchCards, setScratchCards] = useState(() => {
+    try {
+      const stored = localStorage.getItem('cravewave_scratch_cards');
+      if (stored) return JSON.parse(stored);
+      return [
+        {
+          id: 'scratch-welcome',
+          title: 'Welcome Gourmet Mystery Card',
+          prize: '60 CraveCoins',
+          coins: 60,
+          couponCode: 'FEAST50',
+          isScratched: false,
+          icon: '🎁',
+        },
+      ];
+    } catch {
+      return [];
+    }
+  });
+
+  // Eco-Friendly Impact Stats
+  const [ecoStats, setEcoStats] = useState(() => {
+    try {
+      const stored = localStorage.getItem('cravewave_eco_stats');
+      if (stored) return JSON.parse(stored);
+      return { plasticSaved: 14, treesPlanted: 1, co2SavedKg: 2.1 };
+    } catch {
+      return { plasticSaved: 14, treesPlanted: 1, co2SavedKg: 2.1 };
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('cravewave_scratch_cards', JSON.stringify(scratchCards));
+    } catch (e) {
+      // ignore
+    }
+  }, [scratchCards]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('cravewave_eco_stats', JSON.stringify(ecoStats));
+    } catch (e) {
+      // ignore
+    }
+  }, [ecoStats]);
 
   const showToast = (toastData) => {
     setToast(toastData);
@@ -245,6 +295,61 @@ export function AuthProvider({ children }) {
     });
   };
 
+  const openRewardsHub = () => setIsRewardsHubOpen(true);
+  const closeRewardsHub = () => setIsRewardsHubOpen(false);
+
+  const openScratchModal = (card) => {
+    setActiveScratchCard(card);
+  };
+  const closeScratchModal = () => setActiveScratchCard(null);
+
+  const scratchCardWon = (cardId) => {
+    const card = scratchCards.find((c) => c.id === cardId);
+    if (!card || card.isScratched) return;
+
+    setScratchCards((prev) =>
+      prev.map((c) => (c.id === cardId ? { ...c, isScratched: true } : c))
+    );
+
+    if (card.coins) {
+      addCoins(card.coins);
+    }
+
+    showToast({
+      type: 'success',
+      title: `🎉 Unlocked ${card.prize}!`,
+      message: `${card.coins ? `+${card.coins} CraveCoins added!` : ''} ${
+        card.couponCode ? `Code ${card.couponCode} unlocked!` : ''
+      }`,
+    });
+  };
+
+  const generateOrderScratchCard = () => {
+    const rewards = [
+      { coins: 50, prize: '50 CraveCoins', couponCode: 'FEAST50', icon: '🪙' },
+      { coins: 75, prize: '75 CraveCoins', couponCode: 'TASTY75', icon: '🎁' },
+      { coins: 100, prize: '100 CraveCoins', couponCode: 'CRAVE100', icon: '⭐' },
+      { coins: 40, prize: '40 CraveCoins & Free Dessert', couponCode: 'FREESWEET', icon: '🍨' },
+    ];
+    const picked = rewards[Math.floor(Math.random() * rewards.length)];
+    const newCard = {
+      id: 'scratch-' + Date.now(),
+      title: 'Order Reward Mystery Card',
+      ...picked,
+      isScratched: false,
+    };
+    setScratchCards((prev) => [newCard, ...prev]);
+    return newCard;
+  };
+
+  const addEcoImpact = ({ plastic = 4, co2 = 0.3, trees = 0 }) => {
+    setEcoStats((prev) => ({
+      plasticSaved: (prev.plasticSaved || 0) + plastic,
+      co2SavedKg: parseFloat(((prev.co2SavedKg || 0) + co2).toFixed(1)),
+      treesPlanted: (prev.treesPlanted || 0) + trees,
+    }));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -268,6 +373,19 @@ export function AuthProvider({ children }) {
         cancelGold,
         redeemCoins,
         addCoins,
+        // Rewards Hub & Scratch Cards
+        scratchCards,
+        isRewardsHubOpen,
+        openRewardsHub,
+        closeRewardsHub,
+        activeScratchCard,
+        openScratchModal,
+        closeScratchModal,
+        scratchCardWon,
+        generateOrderScratchCard,
+        // Eco Impact
+        ecoStats,
+        addEcoImpact,
         // Modal & Toast Controls
         isAuthModalOpen,
         authModalTab,

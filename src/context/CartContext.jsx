@@ -17,6 +17,20 @@ export function CartProvider({ children }) {
   const [isCoinsApplied, setIsCoinsApplied] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
+  // Feature 1: Gift Order State
+  const [isGiftOrder, setIsGiftOrder] = useState(false);
+  const [giftDetails, setGiftDetails] = useState({
+    recipientName: '',
+    recipientPhone: '',
+    cardTheme: 'birthday',
+    message: 'Wishing you the happiest celebration! Enjoy this feast on me! 🎉🎂',
+    hidePrice: true,
+  });
+
+  // Feature 6: Eco-Friendly Delivery Options
+  const [isNoCutlery, setIsNoCutlery] = useState(true);
+  const [isEvFleet, setIsEvFleet] = useState(false);
+
   const { isGoldMember, walletCoins } = useAuth();
   const [conflictModal, setConflictModal] = useState({
     isOpen: false,
@@ -251,6 +265,19 @@ export function CartProvider({ children }) {
         reorderItems,
         confirmSwitchRestaurantAndAdd,
         cancelSwitchRestaurant,
+        // Gift Order state
+        isGiftOrder,
+        setIsGiftOrder,
+        giftDetails,
+        setGiftDetails,
+        toggleGiftOrder: () => setIsGiftOrder((prev) => !prev),
+        // Eco delivery state
+        isNoCutlery,
+        setIsNoCutlery,
+        toggleNoCutlery: () => setIsNoCutlery((prev) => !prev),
+        isEvFleet,
+        setIsEvFleet,
+        toggleEvFleet: () => setIsEvFleet((prev) => !prev),
       }}
     >
       {children}

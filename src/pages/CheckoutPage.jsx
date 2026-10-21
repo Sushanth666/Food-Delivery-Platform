@@ -34,10 +34,20 @@ export default function CheckoutPage() {
     clearCart,
     isCoinsApplied,
     toggleCoinsUsage,
+    isGiftOrder,
+    giftDetails,
+    isNoCutlery,
+    isEvFleet,
   } = useCart();
   const { placeOrder } = useOrders();
   const { currentLocation, openLocationModal } = useLocationContext();
-  const { isGoldMember, walletCoins, redeemCoins } = useAuth();
+  const {
+    isGoldMember,
+    walletCoins,
+    redeemCoins,
+    generateOrderScratchCard,
+    addEcoImpact,
+  } = useAuth();
 
   // Form State
   const [formData, setFormData] = useState({
@@ -119,9 +129,22 @@ export default function CheckoutPage() {
       restaurant: currentRestaurant,
       items: cartItems,
       bill: bill,
+      isGiftOrder: isGiftOrder,
+      giftDetails: isGiftOrder ? giftDetails : null,
+      isEcoDelivery: isNoCutlery || isEvFleet,
+      ecoDetails: {
+        noCutlery: isNoCutlery,
+        evFleet: isEvFleet,
+      },
       deliveryAddress: {
-        fullName: formData.fullName,
-        phone: formData.phone,
+        fullName:
+          isGiftOrder && giftDetails?.recipientName
+            ? `${giftDetails.recipientName} (Gift via ${formData.fullName})`
+            : formData.fullName,
+        phone:
+          isGiftOrder && giftDetails?.recipientPhone
+            ? giftDetails.recipientPhone
+            : formData.phone,
         street: formData.street,
         city: formData.city,
         zip: formData.zip,
@@ -148,6 +171,18 @@ export default function CheckoutPage() {
         if (bill.coinsRedeemed > 0) {
           redeemCoins(bill.coinsRedeemed);
         }
+        // Unlock mystery scratch card reward
+        generateOrderScratchCard();
+
+        // Credit eco impact
+        if (isNoCutlery || isEvFleet) {
+          addEcoImpact({
+            plastic: isNoCutlery ? 4 : 0,
+            co2: isEvFleet ? 0.4 : 0.1,
+            trees: 0,
+          });
+        }
+
         confetti({
           particleCount: 100,
           spread: 70,

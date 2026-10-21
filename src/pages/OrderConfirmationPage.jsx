@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   CheckCircle2,
@@ -8,9 +8,19 @@ import {
   ArrowRight,
   ShoppingBag,
   Share2,
+  Gift,
+  Sparkles,
+  Coins,
+  Leaf,
+  Copy,
+  Check,
+  EyeOff,
 } from 'lucide-react';
 import { useOrders } from '../context/OrderContext';
+import { useAuth } from '../context/AuthContext';
 import { formatCurrency } from '../utils/formatCurrency';
+import { GIFT_THEMES } from '../components/cart/GiftOrderModal';
+import ScratchCardModal from '../components/rewards/ScratchCardModal';
 import confetti from 'canvas-confetti';
 
 export default function OrderConfirmationPage() {
@@ -96,6 +106,109 @@ export default function OrderConfirmationPage() {
             </Link>
           </div>
         </div>
+
+        {/* 🎁 Feature 1: Gift Order Greeting Card Preview */}
+        {order.isGiftOrder && order.giftDetails && (
+          <div className="mb-6 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-pink-950/60 via-purple-950/40 to-rose-950/60 border border-pink-500/40 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center text-xl shadow-md">
+                  {themeObj.icon || '🎁'}
+                </div>
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-pink-300 block">
+                    Surprise Gift Order
+                  </span>
+                  <h3 className="text-base font-black font-display text-white">
+                    Digital Greeting Card Sent to {order.giftDetails.recipientName}
+                  </h3>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard?.writeText(window.location.href);
+                  setIsCopied(true);
+                  setTimeout(() => setIsCopied(false), 3000);
+                }}
+                className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-pink-200 flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
+                <span>{isCopied ? 'Link Copied!' : 'Share Card'}</span>
+              </button>
+            </div>
+
+            {/* Greeting Card Preview Paper */}
+            <div className={`p-4 rounded-2xl bg-gradient-to-r ${themeObj.gradient} text-white shadow-xl relative overflow-hidden border ${themeObj.borderColor}`}>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black uppercase tracking-wider bg-black/40 px-2.5 py-0.5 rounded-full">
+                  {themeObj.title}
+                </span>
+                <span className="text-[10px] font-semibold text-white/90 bg-white/20 px-2 py-0.5 rounded-md">
+                  {order.giftDetails.hidePrice ? '🔒 Price Hidden on Receipt' : '📄 Receipt Included'}
+                </span>
+              </div>
+
+              <div className="my-3 text-sm sm:text-base font-bold italic font-display">
+                "{order.giftDetails.message}"
+              </div>
+
+              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-xs text-white/90">
+                <span>With love & delicious food</span>
+                <span className="font-extrabold">{order.restaurantName}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 🪙 Feature 3: Mystery Scratch Card Unlocked Banner */}
+        {latestCard && !latestCard.isScratched && (
+          <div className="mb-6 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-amber-950/70 via-black to-rose-950/70 border-2 border-amber-500/50 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5 text-center sm:text-left">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl shadow-lg shadow-amber-950/60 shrink-0 animate-bounce-subtle">
+                🪙
+              </div>
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 block">
+                  Order Reward Unlocked!
+                </span>
+                <h3 className="text-base font-black font-display text-white">
+                  You Won a Mystery Scratch Card!
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Scratch now to reveal instant CraveCoins & bonus surprise treats
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveScratchCard(latestCard)}
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-950/50 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95 shrink-0"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Scratch Card Now</span>
+            </button>
+          </div>
+        )}
+
+        {/* 🌱 Feature 6: Eco-Hero Zero Waste Impact Badge */}
+        {order.isEcoDelivery && (
+          <div className="mb-6 p-4 rounded-2xl bg-[#0F1E16] border border-emerald-500/40 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl shrink-0">
+              🌱
+            </div>
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-wider text-emerald-300 block">
+                Eco-Hero Order Mode Active
+              </span>
+              <p className="text-xs text-emerald-100 font-semibold mt-0.5">
+                Thank you! You eliminated 4 single-use plastic cutlery items and chose zero-emission delivery!
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Order Summary Card */}
         <div className="bg-[#14141C]/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-white/10 shadow-xl space-y-6">
@@ -219,6 +332,15 @@ export default function OrderConfirmationPage() {
           </div>
         </div>
       </div>
+
+      {/* Interactive Scratch Card Modal */}
+      {activeScratchCard && (
+        <ScratchCardModal
+          card={activeScratchCard}
+          isOpen={Boolean(activeScratchCard)}
+          onClose={() => setActiveScratchCard(null)}
+        />
+      )}
     </div>
   );
 }

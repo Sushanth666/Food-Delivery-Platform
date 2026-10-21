@@ -13,6 +13,11 @@ export function FilterProvider({ children }) {
   const [onlyBestsellers, setOnlyBestsellers] = useState(false); // top trending/bestsellers
   const [budgetUnder, setBudgetUnder] = useState(null); // cost for two <= 350
   const [sortBy, setSortBy] = useState('recommended'); // 'recommended', 'rating', 'time', 'costAsc', 'costDesc'
+  const [is15MinRushOnly, setIs15MinRushOnly] = useState(false); // CraveExpress 15-Minute Rush
+
+  const toggle15MinRush = () => {
+    setIs15MinRushOnly((prev) => !prev);
+  };
 
   // Mutually exclusive toggle for Veg
   const togglePureVeg = () => {
@@ -43,6 +48,7 @@ export function FilterProvider({ children }) {
     setOnlyBestsellers(false);
     setBudgetUnder(null);
     setSortBy('recommended');
+    setIs15MinRushOnly(false);
   };
 
   const hasActiveFilters =
@@ -55,7 +61,8 @@ export function FilterProvider({ children }) {
     onlyOffers ||
     onlyBestsellers ||
     budgetUnder !== null ||
-    sortBy !== 'recommended';
+    sortBy !== 'recommended' ||
+    is15MinRushOnly;
 
   return (
     <FilterContext.Provider
@@ -84,6 +91,9 @@ export function FilterProvider({ children }) {
         setSortBy,
         resetFilters,
         hasActiveFilters,
+        is15MinRushOnly,
+        setIs15MinRushOnly,
+        toggle15MinRush,
       }}
     >
       {children}

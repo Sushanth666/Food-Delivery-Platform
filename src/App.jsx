@@ -29,6 +29,7 @@ import AuthModal from './components/common/AuthModal';
 import LogoutModal from './components/common/LogoutModal';
 import AuthToast from './components/common/AuthToast';
 import GoldClubModal from './components/common/GoldClubModal';
+import RewardsHubModal from './components/rewards/RewardsHubModal';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -82,6 +83,7 @@ export default function App() {
               <LogoutModal />
               <AuthToast />
               <GoldClubModal />
+              <RewardsHubModal />
 
               {/* Mobile Bottom Bar */}
               <MobileBottomNav />

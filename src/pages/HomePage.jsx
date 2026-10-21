@@ -5,9 +5,10 @@ import CategoryBar from '../components/home/CategoryBar';
 import FilterBar from '../components/home/FilterBar';
 import RestaurantCard from '../components/home/RestaurantCard';
 import CravingWheelModal from '../components/home/CravingWheelModal';
+import HappyHourBanner from '../components/home/HappyHourBanner';
 import { RESTAURANTS } from '../data/restaurants';
 import { useFilter } from '../context/FilterContext';
-import { Utensils, Frown, Sparkles, Dices } from 'lucide-react';
+import { Utensils, Frown, Sparkles, Dices, Zap } from 'lucide-react';
 
 export default function HomePage() {
   const {
@@ -22,6 +23,8 @@ export default function HomePage() {
     budgetUnder,
     sortBy,
     resetFilters,
+    is15MinRushOnly,
+    setIs15MinRushOnly,
   } = useFilter();
 
   const [isWheelOpen, setIsWheelOpen] = useState(false);
@@ -111,6 +114,18 @@ export default function HomePage() {
         return false;
       }
 
+      // CraveExpress 15-Minute Rush Guarantee Filter
+      if (is15MinRushOnly) {
+        const match = rest.deliveryTime.match(/\d+/g);
+        const lowerTime = match && match.length > 0 ? parseInt(match[0], 10) : 30;
+        const isExpress =
+          lowerTime <= 25 ||
+          rest.cuisines.some((c) =>
+            ['Chaat & Street Food', 'Chai & Lassi', 'Rolls & Burgers', 'Fast Food'].includes(c)
+          );
+        if (!isExpress) return false;
+      }
+
       return true;
     }).sort((a, b) => {
       if (sortBy === 'rating') return b.rating - a.rating;
@@ -134,6 +149,7 @@ export default function HomePage() {
     onlyBestsellers,
     budgetUnder,
     sortBy,
+    is15MinRushOnly,
   ]);
 
   return (
@@ -179,6 +195,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Dynamic Happy Hour Flash Deal Banner */}
+      <HappyHourBanner />
+
       {/* Food Category Carousel */}
       <CategoryBar />
 
@@ -190,7 +209,9 @@ export default function HomePage() {
         <div>
           <h2 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight flex items-center gap-2">
             <span>
-              {selectedCategory !== 'all'
+              {is15MinRushOnly
+                ? '⚡ 15-Minute Hyper-Fast Rush Guarantee'
+                : selectedCategory !== 'all'
                 ? `Restaurants for ${selectedCategory.toUpperCase().replace('-', ' ')}`
                 : 'All Authentic Restaurants'}
             </span>
@@ -199,14 +220,19 @@ export default function HomePage() {
             </span>
           </h2>
           <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
-            Handpicked gourmet eateries with exceptional ratings and swift express delivery
+            {is15MinRushOnly
+              ? 'Guaranteed on-time express dispatch in 15 mins or get ₹50 CraveCoins cashback!'
+              : 'Handpicked gourmet eateries with exceptional ratings and swift express delivery'}
           </p>
         </div>
 
-        {selectedCategory !== 'all' && (
+        {(selectedCategory !== 'all' || is15MinRushOnly) && (
           <button
             type="button"
-            onClick={() => setSelectedCategory('all')}
+            onClick={() => {
+              setSelectedCategory('all');
+              setIs15MinRushOnly(false);
+            }}
             className="text-xs font-bold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors cursor-pointer"
           >
             Clear Filter

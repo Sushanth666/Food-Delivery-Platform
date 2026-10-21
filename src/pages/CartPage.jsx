@@ -15,6 +15,8 @@ import {
   Crown,
   Coins,
   Users,
+  Gift,
+  Leaf,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -22,6 +24,7 @@ import { formatCurrency } from '../utils/formatCurrency';
 import DietaryBadge from '../components/common/DietaryBadge';
 import { COUPONS } from '../data/coupons';
 import GroupOrderModal from '../components/cart/GroupOrderModal';
+import GiftOrderModal from '../components/cart/GiftOrderModal';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -37,12 +40,21 @@ export default function CartPage() {
     removeCoupon,
     isCoinsApplied,
     toggleCoinsUsage,
+    isGiftOrder,
+    giftDetails,
+    setGiftDetails,
+    setIsGiftOrder,
+    isNoCutlery,
+    toggleNoCutlery,
+    isEvFleet,
+    toggleEvFleet,
   } = useCart();
 
   const { isGoldMember, walletCoins, openGoldModal } = useAuth();
   const [couponInput, setCouponInput] = useState('');
   const [couponFeedback, setCouponFeedback] = useState(null);
   const [isGroupOrderOpen, setIsGroupOrderOpen] = useState(false);
+  const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
 
   const handleApplyCoupon = (codeToApply) => {
     const code = codeToApply || couponInput;
@@ -388,6 +400,82 @@ export default function CartPage() {
                   </span>
                 </div>
               )}
+
+              {/* 🎁 Feature 1: Send as a Gift Card */}
+              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-pink-950/40 via-[#1A1624] to-rose-950/40 border border-pink-500/30">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center">
+                      <Gift className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-black text-white block">
+                        {isGiftOrder ? '🎁 Surprise Gift Configured' : 'Send as a Surprise Gift?'}
+                      </span>
+                      <span className="text-[10px] text-gray-400 block">
+                        {isGiftOrder
+                          ? `For ${giftDetails.recipientName || 'a Friend'} • ${giftDetails.hidePrice ? 'Prices Hidden' : 'Bill Included'}`
+                          : 'Add personalized digital card & hide prices'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsGiftModalOpen(true)}
+                    className="px-3 py-1.5 rounded-xl bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/40 text-[11px] font-black uppercase tracking-wider transition-all cursor-pointer"
+                  >
+                    {isGiftOrder ? 'Edit Card' : '+ Add Gift'}
+                  </button>
+                </div>
+              </div>
+
+              {/* 🌱 Feature 6: Eco-Green Zero-Waste Delivery Preferences */}
+              <div className="p-3.5 rounded-2xl bg-[#121B16] border border-emerald-500/30 space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <Leaf className="w-4 h-4 text-emerald-400" />
+                  <span className="text-xs font-black text-emerald-300 uppercase tracking-wider">
+                    Eco-Green Delivery Mode
+                  </span>
+                </div>
+
+                <label className="flex items-center justify-between cursor-pointer text-xs">
+                  <div className="pr-2">
+                    <span className="text-white font-bold block text-[11px]">
+                      No Plastic Cutlery / Napkins
+                    </span>
+                    <span className="text-[10px] text-gray-400 block">
+                      Help eliminate single-use plastic waste
+                    </span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={isNoCutlery}
+                    onChange={toggleNoCutlery}
+                    className="w-4 h-4 accent-emerald-500 rounded cursor-pointer"
+                  />
+                </label>
+
+                <label className="flex items-center justify-between cursor-pointer text-xs pt-2 border-t border-white/5">
+                  <div className="pr-2">
+                    <span className="text-white font-bold block text-[11px] flex items-center gap-1">
+                      <span>Request EV Fleet Delivery</span>
+                      <span className="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[9px] font-extrabold uppercase">
+                        Zero Emission
+                      </span>
+                    </span>
+                    <span className="text-[10px] text-gray-400 block">
+                      Assign available electric delivery partner
+                    </span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={isEvFleet}
+                    onChange={toggleEvFleet}
+                    className="w-4 h-4 accent-emerald-500 rounded cursor-pointer"
+                  />
+                </label>
+              </div>
             </div>
 
             {/* Bill Summary */}
@@ -477,6 +565,12 @@ export default function CartPage() {
       <GroupOrderModal
         isOpen={isGroupOrderOpen}
         onClose={() => setIsGroupOrderOpen(false)}
+      />
+
+      {/* Gift Order Customization Modal */}
+      <GiftOrderModal
+        isOpen={isGiftModalOpen}
+        onClose={() => setIsGiftModalOpen(false)}
       />
     </div>
   );

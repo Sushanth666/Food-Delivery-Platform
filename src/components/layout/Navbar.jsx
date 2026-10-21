@@ -30,6 +30,7 @@ export default function Navbar() {
     isGoldMember,
     walletCoins,
     openGoldModal,
+    openRewardsHub,
     openLoginModal,
     openLogoutModal,
   } = useAuth();
@@ -160,6 +161,19 @@ export default function Navbar() {
               )}
             </button>
 
+            {/* 🪙 CraveCoins Rewards Hub Button */}
+            <button
+              type="button"
+              onClick={openRewardsHub}
+              className="relative flex items-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer group shadow-xs"
+              title="Open CraveCoins & Rewards Hub"
+            >
+              <Coins className="w-4 h-4 text-amber-400 group-hover:rotate-12 transition-transform" />
+              <span className="text-xs font-black tracking-wide hidden sm:inline">
+                Rewards
+              </span>
+            </button>
+
             {/* 2. WISHLIST BUTTON (Center) */}
             <button
               type="button"
@@ -252,6 +266,24 @@ export default function Navbar() {
                       </div>
                       <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
                         {isGoldMember ? 'VIP' : 'Upgrade'}
+                      </span>
+                    </button>
+
+                    {/* Rewards Hub in Dropdown */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        openRewardsHub();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all mb-1 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Coins className="w-4 h-4 text-amber-400" />
+                        <span>CraveCoins & Rewards</span>
+                      </div>
+                      <span className="text-[10px] font-black bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-300">
+                        {walletCoins} Coins
                       </span>
                     </button>
 
