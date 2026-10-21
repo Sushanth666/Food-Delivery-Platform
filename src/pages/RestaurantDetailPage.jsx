@@ -6,6 +6,7 @@ import {
   Star,
   Sparkles,
   Search,
+  X,
   Plus,
   Minus,
   ArrowLeft,
@@ -323,16 +324,31 @@ export default function RestaurantDetailPage() {
               </button>
             </div>
 
-            {/* Search within Menu */}
-            <div className="relative flex-1 max-w-xs">
-              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            {/* Search within Menu with dynamic size enhancement */}
+            <div className="relative flex-1 max-w-xs sm:focus-within:max-w-md transition-all duration-300">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors pointer-events-none" />
               <input
                 type="text"
-                placeholder="Search in menu..."
+                placeholder="Search dishes in menu (e.g. Biryani, Paneer)..."
                 value={searchMenu}
                 onChange={(e) => setSearchMenu(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 text-xs font-semibold rounded-xl border border-white/10 focus:outline-none focus:border-rose-500 bg-[#1A1A22] text-white placeholder:text-gray-500 transition-colors"
+                className="w-full pl-9 pr-14 py-2 text-xs font-semibold rounded-2xl border border-white/10 focus:outline-none focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 bg-[#161620] text-white placeholder:text-gray-500 transition-all shadow-inner"
               />
+              {searchMenu && (
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                  <span className="text-[10px] font-bold text-rose-300 bg-rose-500/20 px-1.5 py-0.5 rounded">
+                    {filteredMenuCategories.reduce((acc, cat) => acc + cat.items.length, 0)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setSearchMenu('')}
+                    className="p-1 text-gray-400 hover:text-white rounded-full hover:bg-white/10 transition-colors cursor-pointer"
+                    title="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

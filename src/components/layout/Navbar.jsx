@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Search,
@@ -22,6 +22,7 @@ import { useLocationContext } from '../../context/LocationContext';
 import { useFilter } from '../../context/FilterContext';
 import EditProfileModal from '../common/EditProfileModal';
 import UserAvatar from '../common/UserAvatar';
+import EnhancedSearchModal from '../search/EnhancedSearchModal';
 
 export default function Navbar() {
   const {
@@ -42,6 +43,19 @@ export default function Navbar() {
 
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
+  // Global ⌘K / Ctrl+K keyboard shortcut to open enhanced search anywhere
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchModalOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Total quantity of items in cart
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -94,27 +108,27 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* CENTER: Search Bar */}
-          <div className="flex-1 max-w-xl mx-2 hidden sm:block">
-            <div className="relative flex items-center">
-              <Search className="w-4 h-4 text-gray-400 absolute left-4 pointer-events-none" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search gourmet cuisines, restaurants..."
-                className="w-full bg-[#16161D] hover:bg-[#1A1A22] focus:bg-[#1A1A22] text-white placeholder-gray-400 text-xs sm:text-sm pl-11 pr-4 py-2.5 rounded-full border border-white/10 focus:border-brand-500/60 focus:outline-none focus:ring-2 focus:ring-brand-500/20 transition-all shadow-inner"
-              />
-              {searchTerm && (
-                <button
-                  type="button"
-                  onClick={() => setSearchTerm('')}
-                  className="absolute right-3 text-xs text-gray-400 hover:text-white px-1.5 py-0.5 rounded-full bg-white/10"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
+          {/* CENTER: Enhanced Expandable Search Trigger Pill */}
+          <div className="flex-1 max-w-md mx-2 hidden sm:block">
+            <button
+              id="navbar-search-btn"
+              type="button"
+              onClick={() => setIsSearchModalOpen(true)}
+              className="w-full group flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 hover:border-rose-500/50 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full transition-all duration-200 shadow-inner hover:shadow-lg hover:shadow-rose-950/40 cursor-pointer text-left"
+              title="Search dishes, restaurants, cuisines (⌘K / Ctrl+K)"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Search className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform shrink-0" />
+                <span className="text-xs sm:text-sm text-gray-400 group-hover:text-gray-200 truncate font-medium">
+                  {searchTerm ? `Searching: "${searchTerm}"` : 'Search dishes, restaurants...'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-bold text-gray-400 bg-white/5 border border-white/10 rounded-md group-hover:border-rose-500/40 group-hover:text-rose-300 transition-colors">
+                  ⌘K
+                </kbd>
+              </div>
+            </button>
           </div>
 
           {/* RIGHT: Actions with Cart and Sign In places exchanged */}
@@ -331,18 +345,23 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Search input bar */}
+        {/* Mobile Search button */}
         <div className="pb-3 pt-1 block sm:hidden">
-          <div className="relative flex items-center">
-            <Search className="w-4 h-4 text-gray-400 absolute left-4 pointer-events-none" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search gourmet cuisines, restaurants..."
-              className="w-full bg-[#16161D] text-white placeholder-gray-400 text-xs pl-11 pr-4 py-2.5 rounded-full border border-white/10 focus:outline-none focus:border-brand-500/60"
-            />
-          </div>
+          <button
+            type="button"
+            onClick={() => setIsSearchModalOpen(true)}
+            className="w-full flex items-center justify-between gap-3 bg-[#16161D] border border-white/10 px-4 py-2.5 rounded-full text-left cursor-pointer"
+          >
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Search className="w-4 h-4 text-rose-400 shrink-0" />
+              <span className="text-xs text-gray-400 truncate font-medium">
+                {searchTerm ? `"${searchTerm}"` : 'Search gourmet cuisines, restaurants...'}
+              </span>
+            </div>
+            <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md shrink-0">
+              Search
+            </span>
+          </button>
         </div>
       </div>
 
@@ -350,6 +369,13 @@ export default function Navbar() {
       <EditProfileModal
         isOpen={isEditProfileOpen}
         onClose={() => setIsEditProfileOpen(false)}
+      />
+
+      {/* Enhanced Omnisearch Modal */}
+      <EnhancedSearchModal
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
+        initialQuery={searchTerm}
       />
     </header>
   );
