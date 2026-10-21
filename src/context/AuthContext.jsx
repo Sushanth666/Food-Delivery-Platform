@@ -7,7 +7,8 @@ const DEMO_USER = {
   name: 'Sushanth',
   email: 'sushanth@example.com',
   phone: '+91 98765 43210',
-  isGoldMember: true,
+  isGoldMember: false, // Free tier by default
+  goldPlan: null,
   walletCoins: 450,
   savedAddresses: [
     {
@@ -30,7 +31,8 @@ export function AuthProvider({ children }) {
       return {
         ...DEMO_USER,
         ...parsed,
-        isGoldMember: parsed.isGoldMember !== undefined ? parsed.isGoldMember : true,
+        isGoldMember: Boolean(parsed.isGoldMember),
+        goldPlan: parsed.goldPlan || null,
         walletCoins: parsed.walletCoins !== undefined ? parsed.walletCoins : 450,
       };
     } catch {
@@ -184,22 +186,44 @@ export function AuthProvider({ children }) {
   const openGoldModal = () => setIsGoldModalOpen(true);
   const closeGoldModal = () => setIsGoldModalOpen(false);
 
-  const toggleGoldMembership = () => {
+  const upgradeToGold = (plan = 'Quarterly VIP (3 Months)') => {
     setUser((prev) => {
       if (!prev) return null;
-      const nextStatus = !prev.isGoldMember;
       showToast({
         type: 'success',
-        title: nextStatus ? '👑 CraveWave Gold VIP Activated!' : 'CraveWave Gold Deactivated',
-        message: nextStatus
-          ? 'Enjoy Unlimited Free Delivery and 10% Extra Off on all orders!'
-          : 'Membership paused. You can reactivate anytime.',
+        title: '👑 Welcome to CraveWave Gold VIP!',
+        message: `Upgraded to ${plan}. Unlimited Free Delivery and 10% Extra Off is now active!`,
       });
       return {
         ...prev,
-        isGoldMember: nextStatus,
+        isGoldMember: true,
+        goldPlan: plan,
       };
     });
+  };
+
+  const cancelGold = () => {
+    setUser((prev) => {
+      if (!prev) return null;
+      showToast({
+        type: 'info',
+        title: 'Gold VIP Membership Cancelled',
+        message: 'Your account is now on the Free tier. You can upgrade anytime!',
+      });
+      return {
+        ...prev,
+        isGoldMember: false,
+        goldPlan: null,
+      };
+    });
+  };
+
+  const toggleGoldMembership = () => {
+    if (user?.isGoldMember) {
+      cancelGold();
+    } else {
+      upgradeToGold('Quarterly VIP');
+    }
   };
 
   const redeemCoins = (amount) => {
@@ -234,11 +258,14 @@ export function AuthProvider({ children }) {
         logout,
         // CraveWave Gold & Wallet Coins
         isGoldMember: Boolean(user?.isGoldMember),
+        goldPlan: user?.goldPlan || null,
         walletCoins: user?.walletCoins || 0,
         isGoldModalOpen,
         openGoldModal,
         closeGoldModal,
         toggleGoldMembership,
+        upgradeToGold,
+        cancelGold,
         redeemCoins,
         addCoins,
         // Modal & Toast Controls

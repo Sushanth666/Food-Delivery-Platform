@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Crown, Check, Zap, Sparkles, ShieldCheck, Coins, ArrowRight, Star } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import confetti from 'canvas-confetti';
 
 export default function GoldClubModal() {
   const {
     isGoldMember,
+    goldPlan,
     walletCoins,
     isGoldModalOpen,
     closeGoldModal,
-    toggleGoldMembership,
-    showToast,
+    upgradeToGold,
+    cancelGold,
   } = useAuth();
 
   const [selectedPlan, setSelectedPlan] = useState('3months');
@@ -18,13 +20,33 @@ export default function GoldClubModal() {
 
   if (!isGoldModalOpen) return null;
 
-  const handleAction = () => {
+  const handleJoinOrUpgrade = () => {
+    setIsProcessing(true);
+    const planTitle = selectedPlan === '3months' ? 'Quarterly VIP (₹199 / 3 mos)' : 'Annual VIP (₹599 / 1 yr)';
+    setTimeout(() => {
+      setIsProcessing(false);
+      upgradeToGold(planTitle);
+      try {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.55 },
+          colors: ['#F59E0B', '#FBBF24', '#FCD34D', '#E11D48'],
+        });
+      } catch (e) {
+        // ignore
+      }
+      closeGoldModal();
+    }, 600);
+  };
+
+  const handleCancelMembership = () => {
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
-      toggleGoldMembership();
+      cancelGold();
       closeGoldModal();
-    }, 700);
+    }, 400);
   };
 
   return (
@@ -145,15 +167,26 @@ export default function GoldClubModal() {
 
             {/* Plan Selector */}
             <div className="space-y-2 pt-1">
-              <p className="text-xs font-black uppercase tracking-wider text-gray-300">Choose Membership</p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-black uppercase tracking-wider text-gray-300">
+                  {isGoldMember ? 'Your VIP Plan / Switch Plan' : 'Choose Your VIP Plan'}
+                </p>
+                {isGoldMember && (
+                  <span className="text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <Check className="w-3 h-3 stroke-[3]" />
+                    <span>Active Plan</span>
+                  </span>
+                )}
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setSelectedPlan('3months')}
-                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                  className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer relative ${
                     selectedPlan === '3months'
-                      ? 'border-amber-400 bg-amber-950/40 shadow-md shadow-amber-950/50'
-                      : 'border-white/10 bg-[#161420] text-gray-400'
+                      ? 'border-amber-400 bg-amber-950/50 shadow-lg shadow-amber-950/60 ring-1 ring-amber-400/50'
+                      : 'border-white/10 bg-[#161420] hover:border-white/20 text-gray-400'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -162,23 +195,29 @@ export default function GoldClubModal() {
                   </div>
                   <p className="text-base font-black text-amber-400 mt-1">₹199 <span className="text-xs text-gray-400 font-normal">/ 3 mos</span></p>
                   <p className="text-[10px] text-gray-400 mt-0.5">₹66/month only</p>
+                  {isGoldMember && (!goldPlan || goldPlan.includes('Quarterly')) && (
+                    <span className="absolute bottom-2 right-2 text-[9px] font-bold text-amber-400 bg-black/60 px-1.5 py-0.5 rounded">Current</span>
+                  )}
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setSelectedPlan('1year')}
-                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                  className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer relative ${
                     selectedPlan === '1year'
-                      ? 'border-amber-400 bg-amber-950/40 shadow-md shadow-amber-950/50'
-                      : 'border-white/10 bg-[#161420] text-gray-400'
+                      ? 'border-amber-400 bg-amber-950/50 shadow-lg shadow-amber-950/60 ring-1 ring-amber-400/50'
+                      : 'border-white/10 bg-[#161420] hover:border-white/20 text-gray-400'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black text-white">Annual VIP</span>
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/30 text-emerald-300">Best Value</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/30 text-emerald-300">Save 40%</span>
                   </div>
                   <p className="text-base font-black text-amber-400 mt-1">₹599 <span className="text-xs text-gray-400 font-normal">/ 1 yr</span></p>
                   <p className="text-[10px] text-gray-400 mt-0.5">₹49/month only</p>
+                  {isGoldMember && goldPlan && goldPlan.includes('Annual') && (
+                    <span className="absolute bottom-2 right-2 text-[9px] font-bold text-emerald-400 bg-black/60 px-1.5 py-0.5 rounded">Current</span>
+                  )}
                 </button>
               </div>
             </div>
@@ -191,31 +230,49 @@ export default function GoldClubModal() {
             <button
               type="button"
               onClick={closeGoldModal}
-              className="px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shrink-0"
+              className="px-4 sm:px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shrink-0"
             >
               Close
             </button>
 
-            <button
-              type="button"
-              disabled={isProcessing}
-              onClick={handleAction}
-              className="flex-1 py-3.5 px-4 sm:px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-amber-950/60 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
-            >
-              {isProcessing ? (
-                <span>Processing...</span>
-              ) : isGoldMember ? (
-                <>
-                  <Check className="w-4 h-4 text-black" />
-                  <span>Gold Active • Tap to Toggle</span>
-                </>
-              ) : (
-                <>
-                  <Crown className="w-4 h-4 text-black" />
-                  <span>Join Gold VIP Now</span>
-                </>
-              )}
-            </button>
+            {isGoldMember ? (
+              <div className="flex-1 flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={isProcessing}
+                  onClick={handleCancelMembership}
+                  className="px-3.5 py-3.5 rounded-2xl bg-rose-950/40 hover:bg-rose-950/70 border border-rose-800/50 text-rose-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                >
+                  Cancel Plan
+                </button>
+                <button
+                  type="button"
+                  disabled={isProcessing}
+                  onClick={handleJoinOrUpgrade}
+                  className="flex-1 py-3.5 px-3 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider shadow-xl shadow-amber-950/60 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+                >
+                  {isProcessing ? 'Updating...' : `Switch to ${selectedPlan === '3months' ? 'Quarterly' : 'Annual'}`}
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                disabled={isProcessing}
+                onClick={handleJoinOrUpgrade}
+                className="flex-1 py-3.5 px-4 sm:px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-amber-950/60 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+              >
+                {isProcessing ? (
+                  <span>Activating Gold VIP...</span>
+                ) : (
+                  <>
+                    <Crown className="w-4 h-4 text-black" />
+                    <span>
+                      Join Gold VIP • {selectedPlan === '3months' ? '₹199 / 3 mos' : '₹599 / 1 yr'}
+                    </span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </motion.div>
       </div>

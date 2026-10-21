@@ -144,16 +144,16 @@ export default function Navbar() {
               className={`relative flex items-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-2xl border transition-all cursor-pointer group ${
                 isGoldMember
                   ? 'bg-gradient-to-r from-amber-950/60 via-yellow-950/40 to-amber-950/60 border-amber-500/40 text-amber-300 hover:border-amber-400 shadow-md shadow-amber-950/40'
-                  : 'bg-white/5 hover:bg-white/10 border-white/10 text-gray-300 hover:text-white'
+                  : 'bg-amber-950/20 hover:bg-amber-950/40 border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-white'
               }`}
-              title="CraveWave Gold VIP Club"
+              title={isGoldMember ? "CraveWave Gold VIP Club Active" : "Upgrade to CraveWave Gold"}
             >
-              <Crown className={`w-4 h-4 ${isGoldMember ? 'text-amber-400 fill-amber-400/30 animate-pulse' : 'text-gray-400'}`} />
-              <span className="text-xs font-black tracking-wide hidden lg:inline">
+              <Crown className={`w-4 h-4 ${isGoldMember ? 'text-amber-400 fill-amber-400/30 animate-pulse' : 'text-amber-400'}`} />
+              <span className="text-xs font-black tracking-wide inline">
                 {isGoldMember ? 'GOLD VIP' : 'Join Gold'}
               </span>
               {walletCoins > 0 && (
-                <span className="hidden xl:inline-flex items-center gap-1 text-[10px] font-extrabold bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30">
+                <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-extrabold bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30">
                   <Coins className="w-2.5 h-2.5" />
                   <span>{walletCoins}</span>
                 </span>
@@ -232,6 +232,28 @@ export default function Navbar() {
                         </p>
                       </div>
                     </div>
+
+                    {/* Gold Membership Status & Upgrade Option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        openGoldModal();
+                        setUserDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all mb-1 cursor-pointer ${
+                        isGoldMember
+                          ? 'bg-amber-950/40 border border-amber-500/40 text-amber-300'
+                          : 'bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Crown className="w-4 h-4 text-amber-400" />
+                        <span>{isGoldMember ? 'Gold VIP Active' : 'Join CraveWave Gold'}</span>
+                      </div>
+                      <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
+                        {isGoldMember ? 'VIP' : 'Upgrade'}
+                      </span>
+                    </button>
 
                     {/* Edit Profile Button */}
                     <button
