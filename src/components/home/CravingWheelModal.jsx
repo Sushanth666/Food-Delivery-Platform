@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, ArrowRight, RotateCw, Store, Shuffle, Gift } from 'lucide-react';
+import { X, Sparkles, ArrowRight, RotateCw, Store, Shuffle, Gift, Utensils } from 'lucide-react';
 import { useFilter } from '../../context/FilterContext';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 
-// Master pool of authentic Indian & global dishes across diverse categories
+// Master pool of authentic Indian & global dishes across diverse categories with direct dish links
 const MASTER_DISH_POOL = [
   {
     id: 'biryani',
@@ -18,6 +18,8 @@ const MASTER_DISH_POOL = [
     type: 'category',
     topRestSlug: 'paradise-meghana-biryani',
     topRestName: 'Paradise & Meghana Royal',
+    targetItemId: 'item-101',
+    targetDishQuery: 'Special Andhra Chicken Dum Biryani',
   },
   {
     id: 'biryani',
@@ -28,6 +30,8 @@ const MASTER_DISH_POOL = [
     type: 'category',
     topRestSlug: 'dindigul-thalappakatti-biryani',
     topRestName: 'Dindigul Thalappakatti',
+    targetItemId: 'item-384',
+    targetDishQuery: 'Thalappakatti Mutton Biryani Special',
   },
   {
     id: 'north-indian',
@@ -36,18 +40,22 @@ const MASTER_DISH_POOL = [
     icon: '🥘',
     color: '#991B1B',
     type: 'category',
-    topRestSlug: 'moti-mahal-gulati',
-    topRestName: 'Moti Mahal Delux',
+    topRestSlug: 'paradise-meghana-biryani',
+    topRestName: 'Paradise & Meghana Royal',
+    targetItemId: 'item-117',
+    targetDishQuery: 'Dal Makhani 24-hr Slow Cooked',
   },
   {
     id: 'north-indian',
-    label: 'Shahi Paneer & Kulcha',
+    label: 'Shahi Paneer Tikka',
     shortLabel: 'PANEER',
     icon: '🫓',
     color: '#B45309',
     type: 'category',
-    topRestSlug: 'punjab-grill-pind-balluchi',
-    topRestName: 'Punjab Grill Dhaba',
+    topRestSlug: 'paradise-meghana-biryani',
+    topRestName: 'Paradise & Meghana Royal',
+    targetItemId: 'item-103',
+    targetDishQuery: 'Shahi Paneer Tikka Dum Biryani',
   },
   {
     id: 'south-indian',
@@ -56,18 +64,22 @@ const MASTER_DISH_POOL = [
     icon: '🥞',
     color: '#CA8A04',
     type: 'category',
-    topRestSlug: 'rameshwaram-cafe-bengaluru',
-    topRestName: 'Rameshwaram Cafe',
+    topRestSlug: 'murugan-idli-a2b',
+    topRestName: 'Murugan Idli Bhavan',
+    targetItemId: 'item-128',
+    targetDishQuery: 'Special Ghee Masala Dosa',
   },
   {
     id: 'south-indian',
-    label: 'Steamed Podi Idli & Vada',
+    label: 'Steamed Mallipoo Idli',
     shortLabel: 'IDLI VADA',
     icon: '🥟',
     color: '#65A30D',
     type: 'category',
     topRestSlug: 'murugan-idli-a2b',
     topRestName: 'Murugan Idli Bhavan',
+    targetItemId: 'item-122',
+    targetDishQuery: 'Famous Soft Mallipoo Idli',
   },
   {
     id: 'chaat',
@@ -78,16 +90,20 @@ const MASTER_DISH_POOL = [
     type: 'category',
     topRestSlug: 'sardar-pav-bhaji-bademiya',
     topRestName: 'Sardar Pav Bhaji',
+    targetItemId: 'item-203',
+    targetDishQuery: 'Amul Butter Overload Pav Bhaji',
   },
   {
     id: 'chaat',
-    label: 'Crispy Pani Puri Platter',
+    label: 'Crispy Pani Puri',
     shortLabel: 'PANI PURI',
     icon: '🥟',
     color: '#7C3AED',
     type: 'category',
-    topRestSlug: 'bikanervala-haldirams',
-    topRestName: "Bikanervala Sweets & Chaat",
+    topRestSlug: 'sardar-pav-bhaji-bademiya',
+    topRestName: 'Sardar Pav Bhaji & Bademiya',
+    targetItemId: 'item-220',
+    targetDishQuery: 'Pani Puri with 2 Waters',
   },
   {
     id: 'rolls',
@@ -96,28 +112,34 @@ const MASTER_DISH_POOL = [
     icon: '🌯',
     color: '#059669',
     type: 'category',
-    topRestSlug: 'chowringhee-arsalan-kolkata',
-    topRestName: 'Chowringhee Kolkata',
+    topRestSlug: 'sardar-pav-bhaji-bademiya',
+    topRestName: 'Sardar Pav Bhaji & Bademiya',
+    targetItemId: 'item-210',
+    targetDishQuery: 'Chicken Tikka Kathi Roll',
   },
   {
     id: 'rolls',
-    label: 'Mumbai Vada Pav & Frankie',
+    label: 'Mumbai Vada Pav',
     shortLabel: 'VADA PAV',
     icon: '🍔',
     color: '#16A34A',
     type: 'category',
-    topRestSlug: 'goli-vada-pav-tibbs-frankie',
-    topRestName: "Goli Vada Pav & Frankie",
+    topRestSlug: 'chai-point-kulhad-chai',
+    topRestName: 'Chai Point Heritage',
+    targetItemId: 'item-295',
+    targetDishQuery: 'Vada Pav Mumbai Style with Chutneys',
   },
   {
     id: 'chinese',
-    label: 'Steamed Darjeeling Momos',
+    label: 'Steamed Chicken Momos',
     shortLabel: 'MOMOS',
     icon: '🥟',
     color: '#0284C7',
     type: 'category',
-    topRestSlug: 'mainland-china-wow-momo',
-    topRestName: 'Wow! Momo Indo-Chinese',
+    topRestSlug: 'chowringhee-arsalan-kolkata',
+    topRestName: 'Chowringhee & Arsalan',
+    targetItemId: 'item-256',
+    targetDishQuery: 'Steamed Chicken Momos',
   },
   {
     id: 'chinese',
@@ -126,18 +148,22 @@ const MASTER_DISH_POOL = [
     icon: '🍜',
     color: '#2563EB',
     type: 'category',
-    topRestSlug: 'chowman-indo-chinese',
-    topRestName: 'Chowman Chinese Kitchen',
+    topRestSlug: 'chowringhee-arsalan-kolkata',
+    topRestName: 'Chowringhee & Arsalan',
+    targetItemId: 'item-258',
+    targetDishQuery: 'Kolkata Hakka Noodles with Egg & Chicken',
   },
   {
-    id: 'pizza',
-    label: 'Cheesy Woodfired Pizza',
-    shortLabel: 'PIZZA',
-    icon: '🍕',
+    id: 'chaat',
+    label: 'Bombay Grilled Sandwich',
+    shortLabel: 'SANDWICH',
+    icon: '🥪',
     color: '#D97706',
     type: 'category',
-    topRestSlug: 'moti-mahal-gulati',
-    topRestName: 'Moti Mahal Pizzeria',
+    topRestSlug: 'shiv-sagar-pure-veg',
+    topRestName: 'Shiv Sagar Pure Veg',
+    targetItemId: 'item-507',
+    targetDishQuery: 'Bombay Grilled Club Sandwich',
   },
   {
     id: 'desserts',
@@ -146,38 +172,46 @@ const MASTER_DISH_POOL = [
     icon: '🍨',
     color: '#DB2777',
     type: 'category',
-    topRestSlug: 'chhappan-bhog-mithai-mahal',
-    topRestName: 'Chhappan Bhog Mithai',
+    topRestSlug: 'paradise-meghana-biryani',
+    topRestName: 'Paradise & Meghana Royal',
+    targetItemId: 'item-120',
+    targetDishQuery: 'Shahi Gulab Jamun in Kesar Syrup',
   },
   {
     id: 'desserts',
-    label: 'Artisanal Malai Kulfi',
+    label: 'Royal Falooda Kulfi',
     shortLabel: 'KULFI',
     icon: '🍧',
     color: '#9333EA',
     type: 'category',
-    topRestSlug: 'naturals-ice-cream-kulfi',
-    topRestName: 'Naturals Artisanal Kulfi',
+    topRestSlug: 'sardar-pav-bhaji-bademiya',
+    topRestName: 'Sardar Pav Bhaji & Bademiya',
+    targetItemId: 'item-222',
+    targetDishQuery: 'Royal Falooda with Kulfi',
   },
   {
     id: 'beverages',
-    label: 'Creamy Kesar Mango Lassi',
+    label: 'Creamy Mango Lassi',
     shortLabel: 'MANGO LASSI',
     icon: '🥭',
     color: '#F59E0B',
     type: 'category',
-    topRestSlug: 'keventers-lassi-shop',
-    topRestName: 'Keventers & Lassi Shop',
+    topRestSlug: 'paradise-meghana-biryani',
+    topRestName: 'Paradise & Meghana Royal',
+    targetItemId: 'item-121',
+    targetDishQuery: 'Thick Mango Lassi with Malai',
   },
   {
     id: 'beverages',
-    label: 'Kadak Kulhad Masala Chai',
+    label: 'Kadak Dum Chai Flask',
     shortLabel: 'KULHAD CHAI',
     icon: '☕',
     color: '#78350F',
     type: 'category',
     topRestSlug: 'chai-point-kulhad-chai',
     topRestName: 'Chai Point Heritage',
+    targetItemId: 'item-283',
+    targetDishQuery: 'Dum Chai Flask',
   },
 ];
 
@@ -327,24 +361,32 @@ export default function CravingWheelModal({ isOpen, onClose }) {
           message: `Code ${code} has been applied to your cart!`,
         });
       }
+      onClose();
     } else {
-      setSelectedCategory(winner.id);
-      setSearchTerm('');
-
-      if (showToast) {
-        showToast({
-          type: 'success',
-          title: `${winner.icon} ${winner.label} Filter Applied!`,
-          message: `Showing 10+ authentic restaurants serving delicious ${winner.label}.`,
-        });
+      // Direct redirect to that specific food inside the restaurant!
+      if (winner.topRestSlug) {
+        if (showToast) {
+          showToast({
+            type: 'success',
+            title: `${winner.icon} Taking you to ${winner.label}!`,
+            message: `Opening ${winner.topRestName} straight to your craving.`,
+          });
+        }
+        onClose();
+        navigate(
+          `/restaurant/${winner.topRestSlug}?dish=${encodeURIComponent(
+            winner.targetDishQuery || winner.label
+          )}&itemId=${winner.targetItemId || ''}`
+        );
+        return;
       }
 
-      // Navigate to homepage if user opened modal from another page
+      // Fallback: category filter on home page
+      setSelectedCategory(winner.id);
+      setSearchTerm('');
       if (window.location.pathname !== '/') {
         navigate('/');
       }
-
-      // Smoothly scroll down to the restaurant list section
       setTimeout(() => {
         const el = document.getElementById('restaurants-list-section');
         if (el) {
@@ -353,8 +395,33 @@ export default function CravingWheelModal({ isOpen, onClose }) {
           window.scrollTo({ top: 900, behavior: 'smooth' });
         }
       }, 150);
+      onClose();
+    }
+  };
+
+  const handleBrowseAllCategoryRestaurants = () => {
+    if (!winner) return;
+    setSelectedCategory(winner.id);
+    setSearchTerm('');
+    if (showToast) {
+      showToast({
+        type: 'info',
+        title: `${winner.icon} ${winner.label} Filter Applied!`,
+        message: `Showing all authentic restaurants serving ${winner.label}.`,
+      });
     }
     onClose();
+    if (window.location.pathname !== '/') {
+      navigate('/');
+    }
+    setTimeout(() => {
+      const el = document.getElementById('restaurants-list-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 900, behavior: 'smooth' });
+      }
+    }, 150);
   };
 
   const sliceAngle = 360 / wheelItems.length;
@@ -508,7 +575,7 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="p-3.5 rounded-2xl bg-gradient-to-r from-rose-950/70 via-black to-rose-950/70 border border-rose-500/40 w-full"
+                  className="p-4 rounded-2xl bg-gradient-to-r from-rose-950/70 via-black to-rose-950/70 border border-rose-500/40 w-full"
                 >
                   <div className="flex items-center justify-center gap-2 text-xs font-bold text-amber-300">
                     <Sparkles className="w-4 h-4 text-amber-400" />
@@ -519,33 +586,37 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                     <span>{winner.label}</span>
                   </div>
 
-                  {/* Primary Explore / Claim Button */}
+                  {/* Primary Explore / Direct Dish Redirect Button */}
                   <button
                     id="explore-wheel-winner-btn"
                     type="button"
                     onClick={handleClaimWinner}
-                    className="mt-3 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-rose-950/50 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
+                    className="mt-3 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-brand-600 via-rose-600 to-amber-600 hover:from-brand-500 hover:via-rose-500 hover:to-amber-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-rose-950/50 flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95 group"
                   >
-                    <span>
-                      {winner.type === 'coupon'
-                        ? `Claim ${winner.couponCode || '50% OFF'} Coupon`
-                        : `Explore ${winner.label}`}
-                    </span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <div className="flex items-center justify-center gap-2">
+                      <span>
+                        {winner.type === 'coupon'
+                          ? `Claim ${winner.couponCode || '50% OFF'} Coupon`
+                          : `Explore ${winner.label}`}
+                      </span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                    {winner.topRestName && (
+                      <span className="text-[10px] font-semibold text-rose-100/90 normal-case">
+                        Direct to dish at {winner.topRestName}
+                      </span>
+                    )}
                   </button>
 
-                  {/* Secondary direct restaurant shortcut if available */}
-                  {winner.topRestSlug && (
+                  {/* Secondary alternative: browse all restaurants for this cuisine on home */}
+                  {winner.type !== 'coupon' && (
                     <button
                       type="button"
-                      onClick={() => {
-                        onClose();
-                        navigate(`/restaurant/${winner.topRestSlug}`);
-                      }}
-                      className="mt-2 w-full py-1 text-[11px] font-bold text-rose-300 hover:text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      onClick={handleBrowseAllCategoryRestaurants}
+                      className="mt-2 w-full py-1 text-[11px] font-semibold text-gray-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-1"
                     >
-                      <Store className="w-3 h-3 text-rose-400" />
-                      <span>Or jump straight to {winner.topRestName} →</span>
+                      <span>Or browse all restaurants for {winner.label}</span>
+                      <ArrowRight className="w-3 h-3 text-gray-500" />
                     </button>
                   )}
 

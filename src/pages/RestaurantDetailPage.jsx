@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Clock,
   MapPin,
@@ -25,6 +25,10 @@ import DishNutritionBadge from '../components/common/DishNutritionBadge';
 export default function RestaurantDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const targetItemId = searchParams.get('itemId');
+  const targetDish = searchParams.get('dish');
+
   const {
     cartItems,
     addToCart,
@@ -39,6 +43,7 @@ export default function RestaurantDetailPage() {
   const [filterNonVegOnly, setFilterNonVegOnly] = useState(false);
   const [filterBestsellerOnly, setFilterBestsellerOnly] = useState(false);
   const [customizingItem, setCustomizingItem] = useState(null);
+  const [highlightedItemId, setHighlightedItemId] = useState(targetItemId || null);
 
   const toggleVegOnly = () => {
     setFilterVegOnly((prev) => {
@@ -63,6 +68,43 @@ export default function RestaurantDetailPage() {
       RESTAURANTS[0]
     );
   }, [slug]);
+
+  // Auto-scroll and highlight dish if directed from Craving Roulette or search
+  useEffect(() => {
+    if (targetItemId || targetDish) {
+      let matchedId = targetItemId;
+      if (!matchedId && targetDish) {
+        for (const cat of restaurant.menuCategories) {
+          const found = cat.items.find((it) =>
+            it.name.toLowerCase().includes(targetDish.toLowerCase())
+          );
+          if (found) {
+            matchedId = found.id;
+            break;
+          }
+        }
+      }
+
+      if (matchedId) {
+        setHighlightedItemId(matchedId);
+        const timer = setTimeout(() => {
+          const el = document.getElementById(`dish-item-${matchedId}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 350);
+
+        const clearTimer = setTimeout(() => {
+          setHighlightedItemId(null);
+        }, 7000);
+
+        return () => {
+          clearTimeout(timer);
+          clearTimeout(clearTimer);
+        };
+      }
+    }
+  }, [targetItemId, targetDish, restaurant]);
 
   // Compute item quantity in cart (for non-customized or sum of same item)
   const getItemCartQuantity = (itemId) => {
@@ -333,11 +375,26 @@ export default function RestaurantDetailPage() {
                   const itemQtyInCart = getItemCartQuantity(item.id);
                   const primaryKey = getItemPrimaryCartKey(item.id);
 
+                  const isTargetDish = highlightedItemId === item.id;
+
                   return (
                     <div
                       key={item.id}
-                      className="bg-[#14141C]/95 backdrop-blur-md rounded-3xl p-5 border border-white/10 hover:border-rose-500/40 shadow-xl hover:shadow-2xl hover:shadow-rose-950/30 hover:-translate-y-1 transition-all duration-300 flex justify-between gap-4 group"
+                      id={`dish-item-${item.id}`}
+                      className={`relative rounded-3xl p-5 backdrop-blur-md transition-all duration-500 flex justify-between gap-4 group scroll-mt-36 ${
+                        isTargetDish
+                          ? 'bg-amber-950/30 border-2 border-amber-400 shadow-2xl shadow-amber-500/30 ring-4 ring-amber-400/25 scale-[1.02]'
+                          : 'bg-[#14141C]/95 border border-white/10 hover:border-rose-500/40 shadow-xl hover:shadow-2xl hover:shadow-rose-950/30 hover:-translate-y-1'
+                      }`}
                     >
+                      {/* Roulette Winner Badge */}
+                      {isTargetDish && (
+                        <div className="absolute -top-3.5 left-5 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 to-rose-500 text-black text-[10px] font-black uppercase tracking-wider shadow-lg shadow-amber-950/50 flex items-center gap-1.5 animate-bounce">
+                          <Sparkles className="w-3 h-3 fill-black text-black" />
+                          <span>Craving Roulette Pick!</span>
+                        </div>
+                      )}
+
                       {/* Left: Info */}
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
