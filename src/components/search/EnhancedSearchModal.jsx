@@ -227,7 +227,7 @@ export default function EnhancedSearchModal({ isOpen, onClose, initialQuery = ''
       onClick={onClose}
     >
       <div
-        className="w-full max-w-3xl bg-[#121218]/95 border border-white/15 rounded-3xl shadow-2xl shadow-rose-950/70 overflow-hidden flex flex-col max-h-[85vh] transition-all transform animate-scale-up"
+        className="w-full max-w-3xl bg-[#121218]/95 border border-white/15 rounded-3xl shadow-2xl shadow-rose-950/70 overflow-hidden flex flex-col max-h-[90vh] transition-all transform animate-scale-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* TOP ENHANCED SEARCH BAR */}
@@ -575,7 +575,7 @@ export default function EnhancedSearchModal({ isOpen, onClose, initialQuery = ''
         {/* FOOTER SHORTCUT HINTS */}
         <div className="px-5 py-3 border-t border-white/10 bg-[#0E0E14] flex flex-wrap items-center justify-between text-[11px] text-gray-400">
           <div className="flex items-center gap-3">
-            <span>
+            <span className="hidden sm:inline">
               Tip: Press <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-gray-200 font-mono text-[10px]">⌘K</kbd> or <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-gray-200 font-mono text-[10px]">Ctrl+K</kbd> anywhere to search
             </span>
           </div>

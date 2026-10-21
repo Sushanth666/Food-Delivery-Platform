@@ -100,7 +100,7 @@ export default function RewardsHubModal() {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-xl bg-[#14141C] border border-amber-500/30 rounded-3xl shadow-2xl p-6 sm:p-8 z-10 text-white overflow-hidden my-8"
+            className="relative w-full max-w-xl bg-[#14141C] border border-amber-500/30 rounded-3xl shadow-2xl p-5 sm:p-8 z-10 text-white overflow-y-auto max-h-[90vh] my-4 sm:my-8"
           >
             {/* Header */}
             <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-5">

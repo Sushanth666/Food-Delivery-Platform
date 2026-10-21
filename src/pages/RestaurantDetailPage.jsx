@@ -548,7 +548,7 @@ export default function RestaurantDetailPage() {
 
       {/* Floating Bottom Cart Bar (if user added items) */}
       {cartItems.length > 0 && (
-        <div className="fixed bottom-4 left-4 right-4 z-40 max-w-2xl mx-auto">
+        <div className="fixed bottom-18 md:bottom-4 left-4 right-4 z-40 max-w-2xl mx-auto">
           <button
             type="button"
             onClick={openCartDrawer}

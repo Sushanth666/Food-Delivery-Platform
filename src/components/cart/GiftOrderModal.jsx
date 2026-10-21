@@ -101,7 +101,7 @@ export default function GiftOrderModal({ isOpen, onClose, giftDetails, onSave })
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-lg bg-[#14141C] border border-white/15 rounded-3xl shadow-2xl p-6 sm:p-7 z-10 text-white overflow-hidden my-8"
+          className="relative w-full max-w-lg bg-[#14141C] border border-white/15 rounded-3xl shadow-2xl p-5 sm:p-7 z-10 text-white overflow-y-auto max-h-[90vh] my-4 sm:my-8"
         >
           {/* Header */}
           <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-4">

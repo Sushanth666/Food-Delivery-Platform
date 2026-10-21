@@ -118,7 +118,7 @@ export default function HeroBanner() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -25 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="w-full px-6 sm:px-12 lg:px-16 py-8 flex flex-col md:flex-row items-center justify-between gap-8"
+                className="w-full px-6 sm:px-12 lg:px-16 py-8 flex flex-col lg:flex-row items-center justify-between gap-8"
               >
                 {/* Card: FLAT 50% OFF */}
                 <div className="w-full sm:w-[320px] md:w-[340px] flex-shrink-0 bg-[#14141C]/90 backdrop-blur-2xl border border-white/15 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden group">
@@ -158,7 +158,7 @@ export default function HeroBanner() {
                 </div>
 
                 {/* Right Side Showcase for Slide 2 */}
-                <div className="flex-1 flex flex-col md:flex-row items-center justify-end gap-6 sm:gap-10">
+                <div className="flex-1 flex flex-col sm:flex-row items-center justify-end gap-6 sm:gap-10">
                   <div className="text-center md:text-left max-w-md">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-300 text-xs font-bold mb-3">
                       <Sparkles className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
@@ -201,7 +201,7 @@ export default function HeroBanner() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -25 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="w-full px-6 sm:px-12 lg:px-16 py-8 flex flex-col md:flex-row items-center justify-between gap-8"
+                className="w-full px-6 sm:px-12 lg:px-16 py-8 flex flex-col lg:flex-row items-center justify-between gap-8"
               >
                 {/* 3rd Image Card: GET 30% OFF */}
                 <div className="w-full sm:w-[320px] md:w-[340px] flex-shrink-0 bg-[#14141C]/90 backdrop-blur-2xl border border-white/15 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden group">
@@ -241,7 +241,7 @@ export default function HeroBanner() {
                 </div>
 
                 {/* Right Side Showcase for Slide 3 */}
-                <div className="flex-1 flex flex-col md:flex-row items-center justify-end gap-6 sm:gap-10">
+                <div className="flex-1 flex flex-col sm:flex-row items-center justify-end gap-6 sm:gap-10">
                   <div className="text-center md:text-left max-w-md">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-300 text-xs font-bold mb-3">
                       <Tag className="w-3.5 h-3.5 text-rose-400" />

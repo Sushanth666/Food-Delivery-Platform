@@ -444,7 +444,7 @@ export default function CravingWheelModal({ isOpen, onClose }) {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-lg bg-[#14141C] border border-white/15 rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col text-white text-center p-6 sm:p-8"
+            className="relative w-full max-w-lg bg-[#14141C] border border-white/15 rounded-3xl shadow-2xl overflow-y-auto max-h-[92vh] z-10 flex flex-col text-white text-center p-5 sm:p-8"
           >
             {/* Header */}
             <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-5">
