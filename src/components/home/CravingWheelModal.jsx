@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Award, ArrowRight, RotateCw, Utensils, Check } from 'lucide-react';
+import { X, Sparkles, Award, ArrowRight, RotateCw, Utensils, Check, Store } from 'lucide-react';
 import { useFilter } from '../../context/FilterContext';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 
 const WHEEL_ITEMS = [
-  { id: 'biryani', label: 'Hyderabadi Biryani', icon: '🍚', color: '#E11D48', type: 'category' },
-  { id: 'north-indian', label: 'Butter Naan & Paneer', icon: '🥘', color: '#881337', type: 'category' },
-  { id: 'pizza', label: 'Woodfired Pizza', icon: '🍕', color: '#D97706', type: 'category' },
-  { id: 'rolls', label: 'Kolkata Kathi Roll', icon: '🌯', color: '#059669', type: 'category' },
-  { id: 'chinese', label: 'Spicy Hakka Noodles', icon: '🍜', color: '#2563EB', type: 'category' },
-  { id: 'chaat', label: 'Crispy Pani Puri', icon: '🥟', color: '#7C3AED', type: 'category' },
-  { id: 'desserts', label: 'Gulab Jamun & Kulfi', icon: '🍨', color: '#DB2777', type: 'category' },
+  { id: 'biryani', label: 'Hyderabadi Biryani', icon: '🍚', color: '#E11D48', type: 'category', topRestSlug: 'paradise-meghana-biryani', topRestName: 'Paradise & Meghana Biryani' },
+  { id: 'north-indian', label: 'Butter Naan & Paneer', icon: '🥘', color: '#881337', type: 'category', topRestSlug: 'punjabi-dhaba-amritsar', topRestName: 'Pind Punjab Heritage Dhaba' },
+  { id: 'pizza', label: 'Woodfired Pizza', icon: '🍕', color: '#D97706', type: 'category', topRestSlug: 'toscano-italian-trattoria', topRestName: 'Toscano Pizzeria' },
+  { id: 'rolls', label: 'Kolkata Kathi Roll', icon: '🌯', color: '#059669', type: 'category', topRestSlug: 'paradise-meghana-biryani', topRestName: 'Paradise & Meghana Royal' },
+  { id: 'chinese', label: 'Spicy Hakka Noodles', icon: '🍜', color: '#2563EB', type: 'category', topRestSlug: 'mainland-dragon-wok', topRestName: 'Mainland Dragon Wok' },
+  { id: 'chaat', label: 'Crispy Pani Puri', icon: '🥟', color: '#7C3AED', type: 'category', topRestSlug: 'chandni-chowk-chaat-bhavan', topRestName: 'Chandni Chowk Chaat' },
+  { id: 'desserts', label: 'Gulab Jamun & Kulfi', icon: '🍨', color: '#DB2777', type: 'category', topRestSlug: 'anand-sweets-delights', topRestName: 'Anand Mithai & Desserts' },
   { id: 'coupon', label: 'FLAT 50% Coupon', icon: '🎟️', color: '#DC2626', type: 'coupon' },
 ];
 
 export default function CravingWheelModal({ isOpen, onClose }) {
+  const navigate = useNavigate();
   const { setSelectedCategory, setSearchTerm } = useFilter();
   const { applyCoupon, openCartDrawer } = useCart();
+  const { showToast } = useAuth();
 
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -49,15 +53,49 @@ export default function CravingWheelModal({ isOpen, onClose }) {
     }, 4200);
   };
 
-  const handleClaimWinner = () => {
+  const handleClaimWinner = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (!winner) return;
 
     if (winner.type === 'coupon') {
       applyCoupon('CRAVE50');
       openCartDrawer();
+      if (showToast) {
+        showToast({
+          type: 'success',
+          title: '🎟️ FLAT 50% Coupon Applied!',
+          message: 'Code CRAVE50 has been applied to your cart!',
+        });
+      }
     } else {
       setSelectedCategory(winner.id);
       setSearchTerm('');
+
+      if (showToast) {
+        showToast({
+          type: 'success',
+          title: `${winner.icon} ${winner.label} Filter Applied!`,
+          message: `Showing 10+ authentic restaurants serving delicious ${winner.label}.`,
+        });
+      }
+
+      // Navigate to homepage if user opened modal from another page
+      if (window.location.pathname !== '/') {
+        navigate('/');
+      }
+
+      // Smoothly scroll down to the restaurant list section
+      setTimeout(() => {
+        const el = document.getElementById('restaurants-list-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 900, behavior: 'smooth' });
+        }
+      }, 150);
     }
     onClose();
   };
@@ -209,6 +247,7 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                     <span>{winner.label}</span>
                   </div>
                   <button
+                    id="explore-wheel-winner-btn"
                     type="button"
                     onClick={handleClaimWinner}
                     className="mt-3 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-rose-950/50 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
@@ -216,6 +255,20 @@ export default function CravingWheelModal({ isOpen, onClose }) {
                     <span>{winner.type === 'coupon' ? 'Claim 50% OFF Coupon' : `Explore ${winner.label}`}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
+
+                  {winner.topRestSlug && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onClose();
+                        navigate(`/restaurant/${winner.topRestSlug}`);
+                      }}
+                      className="mt-2 w-full py-1 text-[11px] font-bold text-rose-300 hover:text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Store className="w-3 h-3 text-rose-400" />
+                      <span>Or jump straight to {winner.topRestName} →</span>
+                    </button>
+                  )}
                 </motion.div>
               ) : (
                 <p className="text-xs text-gray-400 font-medium">

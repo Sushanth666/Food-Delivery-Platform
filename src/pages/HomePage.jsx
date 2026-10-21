@@ -186,10 +186,14 @@ export default function HomePage() {
       <FilterBar />
 
       {/* Section Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div id="restaurants-list-section" className="flex items-center justify-between mb-6 scroll-mt-24">
         <div>
           <h2 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight flex items-center gap-2">
-            <span>All Authentic Restaurants</span>
+            <span>
+              {selectedCategory !== 'all'
+                ? `Restaurants for ${selectedCategory.toUpperCase().replace('-', ' ')}`
+                : 'All Authentic Restaurants'}
+            </span>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-950/70 text-rose-300 border border-rose-800/50 shadow-2xs">
               {filteredRestaurants.length} available
             </span>
@@ -198,6 +202,16 @@ export default function HomePage() {
             Handpicked gourmet eateries with exceptional ratings and swift express delivery
           </p>
         </div>
+
+        {selectedCategory !== 'all' && (
+          <button
+            type="button"
+            onClick={() => setSelectedCategory('all')}
+            className="text-xs font-bold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          >
+            Clear Filter
+          </button>
+        )}
       </div>
 
       {/* Restaurant Grid or Empty Results State */}
