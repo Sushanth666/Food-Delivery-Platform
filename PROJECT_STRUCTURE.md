@@ -20,10 +20,6 @@ Food Delivery Platform/
 │   ├── tablet/                   # 768x1024 tablet layout views
 │   └── mobile/                   # 375x812 responsive phone views
 │
-├── scripts/                      # Developer automation and generation utilities
-│   ├── download_all_dishes.mjs   # Automated high-res dish image downloader
-│   └── generate_restaurants.mjs  # Multi-city restaurant catalog generator
-│
 ├── src/                          # Application source code
 │   ├── assets/                   # Bundled graphics & hero banners
 │   ├── components/               # Modular, reusable component library

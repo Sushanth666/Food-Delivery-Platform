@@ -88,7 +88,6 @@ food-delivery-platform/
 │       ├── cuisines/             # 6 authentic regional cuisine images
 │       └── dishes/               # 605 localized dish photos (item-101 to item-705)
 ├── screenshots/                  # Verified mobile, tablet, and desktop captures
-├── scripts/                      # Dish downloader and catalog generator utilities
 ├── src/
 │   ├── components/               # Modular component library with barrel exports
 │   │   ├── ui/                   # Badges, pills, avatar, ambient background
