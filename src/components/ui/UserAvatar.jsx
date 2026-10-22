@@ -85,25 +85,12 @@ export default function UserAvatar({
   border = true,
 }) {
   const [imageError, setImageError] = useState(false);
+  const auth = useAuth();
 
-  let userAvatarTheme = null;
-  let userAvatarShape = null;
-  let userAvatarImage = null;
-  let userAvatarCustomColor = null;
-
-  try {
-    const auth = useAuth();
-    userAvatarTheme = auth?.user?.avatarTheme;
-    userAvatarShape = auth?.user?.avatarShape;
-    userAvatarImage = auth?.user?.avatarImage || null;
-    userAvatarCustomColor = auth?.user?.avatarCustomColor || null;
-  } catch {
-    // If rendered outside AuthProvider
-    userAvatarTheme = null;
-    userAvatarShape = null;
-    userAvatarImage = null;
-    userAvatarCustomColor = null;
-  }
+  const userAvatarTheme = auth?.user?.avatarTheme || null;
+  const userAvatarShape = auth?.user?.avatarShape || null;
+  const userAvatarImage = auth?.user?.avatarImage || null;
+  const userAvatarCustomColor = auth?.user?.avatarCustomColor || null;
 
   const effectiveImage = imageSrc !== undefined ? imageSrc : userAvatarImage;
   const activeThemeId = theme || userAvatarTheme || 'crimson';

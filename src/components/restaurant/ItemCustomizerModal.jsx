@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, Plus, Minus, Sparkles, ChefHat } from 'lucide-react';
+import { X, Check, Plus, Minus } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { DietaryBadge, DishNutritionBadge } from '../ui';
 
@@ -11,27 +11,30 @@ export default function ItemCustomizerModal({
   restaurant,
   onAddToCart,
 }) {
-  if (!isOpen || !item) return null;
-
-  const options = item.customizationOptions || {};
+  const options = item?.customizationOptions || {};
   const sizes = options.sizes || [];
   const addOns = options.addOns || [];
   const spiceLevels = options.spiceLevels || [];
 
-  const [selectedSize, setSelectedSize] = useState(() => sizes[0] || null);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [selectedAddOns, setSelectedAddOns] = useState([]);
-  const [selectedSpice, setSelectedSpice] = useState(() => spiceLevels[0] || null);
+  const [selectedSpice, setSelectedSpice] = useState(null);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [quantity, setQuantity] = useState(1);
 
   // Reset states when item changes
   useEffect(() => {
-    setSelectedSize(sizes[0] || null);
-    setSelectedAddOns([]);
-    setSelectedSpice(spiceLevels[0] || null);
-    setSpecialInstructions('');
-    setQuantity(1);
+    if (item) {
+      const opts = item.customizationOptions || {};
+      setSelectedSize(opts.sizes?.[0] || null);
+      setSelectedAddOns([]);
+      setSelectedSpice(opts.spiceLevels?.[0] || null);
+      setSpecialInstructions('');
+      setQuantity(1);
+    }
   }, [item]);
+
+  if (!isOpen || !item) return null;
 
   const toggleAddOn = (addon) => {
     if (selectedAddOns.some((a) => a.name === addon.name)) {
