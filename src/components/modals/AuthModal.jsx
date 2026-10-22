@@ -9,7 +9,6 @@ import {
   Eye,
   EyeOff,
   User,
-  Zap,
   Gift,
   Sparkles,
   ArrowRight,
@@ -23,18 +22,12 @@ export default function AuthModal() {
     setAuthModalTab,
     closeAuthModal,
     login,
-    loginWithPhone,
     signup,
-    demoLogin,
   } = useAuth();
 
   // Login form state
-  const [loginMethod, setLoginMethod] = useState('email'); // 'email' | 'phone'
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [loginPhone, setLoginPhone] = useState('');
-  const [loginOtp, setLoginOtp] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
   // Signup form state
@@ -59,44 +52,21 @@ export default function AuthModal() {
     e.preventDefault();
     setError('');
 
-    if (loginMethod === 'email') {
-      if (!loginEmail.trim() || !loginPassword.trim()) {
-        setError('Please fill in both your email and password.');
-        return;
-      }
-      if (!/\S+@\S+\.\S+/.test(loginEmail)) {
-        setError('Please enter a valid email address.');
-        return;
-      }
-
-      setLoading(true);
-      setTimeout(() => {
-        login(loginEmail, loginPassword);
-        setLoading(false);
-        closeAuthModal();
-      }, 400);
-    } else {
-      if (!loginPhone.trim()) {
-        setError('Please enter your mobile phone number.');
-        return;
-      }
-      if (!otpSent) {
-        setOtpSent(true);
-        setError('');
-        return;
-      }
-      if (!loginOtp.trim()) {
-        setError('Please enter the OTP sent to your phone (Use 1234).');
-        return;
-      }
-
-      setLoading(true);
-      setTimeout(() => {
-        loginWithPhone(loginPhone, loginOtp);
-        setLoading(false);
-        closeAuthModal();
-      }, 400);
+    if (!loginEmail.trim() || !loginPassword.trim()) {
+      setError('Please fill in both your email and password.');
+      return;
     }
+    if (!/\S+@\S+\.\S+/.test(loginEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    setLoading(true);
+    setTimeout(() => {
+      login(loginEmail, loginPassword);
+      setLoading(false);
+      closeAuthModal();
+    }, 400);
   };
 
   const handleSignupSubmit = (e) => {
@@ -135,15 +105,6 @@ export default function AuthModal() {
       setLoading(false);
       closeAuthModal();
     }, 400);
-  };
-
-  const handleDemoLogin = () => {
-    setLoading(true);
-    setTimeout(() => {
-      demoLogin();
-      setLoading(false);
-      closeAuthModal();
-    }, 300);
   };
 
   return (
@@ -229,192 +190,75 @@ export default function AuthModal() {
           {/* ======================================================== */}
           {authModalTab === 'login' ? (
             <div>
-              {/* One-Click Demo Login */}
-              <button
-                type="button"
-                onClick={handleDemoLogin}
-                className="w-full mb-4 py-2.5 px-3 rounded-2xl bg-gradient-to-r from-rose-900/40 via-purple-900/30 to-brand-900/40 hover:from-rose-900/60 hover:to-brand-900/60 border border-rose-500/30 text-rose-200 text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md group"
-              >
-                <Zap className="w-4 h-4 text-yellow-400 fill-yellow-400 group-hover:scale-110 transition-transform" />
-                <span>One-Click Demo Foodie Login</span>
-              </button>
-
-              {/* Email / Phone Toggle */}
-              <div className="grid grid-cols-2 gap-2 mb-3.5">
-                <button
-                  type="button"
-                  onClick={() => setLoginMethod('email')}
-                  className={`py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                    loginMethod === 'email'
-                      ? 'bg-white/10 text-white border border-white/15'
-                      : 'text-gray-400 hover:text-gray-200'
-                  }`}
-                >
-                  Email & Password
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLoginMethod('phone')}
-                  className={`py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                    loginMethod === 'phone'
-                      ? 'bg-white/10 text-white border border-white/15'
-                      : 'text-gray-400 hover:text-gray-200'
-                  }`}
-                >
-                  Mobile OTP 🇮🇳
-                </button>
-              </div>
-
               <form onSubmit={handleLoginSubmit} className="space-y-3.5">
-                {loginMethod === 'email' ? (
-                  <>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-300 mb-1">
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                          type="email"
-                          value={loginEmail}
-                          onChange={(e) => setLoginEmail(e.target.value)}
-                          placeholder="name@example.com"
-                          className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-rose-500 transition-colors"
-                        />
-                      </div>
-                    </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-300 mb-1">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="email"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      placeholder="name@example.com"
+                      autoFocus
+                      required
+                      className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-rose-500 transition-colors"
+                    />
+                  </div>
+                </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-gray-300 mb-1">
-                        Password
-                      </label>
-                      <div className="relative">
-                        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                          type={showLoginPassword ? 'text' : 'password'}
-                          value={loginPassword}
-                          onChange={(e) => setLoginPassword(e.target.value)}
-                          placeholder="Enter your password"
-                          className="w-full pl-10 pr-10 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-rose-500 transition-colors"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowLoginPassword(!showLoginPassword)}
-                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-                        >
-                          {showLoginPassword ? (
-                            <EyeOff className="w-4 h-4" />
-                          ) : (
-                            <Eye className="w-4 h-4" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-300 mb-1">
-                        Mobile Number
-                      </label>
-                      <div className="relative flex">
-                        <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-white/10 bg-white/5 text-xs text-gray-400 font-semibold">
-                          +91
-                        </span>
-                        <input
-                          type="tel"
-                          value={loginPhone}
-                          onChange={(e) => setLoginPhone(e.target.value)}
-                          placeholder="98765 43210"
-                          className="w-full pl-3 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-r-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-rose-500 transition-colors"
-                        />
-                      </div>
-                    </div>
-
-                    {otpSent && (
-                      <div>
-                        <label className="block text-xs font-bold text-gray-300 mb-1">
-                          Enter 4-Digit OTP (Use 1234)
-                        </label>
-                        <input
-                          type="text"
-                          maxLength={6}
-                          value={loginOtp}
-                          onChange={(e) => setLoginOtp(e.target.value)}
-                          placeholder="1234"
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-center text-sm font-black tracking-widest text-white placeholder-gray-500 focus:outline-hidden focus:border-rose-500 transition-colors"
-                        />
-                      </div>
-                    )}
-                  </>
-                )}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-bold text-gray-300">
+                      Password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setError('Password reset instructions sent to your email.')}
+                      className="text-[11px] font-semibold text-rose-400 hover:text-rose-300 transition-colors"
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type={showLoginPassword ? 'text' : 'password'}
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      required
+                      className="w-full pl-10 pr-10 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-rose-500 transition-colors"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowLoginPassword(!showLoginPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white cursor-pointer"
+                      aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showLoginPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-950/60 transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full mt-3 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-950/60 transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <span>
-                    {loading
-                      ? 'Authenticating...'
-                      : loginMethod === 'phone' && !otpSent
-                      ? 'Get OTP on Mobile'
-                      : 'Log In to CraveWave'}
-                  </span>
+                  <span>{loading ? 'Authenticating...' : 'Log In to CraveWave'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
 
-              {/* Social Login Buttons */}
-              <div className="relative my-4">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-white/10" />
-                </div>
-                <div className="relative flex justify-center text-[10px] uppercase font-bold text-gray-400">
-                  <span className="bg-[#13131A] px-2.5">or continue with</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                <button
-                  type="button"
-                  onClick={handleDemoLogin}
-                  className="py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-gray-300 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
-                >
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
-                    <path
-                      fill="#EA4335"
-                      d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"
-                    />
-                    <path
-                      fill="#4285F4"
-                      d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 17c1.8 3.7 5.6 6.5 10.1 6.5z"
-                    />
-                  </svg>
-                  <span>Google</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDemoLogin}
-                  className="py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-gray-300 hover:text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
-                >
-                  <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.89c.66-.8 1.11-1.92.99-3.04-1 .04-2.17.67-2.85 1.47-.6.69-1.13 1.83-1 2.93 1.13.09 2.24-.58 2.86-1.36z" />
-                  </svg>
-                  <span>Apple</span>
-                </button>
-              </div>
-
               {/* Switch to Signup */}
-              <div className="text-center text-xs text-gray-400">
+              <div className="text-center text-xs text-gray-400 mt-6 pt-4 border-t border-white/10">
                 Don't have an account yet?{' '}
                 <button
                   type="button"
