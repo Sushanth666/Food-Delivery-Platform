@@ -78,41 +78,47 @@ An elegant, responsive, and feature-complete food delivery single-page applicati
 
 ## 📁 Project Structure
 
+For a full directory breakdown and architecture guide, see [PROJECT_STRUCTURE.md](file:///c:/Users/susha/OneDrive/Desktop/Project%20Tasks/Food%20Delivery%20Platform/PROJECT_STRUCTURE.md).
+
 ```plaintext
 food-delivery-platform/
 ├── public/
-│   └── favicon.svg               # SVG brand favicon
+│   ├── favicon.svg               # SVG brand favicon
+│   └── images/                   # 605 local dish photos & cuisine imagery
+│       ├── cuisines/             # 6 authentic regional cuisine images
+│       └── dishes/               # 605 localized dish photos (item-101 to item-705)
+├── screenshots/                  # Verified mobile, tablet, and desktop captures
+├── scripts/                      # Dish downloader and catalog generator utilities
 ├── src/
-│   ├── components/
-│   │   ├── common/               # DietaryBadge, RatingPill, ConflictModal
-│   │   ├── layout/               # Navbar, Footer, MobileBottomNav
+│   ├── components/               # Modular component library with barrel exports
+│   │   ├── ui/                   # Badges, pills, avatar, ambient background
+│   │   ├── modals/               # All application dialogs and sheets
+│   │   ├── feedback/             # User toasts & notifications
+│   │   ├── cart/                 # CartDrawer, group order, gift order
 │   │   ├── home/                 # HeroBanner, CategoryBar, FilterBar, RestaurantCard
+│   │   ├── layout/               # Navbar, Footer, MobileBottomNav
 │   │   ├── restaurant/           # ItemCustomizerModal
-│   │   └── cart/                 # CartDrawer
-│   ├── context/
-│   │   ├── CartContext.jsx       # Cart state, item customizations, coupon discounts
-│   │   ├── OrderContext.jsx      # Order placement, driver info, timeline tracking
-│   │   └── FilterContext.jsx     # Global search, cuisine, veg/non-veg, sorting
-│   ├── data/
+│   │   ├── rewards/              # RewardsHubModal & CraveCoins
+│   │   ├── search/               # EnhancedSearchModal with ⌘K
+│   │   ├── tracking/             # DeliveryChatDrawer
+│   │   └── index.js              # Master component barrel export
+│   ├── context/                  # React Context state management
+│   │   ├── AuthContext.jsx       # User auth, profile, Gold VIP, and wallet coins
+│   │   ├── CartContext.jsx       # Multi-item cart, customizations, coupons, fees
+│   │   ├── FilterContext.jsx     # Active category, cuisines, veg toggle, search
+│   │   ├── LocationContext.jsx   # GPS geolocation & Indian address picker
+│   │   ├── OrderContext.jsx      # Order placement, active history & 5-step simulation
+│   │   └── WishlistContext.jsx   # Favorited restaurants & dishes
+│   ├── data/                     # Mock databases & initial state catalogs
 │   │   ├── categories.js         # Food categories with icons & tags
 │   │   ├── coupons.js            # Active discount codes & validation rules
-│   │   ├── restaurants.js        # Curated restaurants catalog & menu items
+│   │   ├── featuredCuisines.js   # Featured cuisine cards
+│   │   ├── restaurants.js        # Curated catalog of restaurants & 605 menu items
 │   │   └── mockOrders.js         # Initial order history & timeline step definitions
-│   ├── pages/
-│   │   ├── HomePage.jsx          # Discovery, search, and restaurant listings
-│   │   ├── RestaurantDetailPage.jsx # Restaurant banner, sticky menus, item cards
-│   │   ├── CartPage.jsx          # Dedicated cart page
-│   │   ├── CheckoutPage.jsx      # Address validation & payment options
-│   │   ├── OrderConfirmationPage.jsx # Confetti confirmation & receipt
-│   │   ├── OrderTrackingPage.jsx # 5-step live tracking & simulated GPS map
-│   │   ├── OrderHistoryPage.jsx  # Past orders with 1-click re-ordering
-│   │   └── NotFoundPage.jsx      # 404 handler
-│   ├── utils/
-│   │   ├── formatCurrency.js     # Currency formatter ($USD)
-│   │   ├── calculations.js       # Bill, discount, and fee calculation engine
-│   │   └── storage.js            # Safe LocalStorage helper
+│   ├── pages/                    # Top-level page views (Home, Detail, Cart, Checkout, Track, Orders)
+│   ├── utils/                    # Bill calculations, currency formatting, nutrition, storage
 │   ├── App.jsx                   # Route configurations & layout shell
-│   ├── index.css                 # Tailwind directives & custom utility classes
+│   ├── index.css                 # Tailwind directives, keyframe animations & luxury theme
 │   └── main.jsx                  # React DOM root with BrowserRouter
 ├── tailwind.config.js
 ├── vite.config.js
