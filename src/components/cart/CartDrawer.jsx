@@ -240,9 +240,9 @@ export default function CartDrawer() {
                     <div className="text-xs font-bold uppercase tracking-wider text-gray-400">
                       Items Ordered ({bill.itemCount})
                     </div>
-                    {cartItems.map((item) => (
+                    {cartItems.map((item, idx) => (
                       <div
-                        key={item.cartKey}
+                        key={item.cartKey || item.id || `cart-${idx}`}
                         className="p-3.5 rounded-2xl bg-[#1A1A22] border border-white/10 flex items-start gap-3 relative group"
                       >
                         <div className="pt-0.5">

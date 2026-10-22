@@ -27,8 +27,16 @@ export default function OrderConfirmationPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const { getOrderById } = useOrders();
+  const { scratchCards } = useAuth();
+
+  const [activeScratchCard, setActiveScratchCard] = useState(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   const order = getOrderById(orderId);
+  const latestCard = scratchCards?.[0] || null;
+  const themeObj = (order?.isGiftOrder && order?.giftDetails)
+    ? (GIFT_THEMES?.[order.giftDetails.theme] || GIFT_THEMES?.birthday || {})
+    : {};
 
   useEffect(() => {
     // Fire celebratory particles
@@ -38,7 +46,7 @@ export default function OrderConfirmationPage() {
         spread: 60,
         origin: { y: 0.5 },
       });
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, []);

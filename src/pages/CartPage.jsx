@@ -183,9 +183,9 @@ export default function CartPage() {
               Selected Items ({bill.itemCount})
             </div>
 
-            {cartItems.map((item) => (
+            {cartItems.map((item, idx) => (
               <div
-                key={item.cartKey}
+                key={item.cartKey || item.id || `cart-page-${idx}`}
                 className="bg-[#14141C]/95 backdrop-blur-md rounded-3xl p-5 border border-white/10 shadow-xl flex items-start gap-4"
               >
                 <div className="pt-1">

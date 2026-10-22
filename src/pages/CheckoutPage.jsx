@@ -536,9 +536,9 @@ export default function CheckoutPage() {
 
                 {/* Items List preview */}
                 <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                  {cartItems.map((item) => (
+                  {cartItems.map((item, idx) => (
                     <div
-                      key={item.cartKey}
+                      key={item.cartKey || item.id || `checkout-${idx}`}
                       className="flex justify-between items-center text-xs"
                     >
                       <div className="flex items-center gap-2 truncate pr-2">
