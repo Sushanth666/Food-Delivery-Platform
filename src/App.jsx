@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import MobileBottomNav from './components/layout/MobileBottomNav';
-import CartDrawer from './components/cart/CartDrawer';
-import ConflictModal from './components/common/ConflictModal';
-import LocationModal from './components/common/LocationModal';
+import { Navbar, Footer, MobileBottomNav, CartDrawer } from './components';
+import {
+  ConflictModal,
+  LocationModal,
+  WishlistModal,
+  AuthModal,
+  LogoutModal,
+  GoldClubModal,
+  RewardsHubModal,
+} from './components/modals';
+import { AmbientBackground } from './components/ui';
+import { AuthToast } from './components/feedback';
 
 import HomePage from './pages/HomePage';
 import RestaurantDetailPage from './pages/RestaurantDetailPage';
@@ -24,12 +30,8 @@ import { FilterProvider } from './context/FilterContext';
 import { CartProvider } from './context/CartContext';
 import { OrderProvider } from './context/OrderContext';
 import { LocationProvider } from './context/LocationContext';
-import WishlistModal from './components/common/WishlistModal';
-import AuthModal from './components/common/AuthModal';
-import LogoutModal from './components/common/LogoutModal';
-import AuthToast from './components/common/AuthToast';
-import GoldClubModal from './components/common/GoldClubModal';
-import RewardsHubModal from './components/rewards/RewardsHubModal';
+
+import { AnimatePresence, motion } from 'framer-motion';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -50,29 +52,41 @@ export default function App() {
           <FilterProvider>
             <CartProvider>
               <OrderProvider>
-                <div className="min-h-screen flex flex-col bg-[#0B0B0E] bg-dark-luxury text-gray-100 selection:bg-brand-500 selection:text-white">
+                <div className="min-h-screen flex flex-col bg-[#0B0B0E] bg-dark-luxury text-gray-100 selection:bg-brand-500 selection:text-white relative">
+                  <AmbientBackground />
                   <ScrollToTop />
                   {/* Global Navigation */}
                   <Navbar />
 
-                {/* Main Page Route Views */}
-                <div className="flex-1 flex flex-col">
-                  <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/restaurant/:slug" element={<RestaurantDetailPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/checkout" element={<CheckoutPage />} />
-                    <Route
-                      path="/order-confirmation/:orderId"
-                      element={<OrderConfirmationPage />}
-                    />
-                    <Route path="/track/:orderId" element={<OrderTrackingPage />} />
-                    <Route path="/orders" element={<OrderHistoryPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                  </Routes>
-                </div>
+                  {/* Main Page Route Views with Cinematic Page Transitions */}
+                  <div className="flex-1 flex flex-col relative z-10">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={location.pathname}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                        className="flex-1 flex flex-col"
+                      >
+                        <Routes location={location}>
+                          <Route path="/" element={<HomePage />} />
+                          <Route path="/restaurant/:slug" element={<RestaurantDetailPage />} />
+                          <Route path="/cart" element={<CartPage />} />
+                          <Route path="/checkout" element={<CheckoutPage />} />
+                          <Route
+                            path="/order-confirmation/:orderId"
+                            element={<OrderConfirmationPage />}
+                          />
+                          <Route path="/track/:orderId" element={<OrderTrackingPage />} />
+                          <Route path="/orders" element={<OrderHistoryPage />} />
+                          <Route path="/login" element={<LoginPage />} />
+                          <Route path="/signup" element={<SignupPage />} />
+                          <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
 
               {/* Overlays, Drawers & Location Modal */}
               <CartDrawer />

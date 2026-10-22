@@ -22,10 +22,9 @@ import {
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { formatCurrency } from '../../utils/formatCurrency';
-import DietaryBadge from '../common/DietaryBadge';
+import { DietaryBadge } from '../ui';
+import { GroupOrderModal, GiftOrderModal } from '../modals';
 import { COUPONS } from '../../data/coupons';
-import GroupOrderModal from './GroupOrderModal';
-import GiftOrderModal from './GiftOrderModal';
 
 export default function CartDrawer() {
   const {
@@ -52,7 +51,7 @@ export default function CartDrawer() {
     toggleEvFleet,
   } = useCart();
 
-  const { isGoldMember, walletCoins, openGoldModal } = useAuth();
+  const { isGoldMember, walletCoins, openGoldModal, isAuthenticated, openLoginModal } = useAuth();
   const navigate = useNavigate();
   const [couponInput, setCouponInput] = useState('');
   const [couponFeedback, setCouponFeedback] = useState(null);
@@ -139,7 +138,29 @@ export default function CartDrawer() {
               </div>
 
               {/* Cart Content */}
-              {cartItems.length === 0 ? (
+              {!isAuthenticated ? (
+                <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                  <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-rose-950/60 to-purple-950/40 border border-rose-800/40 flex items-center justify-center text-rose-400 mb-4 shadow-lg shadow-rose-950/40">
+                    <ShoppingBag className="w-10 h-10" />
+                  </div>
+                  <h4 className="text-xl font-black font-display text-white">
+                    Sign In to Access Your Cart
+                  </h4>
+                  <p className="text-sm text-gray-400 mt-2 max-w-xs leading-relaxed">
+                    Please sign in to your CraveWave account to add delicious food, manage your cart, and place orders.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeCartDrawer();
+                      openLoginModal();
+                    }}
+                    className="mt-6 w-full max-w-xs py-3.5 px-6 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-rose-950/60 active:scale-95 transition-all cursor-pointer"
+                  >
+                    Sign In / Create Account
+                  </button>
+                </div>
+              ) : cartItems.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
                   <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-rose-950/60 to-purple-950/40 border border-rose-800/40 flex items-center justify-center text-rose-400 mb-4">
                     <ShoppingBag className="w-10 h-10" />
@@ -572,7 +593,7 @@ export default function CartDrawer() {
                     id="drawer-checkout-button"
                     type="button"
                     onClick={handleProceedToCheckout}
-                    className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-brand-600 via-rose-600 to-brand-600 hover:from-brand-500 hover:to-rose-500 text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-rose-950/80 flex items-center justify-between transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                    className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-brand-600 via-rose-600 to-brand-600 hover:from-brand-500 hover:to-rose-500 text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-rose-950/80 flex items-center justify-between transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer btn-shine"
                   >
                     <div className="flex flex-col text-left">
                       <span className="text-xs uppercase tracking-wider text-rose-200 font-semibold">

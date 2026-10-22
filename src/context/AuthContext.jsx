@@ -26,8 +26,9 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
       const stored = localStorage.getItem('cravewave_user');
-      if (!stored) return DEMO_USER;
+      if (!stored) return null; // Guest by default until login
       const parsed = JSON.parse(stored);
+      if (!parsed) return null;
       return {
         ...DEMO_USER,
         ...parsed,
@@ -36,7 +37,7 @@ export function AuthProvider({ children }) {
         walletCoins: parsed.walletCoins !== undefined ? parsed.walletCoins : 450,
       };
     } catch {
-      return DEMO_USER;
+      return null;
     }
   });
 
@@ -233,7 +234,18 @@ export function AuthProvider({ children }) {
     confirmLogout();
   };
 
-  const openGoldModal = () => setIsGoldModalOpen(true);
+  const openGoldModal = () => {
+    if (!user) {
+      showToast({
+        type: 'warning',
+        title: 'Sign In Required',
+        message: 'Please sign in to join or view CraveWave Gold VIP Membership!',
+      });
+      openLoginModal();
+      return;
+    }
+    setIsGoldModalOpen(true);
+  };
   const closeGoldModal = () => setIsGoldModalOpen(false);
 
   const upgradeToGold = (plan = 'Quarterly VIP (3 Months)') => {
@@ -295,7 +307,18 @@ export function AuthProvider({ children }) {
     });
   };
 
-  const openRewardsHub = () => setIsRewardsHubOpen(true);
+  const openRewardsHub = () => {
+    if (!user) {
+      showToast({
+        type: 'warning',
+        title: 'Sign In Required',
+        message: 'Please sign in to access CraveCoins & Rewards Hub!',
+      });
+      openLoginModal();
+      return;
+    }
+    setIsRewardsHubOpen(true);
+  };
   const closeRewardsHub = () => setIsRewardsHubOpen(false);
 
   const openScratchModal = (card) => {

@@ -118,3 +118,259 @@
 .badge-glow-emerald {
   box-shadow: 0 0 12px -2px rgba(16, 185, 129, 0.4);
 }
+
+.badge-glow-amber {
+  box-shadow: 0 0 14px -2px rgba(245, 158, 11, 0.45);
+}
+
+/* ======================================================== */
+/* SIGNATURE UNIQUE CRAVEWAVE ANIMATIONS & KEYFRAMES        */
+/* ======================================================== */
+
+/* 1. Floating Celestial Food Orbit */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-1.5deg);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 6s ease-in-out infinite;
+}
+
+/* 2. Luxury Diagonal Sheen Beam Sweep */
+@keyframes sheen-sweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  30%, 100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+.animate-sheen-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-sheen-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  animation: sheen-sweep 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+/* 3. Golden VIP Aura Moving Gradient Border */
+@keyframes gold-aura {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gold-gradient-border {
+  background: linear-gradient(90deg, #F59E0B, #E11D48, #FBBF24, #D97706, #F59E0B);
+  background-size: 300% 300%;
+  animation: gold-aura 4s ease infinite;
+}
+
+/* 4. Breathing Gourmet Glow */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px -3px rgba(225, 29, 72, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 35px 2px rgba(225, 29, 72, 0.65);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* 5. Realistic Flame Flicker (for Bestsellers & Trending) */
+@keyframes flame-flicker {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.7));
+  }
+  25% {
+    transform: scale(1.08, 0.95) rotate(-2deg);
+    filter: drop-shadow(0 0 9px rgba(239, 68, 68, 0.85));
+  }
+  50% {
+    transform: scale(0.96, 1.05) rotate(2deg);
+    filter: drop-shadow(0 0 7px rgba(245, 158, 11, 0.8));
+  }
+  75% {
+    transform: scale(1.04, 0.98) rotate(-1deg);
+    filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.9));
+  }
+}
+
+.animate-flame {
+  display: inline-block;
+  animation: flame-flicker 1.8s ease-in-out infinite;
+}
+
+/* 6. Expanding Radar Waves (for Live Order Tracking) */
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.animate-radar {
+  animation: radar-pulse 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+/* 7. Delivery Bike Driving Bounce */
+@keyframes bike-ride {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(1px) rotate(0.5deg);
+  }
+  75% {
+    transform: translateY(-1.5px) rotate(0deg);
+  }
+}
+
+.animate-bike {
+  animation: bike-ride 0.9s ease-in-out infinite;
+}
+
+/* 8. Road Dash Move */
+@keyframes road-dash {
+  0% {
+    background-position: 0px 0;
+  }
+  100% {
+    background-position: -40px 0;
+  }
+}
+
+.animate-road {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.6) 0px,
+    rgba(255, 255, 255, 0.6) 16px,
+    transparent 16px,
+    transparent 32px
+  );
+  animation: road-dash 0.6s linear infinite;
+}
+
+/* 9. Interactive Card Hover Physics */
+.card-interactive {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease;
+}
+
+.card-interactive:hover {
+  transform: translateY(-4px) scale(1.008);
+  box-shadow: 0 16px 36px -10px rgba(225, 29, 72, 0.25),
+              0 0 1px 1px rgba(255, 255, 255, 0.12);
+  border-color: rgba(225, 29, 72, 0.45);
+}
+
+/* 10. Shimmering Button Hover Effect */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: all 0.6s ease;
+}
+
+.btn-shine:hover::before {
+  left: 100%;
+}
+
+/* 11. Cart Badge Pop / Counter Bounce */
+@keyframes counter-bump {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.4);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bump {
+  animation: counter-bump 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 12. Ambient Glowing Aurora Orbs */
+.aurora-orb {
+  filter: blur(80px);
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: float-slow 10s ease-in-out infinite alternate;
+}

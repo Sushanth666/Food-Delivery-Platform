@@ -20,7 +20,7 @@ import {
 import { RESTAURANTS } from '../../data/restaurants';
 import { useCart } from '../../context/CartContext';
 import { formatCurrency } from '../../utils/formatCurrency';
-import DietaryBadge from '../common/DietaryBadge';
+import { DietaryBadge } from '../ui';
 
 const POPULAR_SEARCH_TAGS = [
   { label: 'Biryani', icon: '🔥' },

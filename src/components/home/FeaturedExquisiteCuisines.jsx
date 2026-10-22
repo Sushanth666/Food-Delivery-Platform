@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Heart, Star } from 'lucide-react';
 import { FEATURED_EXQUISITE_CUISINES } from '../../data/featuredCuisines';
 import { useWishlist } from '../../context/WishlistContext';
+import heroFallback from '../../assets/hero.png';
 
 export default function FeaturedExquisiteCuisines() {
   const { isWishlisted, toggleWishlist } = useWishlist();
@@ -24,7 +25,7 @@ export default function FeaturedExquisiteCuisines() {
           return (
             <div
               key={item.id}
-              className="group bg-[#15151B] border border-white/10 hover:border-brand-500/50 rounded-2xl p-2.5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-rose-950/30"
+              className="group bg-[#15151B] border border-white/10 hover:border-brand-500/50 rounded-2xl p-2.5 flex flex-col justify-between card-interactive"
             >
               {/* Dish / Restaurant Photo */}
               <div className="relative aspect-[16/11] rounded-xl overflow-hidden bg-gray-900">
@@ -32,8 +33,11 @@ export default function FeaturedExquisiteCuisines() {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
-                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = heroFallback;
+                    }}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                   />
                 </Link>
 
@@ -82,7 +86,7 @@ export default function FeaturedExquisiteCuisines() {
               {/* VIEW MENU Action Button */}
               <Link
                 to={`/restaurant/${item.slug}`}
-                className="mt-3 w-full py-2 px-2 rounded-xl bg-gradient-to-r from-brand-600 via-rose-600 to-brand-600 hover:from-brand-500 hover:to-rose-500 text-white text-[11px] font-black uppercase tracking-wider text-center block shadow-md shadow-brand-950/40 transition-all active:scale-98"
+                className="mt-3 w-full py-2 px-2 rounded-xl bg-gradient-to-r from-brand-600 via-rose-600 to-brand-600 hover:from-brand-500 hover:to-rose-500 text-white text-[11px] font-black uppercase tracking-wider text-center block shadow-md shadow-brand-950/40 transition-all active:scale-98 btn-shine"
               >
                 VIEW MENU
               </Link>

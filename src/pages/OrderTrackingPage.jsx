@@ -167,7 +167,7 @@ export default function OrderTrackingPage() {
                     return (
                       <div key={st.step} className="flex flex-col items-center">
                         <div
-                          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all ${
+                          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all relative ${
                             isCompleted
                               ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950/50'
                               : isCurrent
@@ -175,6 +175,9 @@ export default function OrderTrackingPage() {
                               : 'bg-[#1C1C26] text-gray-500 border border-white/5'
                           }`}
                         >
+                          {isCurrent && (
+                            <div className="absolute inset-0 rounded-2xl border-2 border-rose-500 animate-radar pointer-events-none" />
+                          )}
                           <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                         </div>
                         <span
@@ -231,8 +234,11 @@ export default function OrderTrackingPage() {
                     transform: `translateX(${Math.min(currentStep * 18, 80)}%)`,
                   }}
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-rose-600 text-white flex items-center justify-center shadow-xl shadow-rose-950/60 animate-bounce-subtle">
-                    <Bike className="w-6 h-6 stroke-[2.5]" />
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-rose-600 text-white flex items-center justify-center shadow-xl shadow-rose-950/60 animate-bike">
+                      <Bike className="w-6 h-6 stroke-[2.5]" />
+                    </div>
+                    <div className="absolute -inset-1 rounded-2xl border border-rose-400/60 animate-radar pointer-events-none" />
                   </div>
                   <div className="bg-black/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-xs shadow-lg">
                     <span className="font-extrabold text-amber-300">

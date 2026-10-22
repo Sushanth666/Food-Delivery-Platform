@@ -42,7 +42,7 @@ export const INITIAL_MOCK_ORDERS = [
     date: '2026-10-14T19:30:00Z',
     restaurantId: 'rest-1',
     restaurantName: 'Paradise & Meghana Royal Biryani',
-    restaurantImage: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=400&q=80',
+    restaurantImage: '/images/hero_biryani.jpg',
     status: 'Delivered',
     currentStep: 5,
     items: [
@@ -94,7 +94,7 @@ export const INITIAL_MOCK_ORDERS = [
     date: '2026-10-10T13:15:00Z',
     restaurantId: 'rest-2',
     restaurantName: 'Murugan Tiffin & Dosa Corner',
-    restaurantImage: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=400&q=80',
+    restaurantImage: '/images/hero_butter_chicken.jpg',
     status: 'Delivered',
     currentStep: 5,
     items: [

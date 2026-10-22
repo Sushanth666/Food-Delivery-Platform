@@ -21,10 +21,9 @@ import {
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { formatCurrency } from '../utils/formatCurrency';
-import DietaryBadge from '../components/common/DietaryBadge';
+import { DietaryBadge } from '../components/ui';
+import { GroupOrderModal, GiftOrderModal } from '../components/modals';
 import { COUPONS } from '../data/coupons';
-import GroupOrderModal from '../components/cart/GroupOrderModal';
-import GiftOrderModal from '../components/cart/GiftOrderModal';
 
 export default function CartPage() {
   const navigate = useNavigate();

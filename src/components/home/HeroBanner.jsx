@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Sparkles, Tag } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import butterChickenImg from '../../assets/hero_butter_chicken.jpg';
+import biryaniImg from '../../assets/hero_biryani.jpg';
+import paneerTikkaImg from '../../assets/hero_paneer_tikka.jpg';
 
 export default function HeroBanner() {
   const { applyCoupon, openCartDrawer, coupon } = useCart();
@@ -81,14 +84,14 @@ export default function HeroBanner() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -25 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="w-full px-6 sm:px-10 lg:px-14 py-8 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12"
+                className="w-full px-6 sm:px-8 md:px-10 lg:px-14 py-8 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 lg:gap-12"
               >
                 {/* Image Left: Circular Kadai Platter with Naan */}
-                <div className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 lg:w-[320px] lg:h-[320px] flex items-center justify-center">
+                <div className="relative flex-shrink-0 w-60 h-60 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-[320px] lg:h-[320px] flex items-center justify-center animate-float-slow">
                   <div className="absolute inset-0 rounded-full bg-rose-600/20 blur-2xl pointer-events-none" />
                   <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl shadow-black/95 border-2 border-white/15 group">
                     <img
-                      src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=85"
+                      src={butterChickenImg}
                       alt="Kadai Butter Chicken Feast with Naan"
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
@@ -140,7 +143,7 @@ export default function HeroBanner() {
                   <button
                     type="button"
                     onClick={() => handleOrderNow('CRAVE50')}
-                    className={`mt-5 w-full py-3 px-8 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${
+                    className={`mt-5 w-full py-3 px-8 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer btn-shine ${
                       codeApplied || coupon?.code === 'CRAVE50'
                         ? 'bg-emerald-600 text-white shadow-emerald-950/60'
                         : 'bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-rose-950/80 hover:shadow-rose-900 hover:scale-102'
@@ -180,9 +183,9 @@ export default function HeroBanner() {
                     </div>
                   </div>
 
-                  <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-2xl border-2 border-white/10 flex-shrink-0 group">
+                  <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-2xl border-2 border-white/10 flex-shrink-0 group animate-float-reverse">
                     <img
-                      src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=600&q=80"
+                      src={biryaniImg}
                       alt="Royal Hyderabadi Biryani"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
@@ -223,7 +226,7 @@ export default function HeroBanner() {
                   <button
                     type="button"
                     onClick={() => handleOrderNow('TASTY30')}
-                    className={`mt-5 w-full py-3 px-8 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${
+                    className={`mt-5 w-full py-3 px-8 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer btn-shine ${
                       codeApplied || coupon?.code === 'TASTY30'
                         ? 'bg-emerald-600 text-white shadow-emerald-950/60'
                         : 'bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-rose-950/80 hover:shadow-rose-900 hover:scale-102'
@@ -263,9 +266,9 @@ export default function HeroBanner() {
                     </div>
                   </div>
 
-                  <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-2xl border-2 border-white/10 flex-shrink-0 group">
+                  <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-2xl border-2 border-white/10 flex-shrink-0 group animate-float-slow">
                     <img
-                      src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=600&q=80"
+                      src={paneerTikkaImg}
                       alt="Tandoori Paneer Tikka Starters"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />

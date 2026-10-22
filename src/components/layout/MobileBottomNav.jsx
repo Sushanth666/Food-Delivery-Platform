@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, Clock, User } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import UserAvatar from '../common/UserAvatar';
+import { UserAvatar } from '../ui';
 
 export default function MobileBottomNav() {
   const location = useLocation();

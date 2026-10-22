@@ -18,10 +18,9 @@ import {
 import { RESTAURANTS } from '../data/restaurants';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../utils/formatCurrency';
-import DietaryBadge from '../components/common/DietaryBadge';
-import RatingPill from '../components/common/RatingPill';
-import ItemCustomizerModal from '../components/restaurant/ItemCustomizerModal';
-import DishNutritionBadge from '../components/common/DishNutritionBadge';
+import { DietaryBadge, RatingPill, DishNutritionBadge } from '../components/ui';
+import { ItemCustomizerModal } from '../components/modals';
+import heroFallback from '../assets/hero.png';
 
 export default function RestaurantDetailPage() {
   const { slug } = useParams();
@@ -184,6 +183,10 @@ export default function RestaurantDetailPage() {
             <img
               src={restaurant.bannerImage || restaurant.image}
               alt={restaurant.name}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = heroFallback;
+              }}
               className="w-full h-full object-cover opacity-40 brightness-75 scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/70 to-transparent" />
@@ -400,7 +403,7 @@ export default function RestaurantDetailPage() {
                       className={`relative rounded-3xl p-5 backdrop-blur-md transition-all duration-500 flex justify-between gap-4 group scroll-mt-36 ${
                         isTargetDish
                           ? 'bg-amber-950/30 border-2 border-amber-400 shadow-2xl shadow-amber-500/30 ring-4 ring-amber-400/25 scale-[1.02]'
-                          : 'bg-[#14141C]/95 border border-white/10 hover:border-rose-500/40 shadow-xl hover:shadow-2xl hover:shadow-rose-950/30 hover:-translate-y-1'
+                          : 'bg-[#14141C]/95 border border-white/10 shadow-xl card-interactive'
                       }`}
                     >
                       {/* Roulette Winner Badge */}
@@ -418,7 +421,7 @@ export default function RestaurantDetailPage() {
                             <DietaryBadge isVeg={item.isVeg} size="sm" />
                             {item.isBestseller && (
                               <span className="px-2 py-0.5 rounded-full text-[10px] font-black tracking-wide uppercase bg-amber-950/60 text-amber-300 border border-amber-600/40 flex items-center gap-1 shadow-2xs">
-                                <Sparkles className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
+                                <Sparkles className="w-2.5 h-2.5 fill-amber-400 text-amber-400 animate-flame" />
                                 <span>Bestseller</span>
                               </span>
                             )}
@@ -506,7 +509,7 @@ export default function RestaurantDetailPage() {
                             <button
                               type="button"
                               onClick={() => handleAddItem(item)}
-                              className="w-full py-1.5 px-3 rounded-xl bg-gradient-to-r from-rose-950/50 to-purple-950/30 border border-rose-500/40 text-rose-300 hover:from-brand-600 hover:to-rose-600 hover:text-white hover:border-transparent font-extrabold text-xs shadow-xs hover:shadow-lg hover:shadow-rose-950/50 transition-all active:scale-95 flex items-center justify-center gap-1 group/btn cursor-pointer"
+                              className="w-full py-1.5 px-3 rounded-xl bg-gradient-to-r from-rose-950/50 to-purple-950/30 border border-rose-500/40 text-rose-300 hover:from-brand-600 hover:to-rose-600 hover:text-white hover:border-transparent font-extrabold text-xs shadow-xs hover:shadow-lg hover:shadow-rose-950/50 transition-all active:scale-95 flex items-center justify-center gap-1 group/btn cursor-pointer btn-shine"
                             >
                               <Plus className="w-3.5 h-3.5 stroke-[3]" />
                               <span>{itemQtyInCart > 0 ? `Add (${itemQtyInCart})` : 'ADD'}</span>

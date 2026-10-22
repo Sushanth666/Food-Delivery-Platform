@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, Plus, Minus, Sparkles, ChefHat } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatCurrency';
-import DietaryBadge from '../common/DietaryBadge';
-import DishNutritionBadge from '../common/DishNutritionBadge';
+import { DietaryBadge, DishNutritionBadge } from '../ui';
 
 export default function ItemCustomizerModal({
   isOpen,

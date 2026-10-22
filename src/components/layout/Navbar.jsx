@@ -23,11 +23,8 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { useFilter } from '../../context/FilterContext';
-import EditProfileModal from '../common/EditProfileModal';
-import UserAvatar from '../common/UserAvatar';
-import EnhancedSearchModal from '../search/EnhancedSearchModal';
-import CravingWheelModal from '../home/CravingWheelModal';
-import OffersNotificationsModal from '../common/OffersNotificationsModal';
+import { EditProfileModal, OffersNotificationsModal, EnhancedSearchModal, CravingWheelModal } from '../modals';
+import { UserAvatar } from '../ui';
 
 export default function Navbar() {
   const {
@@ -74,20 +71,20 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 bg-[#0B0B0E]/95 backdrop-blur-xl border-b border-white/10 transition-all">
-      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-3 sm:gap-4 md:gap-5">
+      <div className="w-full max-w-[1536px] mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20 gap-2 sm:gap-4 md:gap-5">
           {/* LEFT: Logo & Delivering To Pill */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-4 min-w-0">
             {/* CraveWave Brand Logo */}
-            <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/60 group-hover:scale-105 transition-transform border border-white/10 shrink-0">
-                <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6" />
+            <Link to="/" className="flex items-center gap-1.5 xs:gap-2 sm:gap-2.5 group shrink-0">
+              <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg xs:rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-md sm:shadow-lg shadow-rose-950/60 group-hover:scale-105 group-hover:rotate-3 transition-transform border border-white/10 shrink-0">
+                <UtensilsCrossed className="w-4 h-4 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:rotate-12" />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="text-lg sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-300 transition-colors leading-tight">
+                <span className="text-base xs:text-lg sm:text-2xl font-black font-display tracking-tight text-white group-hover:text-rose-300 transition-colors leading-none">
                   Crave<span className="text-[#E11D48]">Wave</span>
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-rose-400 leading-none hidden sm:block">
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-rose-400 leading-none hidden sm:block mt-0.5">
                   Food Delivered Fast
                 </span>
               </div>
@@ -97,21 +94,21 @@ export default function Navbar() {
             <button
               type="button"
               onClick={openLocationModal}
-              className="h-10 sm:h-11 flex items-center gap-1.5 sm:gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl text-left transition-all duration-200 group max-w-[130px] sm:max-w-[200px] md:max-w-[240px] shrink-0 cursor-pointer"
+              className="h-8 xs:h-9 sm:h-11 flex items-center gap-1 xs:gap-1.5 sm:gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-1.5 xs:px-2.5 sm:px-3.5 rounded-lg xs:rounded-xl sm:rounded-2xl text-left transition-all duration-200 group max-w-[105px] xs:max-w-[130px] sm:max-w-[200px] md:max-w-[240px] min-w-0 cursor-pointer"
               title="Change Delivery Location"
             >
-              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                <MapPin className="w-3.5 h-3.5 text-white" />
+              <div className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                <MapPin className="w-2.5 h-2.5 xs:w-3.5 xs:h-3.5 text-white" />
               </div>
-              <div className="flex flex-col min-w-0 pr-1 justify-center">
-                <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium leading-none">
+              <div className="flex flex-col min-w-0 pr-0.5 justify-center flex-1">
+                <span className="text-[8px] sm:text-[10px] text-gray-400 font-medium leading-none hidden xs:block">
                   Delivering to:
                 </span>
-                <span className="text-xs font-bold text-white truncate mt-0.5 leading-tight">
+                <span className="text-[10px] xs:text-xs font-bold text-white truncate mt-0.5 leading-tight">
                   {displayLocation}
                 </span>
               </div>
-              <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-auto" />
+              <ChevronRight className="w-3 h-3 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0 ml-auto hidden xs:block" />
             </button>
           </div>
 
@@ -145,10 +142,10 @@ export default function Navbar() {
               id="navbar-mobile-roulette-btn"
               type="button"
               onClick={() => setIsWheelOpen(true)}
-              className="h-10 sm:h-11 flex lg:hidden items-center gap-1.5 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-950/80 via-rose-950/60 to-amber-950/60 hover:from-purple-900 hover:to-amber-900 border border-amber-500/30 hover:border-amber-400 text-white shadow-md shadow-rose-950/40 transition-all active:scale-95 cursor-pointer shrink-0 group"
+              className="h-8 w-8 xs:h-9 xs:w-9 sm:h-11 sm:w-auto flex lg:hidden items-center justify-center gap-1.5 px-0 sm:px-3.5 rounded-lg xs:rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-950/80 via-rose-950/60 to-amber-950/60 hover:from-purple-900 hover:to-amber-900 border border-amber-500/30 hover:border-amber-400 text-white shadow-md shadow-rose-950/40 transition-all active:scale-95 cursor-pointer shrink-0 group"
               title="Spin the Craving Roulette Wheel"
             >
-              <span className="text-base sm:text-lg group-hover:rotate-180 transition-transform duration-500">🎰</span>
+              <span className="text-sm xs:text-base sm:text-lg group-hover:rotate-180 transition-transform duration-500">🎰</span>
               <span className="text-xs font-black tracking-wide text-amber-200 hidden sm:inline">Spin & Win</span>
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping hidden sm:block" />
             </button>
@@ -158,11 +155,11 @@ export default function Navbar() {
               id="navbar-mobile-offers-btn"
               type="button"
               onClick={() => setIsOffersOpen(true)}
-              className="h-10 sm:h-11 relative flex lg:hidden items-center gap-1.5 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-rose-500/40 text-gray-200 hover:text-white transition-all active:scale-95 cursor-pointer shadow-xs shrink-0"
+              className="h-8 w-8 xs:h-9 xs:w-9 sm:h-11 sm:w-auto relative flex lg:hidden items-center justify-center gap-1.5 px-0 sm:px-3.5 rounded-lg xs:rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-rose-500/40 text-gray-200 hover:text-white transition-all active:scale-95 cursor-pointer shadow-xs shrink-0"
               title="Offers & Live Deals"
             >
               <div className="relative flex items-center justify-center">
-                <Bell className="w-4 h-4 text-rose-400" />
+                <Bell className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-rose-400" />
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500 animate-ping" />
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500" />
               </div>
@@ -174,13 +171,16 @@ export default function Navbar() {
               id="navbar-cart-button"
               type="button"
               onClick={openCartDrawer}
-              className="h-11 relative hidden lg:flex items-center gap-2 px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0"
+              className="h-11 relative hidden lg:flex items-center gap-2 px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0 btn-shine"
               aria-label="Cart"
             >
               <div className="relative flex items-center justify-center">
                 <ShoppingBag className="w-4 h-4 text-white" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2.5 -right-2.5 bg-white text-[#E11D48] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
+                  <span 
+                    key={cartCount}
+                    className="absolute -top-2.5 -right-2.5 bg-white text-[#E11D48] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-bump"
+                  >
                     {cartCount}
                   </span>
                 )}
@@ -194,12 +194,12 @@ export default function Navbar() {
               onClick={openGoldModal}
               className={`h-11 relative hidden lg:flex items-center gap-1.5 px-3 rounded-2xl border transition-all cursor-pointer shrink-0 ${
                 isGoldMember
-                  ? 'bg-gradient-to-r from-amber-950/60 via-yellow-950/40 to-amber-950/60 border-amber-500/40 text-amber-300 hover:border-amber-400 shadow-md shadow-amber-950/40'
+                  ? 'gold-gradient-border text-amber-200 border-transparent shadow-lg shadow-amber-950/50 font-black'
                   : 'bg-amber-950/20 hover:bg-amber-950/40 border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-white'
               }`}
               title={isGoldMember ? "CraveWave Gold VIP Club Active" : "Upgrade to CraveWave Gold"}
             >
-              <Crown className={`w-4 h-4 ${isGoldMember ? 'text-amber-400 fill-amber-400/30 animate-pulse' : 'text-amber-400'}`} />
+              <Crown className={`w-4 h-4 ${isGoldMember ? 'text-amber-300 fill-amber-300 animate-pulse' : 'text-amber-400'}`} />
               <span className="text-xs font-black tracking-wide inline">
                 {isGoldMember ? 'GOLD VIP' : 'Join Gold'}
               </span>
@@ -382,15 +382,15 @@ export default function Navbar() {
         </div>
 
         {/* Mobile & Tablet Search button */}
-        <div className="pb-3.5 pt-1 block lg:hidden">
+        <div className="pb-2.5 pt-0.5 sm:pb-3.5 sm:pt-1 block lg:hidden">
           <button
             type="button"
             onClick={() => setIsSearchModalOpen(true)}
-            className="h-11 w-full flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 px-4 rounded-2xl text-left cursor-pointer transition-colors shadow-inner"
+            className="h-10 sm:h-11 w-full flex items-center justify-between gap-3 bg-[#14141C] hover:bg-[#1A1A24] border border-white/10 px-3.5 sm:px-4 rounded-xl sm:rounded-2xl text-left cursor-pointer transition-colors shadow-inner"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <Search className="w-4 h-4 text-rose-400 shrink-0" />
-              <span className="text-xs text-gray-400 truncate font-medium">
+              <span className="text-xs sm:text-sm text-gray-400 truncate font-medium">
                 {searchTerm ? `"${searchTerm}"` : 'Search dishes, restaurants, cuisines...'}
               </span>
             </div>

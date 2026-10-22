@@ -31,7 +31,7 @@ export function CartProvider({ children }) {
   const [isNoCutlery, setIsNoCutlery] = useState(true);
   const [isEvFleet, setIsEvFleet] = useState(false);
 
-  const { isGoldMember, walletCoins } = useAuth();
+  const { isGoldMember, walletCoins, isAuthenticated, openLoginModal, showToast } = useAuth();
   const [conflictModal, setConflictModal] = useState({
     isOpen: false,
     pendingRestaurant: null,
@@ -57,6 +57,18 @@ export function CartProvider({ children }) {
   };
 
   const addToCart = (restaurant, item, customization = null) => {
+    // Require login before adding food to cart
+    if (!isAuthenticated) {
+      if (showToast) {
+        showToast({
+          type: 'warning',
+          title: 'Sign In Required',
+          message: 'Please sign in to your account to add items to your cart!',
+        });
+      }
+      if (openLoginModal) openLoginModal();
+      return false;
+    }
     // Check if adding from a different restaurant
     if (
       currentRestaurant &&
@@ -211,6 +223,17 @@ export function CartProvider({ children }) {
 
   // Re-order past order directly
   const reorderItems = (order) => {
+    if (!isAuthenticated) {
+      if (showToast) {
+        showToast({
+          type: 'warning',
+          title: 'Sign In Required',
+          message: 'Please sign in to your account to re-order your favorite meals!',
+        });
+      }
+      if (openLoginModal) openLoginModal();
+      return;
+    }
     if (!order || !order.items) return;
     clearCart();
     setCurrentRestaurant({
@@ -241,6 +264,21 @@ export function CartProvider({ children }) {
     userCoins: walletCoins,
   });
 
+  const handleOpenCartDrawer = () => {
+    if (!isAuthenticated) {
+      if (showToast) {
+        showToast({
+          type: 'warning',
+          title: 'Sign In Required',
+          message: 'Please sign in to access your cart and checkout!',
+        });
+      }
+      if (openLoginModal) openLoginModal();
+      return;
+    }
+    setIsCartDrawerOpen(true);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -254,7 +292,7 @@ export function CartProvider({ children }) {
         setIsCoinsApplied,
         toggleCoinsUsage: () => setIsCoinsApplied((prev) => !prev),
         setIsCartDrawerOpen,
-        openCartDrawer: () => setIsCartDrawerOpen(true),
+        openCartDrawer: handleOpenCartDrawer,
         closeCartDrawer: () => setIsCartDrawerOpen(false),
         addToCart,
         removeFromCart,

@@ -12,6 +12,7 @@ import {
 import { useOrders } from '../context/OrderContext';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../utils/formatCurrency';
+import heroFallback from '../assets/hero.png';
 
 export default function OrderHistoryPage() {
   const navigate = useNavigate();
@@ -86,6 +87,10 @@ export default function OrderHistoryPage() {
                     <img
                       src={order.restaurantImage}
                       alt={order.restaurantName}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = heroFallback;
+                      }}
                       className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover flex-shrink-0 border border-white/10"
                     />
                     <div>

@@ -48,12 +48,56 @@ export default function RewardsHubModal() {
     redeemCoins,
     scratchCards,
     showToast,
+    isAuthenticated,
+    openLoginModal,
   } = useAuth();
   const { applyCoupon, openCartDrawer } = useCart();
 
   const [activeScratchCard, setActiveScratchCard] = useState(null);
 
   if (!isRewardsHubOpen) return null;
+
+  if (!isAuthenticated) {
+    return (
+      <AnimatePresence>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeRewardsHub}
+            className="fixed inset-0 bg-black/85 backdrop-blur-md"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative w-full max-w-md bg-[#131319] border border-amber-500/30 rounded-3xl p-8 text-center text-white shadow-2xl z-10"
+          >
+            <div className="w-20 h-20 rounded-3xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 mx-auto mb-5 shadow-lg shadow-amber-950/40">
+              <Coins className="w-10 h-10" />
+            </div>
+            <h3 className="text-2xl font-black font-display text-white mb-2">
+              Sign In for CraveCoins
+            </h3>
+            <p className="text-gray-300 text-xs sm:text-sm mb-6 leading-relaxed">
+              Earn CraveCoins on every meal, scratch mystery cards, and redeem free gourmet food rewards by logging into your account.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                closeRewardsHub();
+                openLoginModal();
+              }}
+              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-rose-950/60 active:scale-95 transition-all cursor-pointer"
+            >
+              Sign In / Register
+            </button>
+          </motion.div>
+        </div>
+      </AnimatePresence>
+    );
+  }
 
   const handleRedeem = (item) => {
     if (walletCoins < item.cost) {

@@ -1,14 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getLocalStorage, setLocalStorage } from '../utils/storage';
+import { useAuth } from './AuthContext';
 
 const WishlistContext = createContext(null);
 
 export function WishlistProvider({ children }) {
+  const { isAuthenticated, openLoginModal, showToast } = useAuth();
   const [wishlist, setWishlist] = useState(() =>
-    getLocalStorage('cravewave_wishlist', [
-      // Pre-populate with first item for immediate delightful visual
-      'rest-1',
-    ])
+    getLocalStorage('cravewave_wishlist', [])
   );
   const [isWishlistModalOpen, setIsWishlistModalOpen] = useState(false);
 
@@ -17,18 +16,59 @@ export function WishlistProvider({ children }) {
   }, [wishlist]);
 
   const toggleWishlist = (id) => {
+    if (!isAuthenticated) {
+      if (showToast) {
+        showToast({
+          type: 'warning',
+          title: 'Sign In Required',
+          message: 'Please sign in to save dishes and restaurants to your wishlist!',
+        });
+      }
+      if (openLoginModal) openLoginModal();
+      return false;
+    }
+
     setWishlist((prev) => {
-      if (prev.includes(id)) {
+      const isAlreadyWishlisted = prev.includes(id);
+      if (isAlreadyWishlisted) {
+        if (showToast) {
+          showToast({
+            type: 'info',
+            title: 'Removed from Wishlist',
+            message: 'Item has been removed from your saved favorites.',
+          });
+        }
         return prev.filter((item) => item !== id);
       } else {
+        if (showToast) {
+          showToast({
+            type: 'success',
+            title: '❤️ Added to Wishlist',
+            message: 'Item saved! You can view it anytime from your profile.',
+          });
+        }
         return [...prev, id];
       }
     });
+    return true;
   };
 
-  const isWishlisted = (id) => wishlist.includes(id);
+  const isWishlisted = (id) => (isAuthenticated ? wishlist.includes(id) : false);
 
-  const openWishlist = () => setIsWishlistModalOpen(true);
+  const openWishlist = () => {
+    if (!isAuthenticated) {
+      if (showToast) {
+        showToast({
+          type: 'warning',
+          title: 'Sign In Required',
+          message: 'Please sign in to view your saved wishlist!',
+        });
+      }
+      if (openLoginModal) openLoginModal();
+      return;
+    }
+    setIsWishlistModalOpen(true);
+  };
   const closeWishlist = () => setIsWishlistModalOpen(false);
 
   return (
