@@ -199,7 +199,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-20">
+    <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-28 lg:pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
         <div className="mb-8 pb-4 border-b border-white/10">
           <div className="flex items-center gap-2 text-xs text-gray-400 font-semibold mb-1">

@@ -24,7 +24,7 @@ export default function OrderHistoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-20">
+    <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-28 lg:pb-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-white/15 gap-4 mb-8">

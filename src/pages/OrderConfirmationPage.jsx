@@ -68,7 +68,7 @@ export default function OrderConfirmationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-20">
+    <div className="min-h-screen bg-[#0B0B0E] bg-dark-luxury text-white pb-28 lg:pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-1">
         {/* Confirmation Header Banner */}
         <div className="bg-[#14141C]/95 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-2xl shadow-rose-950/40 text-center mb-8 relative overflow-hidden">
