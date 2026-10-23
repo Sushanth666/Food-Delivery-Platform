@@ -501,12 +501,9 @@ export default function AuthModal() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-xs font-bold text-gray-300">
-                      Admin Password
-                    </label>
-                    <span className="text-[10px] text-gray-400 font-mono">Default: admin123</span>
-                  </div>
+                  <label className="block text-xs font-bold text-gray-300 mb-1">
+                    Admin Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
