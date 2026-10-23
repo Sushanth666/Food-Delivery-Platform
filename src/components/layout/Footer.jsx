@@ -160,6 +160,12 @@ export default function Footer() {
                   Safety & Hygiene Promise
                 </span>
               </li>
+              <li>
+                <Link to="/admin" className="text-rose-400 hover:text-rose-300 font-bold transition-colors flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
+                  <span>Admin Flow Portal</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -23,6 +23,7 @@ import OrderHistoryPage from './pages/OrderHistoryPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
+import AdminPage from './pages/AdminPage';
 
 import { AuthProvider } from './context/AuthContext';
 import { WishlistProvider } from './context/WishlistContext';
@@ -43,7 +44,8 @@ function ScrollToTop() {
 
 export default function App() {
   const location = useLocation();
-  const hideFooter = ['/login', '/signup'].includes(location.pathname);
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const hideFooter = ['/login', '/signup'].includes(location.pathname) || isAdminRoute;
 
   return (
     <AuthProvider>
@@ -53,10 +55,10 @@ export default function App() {
             <CartProvider>
               <OrderProvider>
                 <div className="min-h-screen flex flex-col bg-[#0B0B0E] bg-dark-luxury text-gray-100 selection:bg-brand-500 selection:text-white relative">
-                  <AmbientBackground />
+                  {!isAdminRoute && <AmbientBackground />}
                   <ScrollToTop />
-                  {/* Global Navigation */}
-                  <Navbar />
+                  {/* Global Storefront Navigation (Hidden on Admin Routes) */}
+                  {!isAdminRoute && <Navbar />}
 
                   {/* Main Page Route Views with Cinematic Page Transitions */}
                   <div className="flex-1 flex flex-col relative z-10">
@@ -71,6 +73,8 @@ export default function App() {
                       >
                         <Routes location={location}>
                           <Route path="/" element={<HomePage />} />
+                          <Route path="/admin" element={<AdminPage />} />
+                          <Route path="/admin/*" element={<AdminPage />} />
                           <Route path="/restaurant/:slug" element={<RestaurantDetailPage />} />
                           <Route path="/cart" element={<CartPage />} />
                           <Route path="/checkout" element={<CheckoutPage />} />
@@ -88,21 +92,23 @@ export default function App() {
                     </AnimatePresence>
                   </div>
 
-              {/* Overlays, Drawers & Location Modal */}
-              <CartDrawer />
-              <ConflictModal />
-              <LocationModal />
-              <WishlistModal />
-              <AuthModal />
-              <LogoutModal />
-              <AuthToast />
-              <GoldClubModal />
-              <RewardsHubModal />
+              {/* Overlays, Drawers & Location Modal (Storefront Only) */}
+              {!isAdminRoute && (
+                <>
+                  <CartDrawer />
+                  <ConflictModal />
+                  <LocationModal />
+                  <WishlistModal />
+                  <AuthModal />
+                  <LogoutModal />
+                  <AuthToast />
+                  <GoldClubModal />
+                  <RewardsHubModal />
+                  <MobileBottomNav />
+                </>
+              )}
 
-              {/* Mobile Bottom Bar */}
-              <MobileBottomNav />
-
-              {/* Footer */}
+              {/* Footer (Storefront Only) */}
               {!hideFooter && <Footer />}
             </div>
           </OrderProvider>

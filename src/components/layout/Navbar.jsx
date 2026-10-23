@@ -17,6 +17,7 @@ import {
   Bell,
   Dices,
   Sparkles,
+  LayoutDashboard,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
@@ -356,6 +357,21 @@ export default function Navbar() {
                     >
                       <Clock className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
                       <span>Order History</span>
+                    </Link>
+
+                    {/* Admin Flow Portal */}
+                    <Link
+                      to="/admin"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-colors cursor-pointer group mt-1"
+                    >
+                      <div className="flex items-center gap-2">
+                        <LayoutDashboard className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
+                        <span>Admin Flow</span>
+                      </div>
+                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300">
+                        Portal
+                      </span>
                     </Link>
 
                     {/* Logout */}
