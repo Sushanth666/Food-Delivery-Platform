@@ -58,6 +58,14 @@ export default function AdminLayout() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
+  // Reset scroll to top inside admin page content whenever active tab changes
+  useEffect(() => {
+    const adminMain = document.getElementById('admin-main-scroll');
+    if (adminMain) {
+      adminMain.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [activeTab]);
+
   // Badge calculations
   const pendingOrdersCount = orders.filter((o) => o.status === 'Pending Confirmation').length;
   const pendingRestCount = pendingRestaurants.length;
@@ -76,10 +84,10 @@ export default function AdminLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090C] text-gray-100 flex flex-col font-sans selection:bg-rose-500 selection:text-white">
-      {/* 1. TOP ENTERPRISE HEADER */}
-      <header className="sticky top-0 z-40 bg-[#0E0E14]/95 border-b border-white/10 backdrop-blur-xl transition-all">
-        <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <div className="h-full flex flex-col bg-[#09090C] text-gray-100 font-sans selection:bg-rose-500 selection:text-white overflow-hidden">
+      {/* 1. TOP ENTERPRISE HEADER - Fixed full-width at top with ZERO scrollbar beside it */}
+      <header className="h-16 shrink-0 z-40 bg-[#0E0E14]/95 border-b border-white/10 backdrop-blur-xl">
+        <div className="w-full px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
           {/* Left: Mobile hamburger + Brand */}
           <div className="flex items-center gap-3">
             <button
@@ -166,10 +174,10 @@ export default function AdminLayout() {
         </div>
       </header>
 
-      {/* 2. BODY LAYOUT: SIDEBAR + MAIN CONTENT */}
-      <div className="flex-1 flex w-full max-w-[1720px] mx-auto">
+      {/* 2. BODY LAYOUT: SIDEBAR + MAIN CONTENT (Scrollbar exists ONLY in pages below header) */}
+      <div className="flex-1 flex w-full max-w-[1720px] mx-auto min-h-0 overflow-hidden">
         {/* Sidebar for Desktop */}
-        <aside className="hidden lg:flex flex-col w-64 xl:w-72 border-r border-white/10 bg-[#0B0B0F]/90 p-4 shrink-0 justify-between">
+        <aside className="hidden lg:flex flex-col w-64 xl:w-72 border-r border-white/10 bg-[#0B0B0F]/90 p-4 shrink-0 justify-between overflow-y-auto">
           <div className="space-y-1.5">
             <span className="text-[10px] font-black tracking-wider uppercase text-gray-500 px-3 block mb-2">
               Platform Modules
@@ -272,8 +280,8 @@ export default function AdminLayout() {
           </div>
         )}
 
-        {/* Main Content Area */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        {/* Main Content Area: Page content scrolls strictly here, scrollbar starts below header */}
+        <main id="admin-main-scroll" className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto min-w-0">
           {activeTab === 'dashboard' && <DashboardModule setActiveTab={setActiveTab} />}
           {activeTab === 'orders' && <OrderManagementModule />}
           {activeTab === 'restaurants' && <RestaurantManagementModule />}

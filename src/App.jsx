@@ -42,6 +42,10 @@ function ScrollToTop() {
     if (container) {
       container.scrollTo(0, 0);
     }
+    const adminMain = document.getElementById('admin-main-scroll');
+    if (adminMain) {
+      adminMain.scrollTo(0, 0);
+    }
   }, [pathname]);
   return null;
 }
@@ -67,7 +71,9 @@ export default function App() {
                   {/* Main Page Scroll Container: Scrollbar exists ONLY in pages, starting below the navbar */}
                   <div
                     id="main-scroll-container"
-                    className="flex-1 overflow-y-auto flex flex-col relative z-10"
+                    className={`flex-1 flex flex-col relative z-10 min-h-0 ${
+                      isAdminRoute ? 'overflow-hidden' : 'overflow-y-auto'
+                    }`}
                   >
                     <AnimatePresence mode="wait">
                       <motion.div
@@ -76,7 +82,7 @@ export default function App() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex-1 flex flex-col"
+                        className="flex-1 flex flex-col min-h-0"
                       >
                         <Routes location={location}>
                           <Route path="/" element={<HomePage />} />
