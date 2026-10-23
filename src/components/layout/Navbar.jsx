@@ -136,26 +136,24 @@ export default function Navbar() {
           </div>
 
           {/* RIGHT: Action Buttons */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            {/* MOBILE & TABLET ONLY: 1. Craving Roulette Wheel (🎰 Spin & Win) */}
+          <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-2.5 shrink-0 no-scrollbar">
+            {/* MOBILE ONLY (< sm): 1. Craving Roulette Wheel (🎰 Spin & Win) */}
             <button
               id="navbar-mobile-roulette-btn"
               type="button"
               onClick={() => setIsWheelOpen(true)}
-              className="h-8 w-8 xs:h-9 xs:w-9 sm:h-11 sm:w-auto flex lg:hidden items-center justify-center gap-1.5 px-0 sm:px-3.5 rounded-lg xs:rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-950/80 via-rose-950/60 to-amber-950/60 hover:from-purple-900 hover:to-amber-900 border border-amber-500/30 hover:border-amber-400 text-white shadow-md shadow-rose-950/40 transition-all active:scale-95 cursor-pointer shrink-0 group"
+              className="h-8 w-8 xs:h-9 xs:w-9 flex sm:hidden items-center justify-center gap-1.5 px-0 rounded-lg xs:rounded-xl bg-gradient-to-r from-purple-950/80 via-rose-950/60 to-amber-950/60 hover:from-purple-900 hover:to-amber-900 border border-amber-500/30 hover:border-amber-400 text-white shadow-md shadow-rose-950/40 transition-all active:scale-95 cursor-pointer shrink-0 group"
               title="Spin the Craving Roulette Wheel"
             >
-              <span className="text-sm xs:text-base sm:text-lg group-hover:rotate-180 transition-transform duration-500">🎰</span>
-              <span className="text-xs font-black tracking-wide text-amber-200 hidden sm:inline">Spin & Win</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping hidden sm:block" />
+              <span className="text-sm xs:text-base group-hover:rotate-180 transition-transform duration-500">🎰</span>
             </button>
 
-            {/* MOBILE & TABLET ONLY: 2. Offers & Notifications (🔔 Deals) */}
+            {/* MOBILE ONLY (< sm): 2. Offers & Notifications (🔔 Deals) */}
             <button
               id="navbar-mobile-offers-btn"
               type="button"
               onClick={() => setIsOffersOpen(true)}
-              className="h-8 w-8 xs:h-9 xs:w-9 sm:h-11 sm:w-auto relative flex lg:hidden items-center justify-center gap-1.5 px-0 sm:px-3.5 rounded-lg xs:rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-rose-500/40 text-gray-200 hover:text-white transition-all active:scale-95 cursor-pointer shadow-xs shrink-0"
+              className="h-8 w-8 xs:h-9 xs:w-9 relative flex sm:hidden items-center justify-center gap-1.5 px-0 rounded-lg xs:rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-rose-500/40 text-gray-200 hover:text-white transition-all active:scale-95 cursor-pointer shadow-xs shrink-0"
               title="Offers & Live Deals"
             >
               <div className="relative flex items-center justify-center">
@@ -163,44 +161,43 @@ export default function Navbar() {
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500 animate-ping" />
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500" />
               </div>
-              <span className="text-xs font-bold text-gray-200 hidden sm:inline">Offers</span>
             </button>
 
-            {/* DESKTOP ONLY: 1. CART BUTTON */}
+            {/* TABLET & DESKTOP (>= sm): 1. CART BUTTON */}
             <button
               id="navbar-cart-button"
               type="button"
               onClick={openCartDrawer}
-              className="h-11 relative hidden lg:flex items-center gap-2 px-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0 btn-shine"
+              className="h-9 md:h-10 lg:h-11 relative hidden sm:flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-3.5 lg:px-4 rounded-xl md:rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-500 hover:to-rose-500 text-white font-bold text-xs md:text-sm shadow-md shadow-rose-950/50 hover:shadow-rose-900/70 transition-all active:scale-95 cursor-pointer shrink-0 btn-shine"
               aria-label="Cart"
             >
               <div className="relative flex items-center justify-center">
-                <ShoppingBag className="w-4 h-4 text-white" />
+                <ShoppingBag className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
                 {cartCount > 0 && (
                   <span 
                     key={cartCount}
-                    className="absolute -top-2.5 -right-2.5 bg-white text-[#E11D48] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-bump"
+                    className="absolute -top-2 -right-2.5 bg-white text-[#E11D48] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-bump"
                   >
                     {cartCount}
                   </span>
                 )}
               </div>
-              <span className="font-extrabold text-sm">Cart</span>
+              <span className="font-extrabold text-xs md:text-sm">Cart</span>
             </button>
 
-            {/* DESKTOP ONLY: CraveWave Gold VIP Membership Pill */}
+            {/* TABLET & DESKTOP (>= sm): 2. CraveWave Gold VIP Membership Pill */}
             <button
               type="button"
               onClick={openGoldModal}
-              className={`h-11 relative hidden lg:flex items-center gap-1.5 px-3 rounded-2xl border transition-all cursor-pointer shrink-0 ${
+              className={`h-9 md:h-10 lg:h-11 relative hidden sm:flex items-center gap-1 md:gap-1.5 px-2 sm:px-2.5 md:px-3 rounded-xl md:rounded-2xl border transition-all cursor-pointer shrink-0 ${
                 isGoldMember
                   ? 'gold-gradient-border text-amber-200 border-transparent shadow-lg shadow-amber-950/50 font-black'
                   : 'bg-amber-950/20 hover:bg-amber-950/40 border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-white'
               }`}
               title={isGoldMember ? "CraveWave Gold VIP Club Active" : "Upgrade to CraveWave Gold"}
             >
-              <Crown className={`w-4 h-4 ${isGoldMember ? 'text-amber-300 fill-amber-300 animate-pulse' : 'text-amber-400'}`} />
-              <span className="text-xs font-black tracking-wide inline">
+              <Crown className={`w-3.5 h-3.5 md:w-4 md:h-4 ${isGoldMember ? 'text-amber-300 fill-amber-300 animate-pulse' : 'text-amber-400'}`} />
+              <span className="text-[11px] md:text-xs font-black tracking-wide inline">
                 {isGoldMember ? 'GOLD VIP' : 'Join Gold'}
               </span>
               {walletCoins > 0 && (
@@ -211,48 +208,48 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* DESKTOP ONLY: CraveCoins Rewards Hub Button */}
+            {/* TABLET & DESKTOP (>= sm): 3. CraveCoins Rewards Hub Button */}
             <button
               type="button"
               onClick={openRewardsHub}
-              className="h-11 relative hidden lg:flex items-center gap-1.5 px-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer shadow-xs shrink-0"
+              className="h-9 md:h-10 lg:h-11 relative hidden sm:flex items-center gap-1 md:gap-1.5 px-2 sm:px-2.5 md:px-3 rounded-xl md:rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white transition-all cursor-pointer shadow-xs shrink-0"
               title="Open CraveCoins & Rewards Hub"
             >
-              <Coins className="w-4 h-4 text-amber-400 hover:rotate-12 transition-transform" />
-              <span className="text-xs font-black tracking-wide hidden xl:inline">
+              <Coins className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-400 hover:rotate-12 transition-transform" />
+              <span className="text-[11px] md:text-xs font-black tracking-wide inline">
                 Rewards
               </span>
             </button>
 
-            {/* DESKTOP ONLY: WISHLIST BUTTON */}
+            {/* TABLET & DESKTOP (>= sm): 4. WISHLIST BUTTON */}
             <button
               type="button"
               onClick={openWishlist}
-              className="h-11 relative hidden xl:flex items-center gap-1.5 px-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all cursor-pointer shrink-0"
+              className="h-9 md:h-10 lg:h-11 relative hidden sm:flex items-center gap-1 md:gap-1.5 px-2 sm:px-2.5 md:px-3 rounded-xl md:rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all cursor-pointer shrink-0"
               aria-label="Wishlist"
               title="View Wishlist"
             >
               <div className="relative flex items-center justify-center">
-                <Heart className="w-4 h-4 text-gray-300 hover:text-rose-400 transition-colors" />
+                <Heart className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-300 hover:text-rose-400 transition-colors" />
                 {wishlistCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center shadow-xs">
                     {wishlistCount}
                   </span>
                 )}
               </div>
-              <span className="text-xs font-semibold text-gray-300 hover:text-white hidden 2xl:inline">
+              <span className="text-[11px] md:text-xs font-semibold text-gray-300 hover:text-white inline">
                 Wishlist
               </span>
             </button>
 
-            {/* DESKTOP ONLY: SIGN IN / PROFILE BUTTON */}
-            <div className="relative shrink-0 hidden lg:block">
+            {/* TABLET & DESKTOP (>= sm): 5. SIGN IN / PROFILE BUTTON */}
+            <div className="relative shrink-0 hidden sm:block">
               {isAuthenticated ? (
                 <button
                   id="user-profile-btn"
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="h-11 flex items-center gap-2 px-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer shrink-0"
+                  className="h-9 md:h-10 lg:h-11 flex items-center gap-1.5 md:gap-2 px-2.5 md:px-3 rounded-xl md:rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-all cursor-pointer shrink-0"
                   aria-label="Profile"
                 >
                   <UserAvatar name={user.name} size="xs" />
@@ -266,10 +263,10 @@ export default function Navbar() {
                   id="navbar-signin-btn"
                   type="button"
                   onClick={openLoginModal}
-                  className="h-11 flex items-center gap-2 px-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-sm transition-all shadow-xs cursor-pointer shrink-0"
+                  className="h-9 md:h-10 lg:h-11 flex items-center gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 rounded-xl md:rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white hover:text-rose-400 font-bold text-xs md:text-sm transition-all shadow-xs cursor-pointer shrink-0"
                 >
-                  <User className="w-4 h-4 text-rose-400 hover:scale-110 transition-transform" />
-                  <span className="text-sm font-bold">Sign In</span>
+                  <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-rose-400 hover:scale-110 transition-transform" />
+                  <span className="text-xs md:text-sm font-bold">Sign In</span>
                 </button>
               )}
 
