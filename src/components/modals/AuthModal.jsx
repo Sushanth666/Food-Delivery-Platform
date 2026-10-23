@@ -43,12 +43,12 @@ export default function AuthModal() {
   const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
   const [showSignupPassword, setShowSignupPassword] = useState(false);
 
-  // Admin form state
-  const [adminEmail, setAdminEmail] = useState('admin@cravewave.internal');
+  // Admin form state (cleared by default)
+  const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [showAdminPassword, setShowAdminPassword] = useState(false);
   const [adminRole, setAdminRole] = useState('Super Admin');
-  const [adminPin, setAdminPin] = useState('9021');
+  const [adminPin, setAdminPin] = useState('');
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -139,13 +139,10 @@ export default function AuthModal() {
 
   const handleDemoAdminClick = () => {
     setError('');
-    setLoading(true);
-    setTimeout(() => {
-      demoAdminLogin();
-      setLoading(false);
-      closeAuthModal();
-      navigate('/admin');
-    }, 350);
+    setAdminEmail('admin@cravewave.internal');
+    setAdminPassword('admin123');
+    setAdminPin('9021');
+    setAdminRole('Super Admin');
   };
 
   return (
@@ -442,7 +439,7 @@ export default function AuthModal() {
           {/* ======================================================== */}
           {authModalTab === 'admin' && (
             <div className="space-y-4">
-              {/* Compact Demo Admin Login */}
+              {/* Compact Demo Admin Fill Card */}
               <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300 shrink-0">
@@ -452,11 +449,11 @@ export default function AuthModal() {
                     <div className="flex items-center gap-1.5">
                       <span className="text-xs font-black text-white">Demo Admin</span>
                       <span className="text-[9px] font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.2 rounded border border-amber-500/30">
-                        1-Click
+                        1-Click Fill
                       </span>
                     </div>
                     <p className="text-[10px] text-gray-400 font-mono truncate">
-                      admin@cravewave.internal
+                      Auto-fill demo credentials
                     </p>
                   </div>
                 </div>
@@ -464,10 +461,9 @@ export default function AuthModal() {
                 <button
                   type="button"
                   onClick={handleDemoAdminClick}
-                  disabled={loading}
                   className="py-2 px-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-rose-950/60 transition-all active:scale-98 cursor-pointer flex items-center gap-1.5 shrink-0"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-200" />
+                  <Zap className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />
                   <span>Demo Login</span>
                 </button>
               </div>
