@@ -1,12 +1,23 @@
-# 🍕 CraveWave — Modern Food Delivery & Live Tracking Platform
+<div align="center">
 
-[![React](https://img.shields.io/badge/React-19.2.8-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-8.3.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.19-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![React Router](https://img.shields.io/badge/React_Router-7.18.4-CA4245?logo=react-router&logoColor=white)](https://reactrouter.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  <a href="https://github.com/Sushanth666/Food-Delivery-Platform">
+    <img src="screenshots/logo.svg" alt="CraveWave Logo" width="480" />
+  </a>
 
-> **CraveWave** is a full-featured, luxury-themed food delivery single-page application built for high performance, visual elegance, and fluid responsiveness across **Desktop**, **Tablet**, and **Mobile** devices. It simulates an authentic end-to-end food delivery journey—from smart GPS location detection and multi-cuisine restaurant discovery to interactive item customization, collaborative group ordering, instant coupon discounts, simulated payment gateways, and real-time 5-stage live delivery tracking.
+  <p align="center">
+    <strong>Modern Food Delivery & Live Tracking Platform</strong><br>
+    <em>Full-featured luxury food ordering experience with 8 Enterprise Admin modules, live GPS tracking, and responsive multi-device layouts.</em>
+  </p>
+
+  <p align="center">
+    <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19.2.8-61DAFB?logo=react&logoColor=black" alt="React" /></a>
+    <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-8.3.4-646CFF?logo=vite&logoColor=white" alt="Vite" /></a>
+    <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-3.4.19-38B2AC?logo=tailwind-css&logoColor=white" alt="Tailwind CSS" /></a>
+    <a href="https://reactrouter.com/"><img src="https://img.shields.io/badge/React_Router-7.18.4-CA4245?logo=react-router&logoColor=white" alt="React Router" /></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" /></a>
+  </p>
+
+</div>
 
 ---
 
@@ -36,7 +47,10 @@
 
 ## 🌟 Project Overview
 
-CraveWave was crafted to deliver an extraordinary, responsive user experience modeled after top global food delivery platforms (such as Swiggy, Zomato, and DoorDash) combined with a dark luxury aesthetic.
+<p align="left">
+  <img src="screenshots/logo-icon.svg" width="36" height="36" align="left" style="margin-right: 12px; margin-bottom: 8px;" />
+  <strong>CraveWave</strong> was crafted to deliver an extraordinary, responsive user experience modeled after top global food delivery platforms (such as Swiggy, Zomato, and DoorDash) combined with a dark luxury aesthetic.
+</p>
 
 ### Core Highlights:
 - **605+ Curated Dishes & Restaurants**: Handcrafted menu database covering authentic Indian, Italian, Pan-Asian, Continental, Fast Food, Mithai, and Street Food.
