@@ -309,10 +309,10 @@ const INITIAL_DELIVERY_ZONES = [
 
 // Initial Audit Logs
 const INITIAL_AUDIT_LOGS = [
-  { id: 'LOG-1', admin: 'Akash Barik (Super Admin)', action: 'Approved Onboarding', module: 'Restaurants', details: 'Approved Paradise Biryani branch expansion', time: '10 mins ago' },
+  { id: 'LOG-1', admin: 'Admin (Super Admin)', action: 'Approved Onboarding', module: 'Restaurants', details: 'Approved Paradise Biryani branch expansion', time: '10 mins ago' },
   { id: 'LOG-2', admin: 'Priya Nair (Ops Lead)', action: 'Assigned Partner', module: 'Orders', details: 'Manually assigned Ramesh Kumar (DP-101) to CW-89215', time: '24 mins ago' },
   { id: 'LOG-3', admin: 'Vikram Seth (Finance Lead)', action: 'Processed Settlement', module: 'Finance', details: 'Released ₹1,48,200 batch payout to 12 restaurants', time: '1 hour ago' },
-  { id: 'LOG-4', admin: 'Akash Barik (Super Admin)', action: 'Created Promo Campaign', module: 'Promotions', details: 'Launched CRAVE50 flash discount coupon', time: '2 hours ago' },
+  { id: 'LOG-4', admin: 'Admin (Super Admin)', action: 'Created Promo Campaign', module: 'Promotions', details: 'Launched CRAVE50 flash discount coupon', time: '2 hours ago' },
   { id: 'LOG-5', admin: 'System Monitor', action: 'Triggered Rain Surge', module: 'Settings', details: 'Activated 1.3x surge in CBD zone due to rain radar', time: '3 hours ago' },
 ];
 
@@ -457,10 +457,10 @@ export function AdminProvider({ children }) {
       // ignore
     }
     return {
-      name: 'Akash Barik',
-      email: 'akash.barik@cravewave.internal',
+      name: 'Admin',
+      email: 'admin@cravewave.internal',
       role: 'Super Admin',
-      avatar: 'AB',
+      avatar: 'AD',
       lastLogin: 'Just now',
     };
   });

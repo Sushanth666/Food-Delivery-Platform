@@ -43,7 +43,7 @@ export default function SupportSettingsModule() {
 
   // Admin roles list
   const adminUsers = [
-    { id: 'ADM-1', name: 'Akash Barik', email: 'akash.barik@cravewave.internal', role: 'Super Admin', permissions: 'Full Access (All Modules)' },
+    { id: 'ADM-1', name: 'Admin', email: 'admin@cravewave.internal', role: 'Super Admin', permissions: 'Full Access (All Modules)' },
     { id: 'ADM-2', name: 'Priya Nair', email: 'priya.nair@cravewave.internal', role: 'Operations Lead', permissions: 'Orders, Fleet, Support, Menus' },
     { id: 'ADM-3', name: 'Vikram Seth', email: 'vikram.seth@cravewave.internal', role: 'Finance Lead', permissions: 'Payouts, Settlements, GST, Reports' },
     { id: 'ADM-4', name: 'Sneha Rao', email: 'sneha.rao@cravewave.internal', role: 'Support Agent', permissions: 'Tickets, Order Inspection, Chat Desk' },

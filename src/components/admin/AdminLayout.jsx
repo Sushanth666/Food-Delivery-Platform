@@ -115,7 +115,7 @@ export default function AdminLayout() {
                 className="h-9 px-2.5 sm:px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white flex items-center gap-2 cursor-pointer transition-all"
               >
                 <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center font-black text-[11px] text-white">
-                  AB
+                  {currentAdmin.avatar || (currentAdmin.name ? currentAdmin.name.slice(0, 2).toUpperCase() : 'AD')}
                 </div>
                 <div className="hidden sm:block text-left text-xs leading-tight">
                   <p className="font-bold text-white leading-none">{currentAdmin.name}</p>
@@ -198,7 +198,7 @@ export default function AdminLayout() {
               </span>
             </div>
             <p className="text-[10px] text-gray-500">
-              Logged in as Akash Barik (Super Admin)
+              Logged in as {currentAdmin.name} ({currentAdmin.role})
             </p>
           </div>
         </aside>

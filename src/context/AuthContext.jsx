@@ -204,14 +204,18 @@ export function AuthProvider({ children }) {
   };
 
   const adminLogin = (email, password, role = 'Super Admin') => {
-    const derivedName = email
+    let derivedName = email
       .split('@')[0]
       .replace(/[._]/g, ' ')
       .replace(/\b\w/g, (l) => l.toUpperCase());
 
+    if (!derivedName || derivedName.toLowerCase() === 'admin') {
+      derivedName = 'Admin';
+    }
+
     const adminUser = {
       id: 'admin-' + Date.now(),
-      name: derivedName || 'Akash Barik',
+      name: derivedName,
       email: email.trim(),
       phone: '+91 98888 77777',
       role: 'admin',
@@ -229,7 +233,7 @@ export function AuthProvider({ children }) {
           name: adminUser.name,
           email: adminUser.email,
           role: role,
-          avatar: (adminUser.name.slice(0, 2) || 'AB').toUpperCase(),
+          avatar: (adminUser.name.slice(0, 2) || 'AD').toUpperCase(),
           lastLogin: 'Just now',
         })
       );
@@ -248,7 +252,7 @@ export function AuthProvider({ children }) {
   const demoAdminLogin = () => {
     const adminUser = {
       id: 'admin-super-01',
-      name: 'Akash Barik',
+      name: 'Admin',
       email: 'admin@cravewave.internal',
       phone: '+91 98888 77777',
       role: 'admin',
@@ -263,10 +267,10 @@ export function AuthProvider({ children }) {
       localStorage.setItem(
         'cravewave_current_admin',
         JSON.stringify({
-          name: 'Akash Barik',
+          name: 'Admin',
           email: 'admin@cravewave.internal',
           role: 'Super Admin',
-          avatar: 'AB',
+          avatar: 'AD',
           lastLogin: 'Just now',
         })
       );
@@ -277,7 +281,7 @@ export function AuthProvider({ children }) {
     showToast({
       type: 'success',
       title: 'Demo Admin Access Granted! 🛡️',
-      message: 'Logged in as Super Admin. Redirecting to Admin Operations Dashboard...',
+      message: 'Logged in as Admin. Redirecting to Admin Operations Dashboard...',
     });
     return { success: true };
   };
