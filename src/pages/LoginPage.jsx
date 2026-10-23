@@ -14,7 +14,7 @@ import { useAuth } from '../context/AuthContext';
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, demoAdminLogin } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -174,8 +174,32 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Quick Demo Admin Login */}
+          <div className="mt-5 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between gap-3">
+            <div className="text-left">
+              <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>Enterprise Portal</span>
+                <span className="text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/30">
+                  Demo
+                </span>
+              </p>
+              <p className="text-[10px] text-gray-400">Log in as Super Admin</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                demoAdminLogin();
+                navigate('/admin');
+              }}
+              className="py-1.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5 shrink-0"
+            >
+              <span>Demo Admin</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
           {/* Switch to Signup */}
-          <div className="text-center text-xs text-gray-400 mt-6 pt-6 border-t border-white/10">
+          <div className="text-center text-xs text-gray-400 mt-5 pt-4 border-t border-white/10">
             Don't have an account yet?{' '}
             <Link
               to="/signup"

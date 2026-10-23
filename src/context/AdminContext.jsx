@@ -449,13 +449,29 @@ export function AdminProvider({ children }) {
   });
 
   // Current active admin role session
-  const [currentAdmin, setCurrentAdmin] = useState({
-    name: 'Akash Barik',
-    email: 'akash.barik@cravewave.internal',
-    role: 'Super Admin',
-    avatar: 'AB',
-    lastLogin: 'Just now',
+  const [currentAdmin, setCurrentAdmin] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cravewave_current_admin');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      // ignore
+    }
+    return {
+      name: 'Akash Barik',
+      email: 'akash.barik@cravewave.internal',
+      role: 'Super Admin',
+      avatar: 'AB',
+      lastLogin: 'Just now',
+    };
   });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('cravewave_current_admin', JSON.stringify(currentAdmin));
+    } catch (e) {
+      // ignore
+    }
+  }, [currentAdmin]);
 
   // Persistence side-effects
   useEffect(() => {

@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   UtensilsCrossed,
   X,
   Mail,
   Lock,
-  Phone,
   Eye,
   EyeOff,
   User,
   Gift,
   Sparkles,
   ArrowRight,
+  ShieldCheck,
+  Zap,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function AuthModal() {
+  const navigate = useNavigate();
   const {
     isAuthModalOpen,
     authModalTab,
@@ -23,6 +26,8 @@ export default function AuthModal() {
     closeAuthModal,
     login,
     signup,
+    adminLogin,
+    demoAdminLogin,
   } = useAuth();
 
   // Login form state
@@ -37,6 +42,13 @@ export default function AuthModal() {
   const [signupPassword, setSignupPassword] = useState('');
   const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
   const [showSignupPassword, setShowSignupPassword] = useState(false);
+
+  // Admin form state
+  const [adminEmail, setAdminEmail] = useState('admin@cravewave.internal');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
+  const [adminRole, setAdminRole] = useState('Super Admin');
+  const [adminPin, setAdminPin] = useState('9021');
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -107,6 +119,35 @@ export default function AuthModal() {
     }, 400);
   };
 
+  const handleAdminSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!adminEmail.trim() || !adminPassword.trim()) {
+      setError('Please provide your enterprise admin email and password.');
+      return;
+    }
+
+    setLoading(true);
+    setTimeout(() => {
+      adminLogin(adminEmail, adminPassword, adminRole);
+      setLoading(false);
+      closeAuthModal();
+      navigate('/admin');
+    }, 400);
+  };
+
+  const handleDemoAdminClick = () => {
+    setError('');
+    setLoading(true);
+    setTimeout(() => {
+      demoAdminLogin();
+      setLoading(false);
+      closeAuthModal();
+      navigate('/admin');
+    }, 350);
+  };
+
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -139,25 +180,41 @@ export default function AuthModal() {
 
           {/* Logo & Header */}
           <div className="flex flex-col items-center text-center mb-5">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 flex items-center justify-center text-white shadow-lg shadow-rose-950/70 border border-white/10 mb-2.5">
-              <UtensilsCrossed className="w-5 h-5" />
+            <div
+              className={`w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-lg border border-white/10 mb-2.5 transition-all ${
+                authModalTab === 'admin'
+                  ? 'bg-gradient-to-tr from-amber-600 via-rose-600 to-brand-700 shadow-amber-950/70'
+                  : 'bg-gradient-to-tr from-[#E11D48] via-rose-600 to-brand-700 shadow-rose-950/70'
+              }`}
+            >
+              {authModalTab === 'admin' ? (
+                <ShieldCheck className="w-5 h-5 text-amber-300" />
+              ) : (
+                <UtensilsCrossed className="w-5 h-5" />
+              )}
             </div>
             <h3 className="text-xl font-black font-display text-white tracking-tight">
-              {authModalTab === 'login' ? 'Welcome Back to CraveWave' : 'Create Your CraveWave Account'}
+              {authModalTab === 'login'
+                ? 'Welcome Back to CraveWave'
+                : authModalTab === 'signup'
+                ? 'Create Your CraveWave Account'
+                : 'CraveWave Admin & Ops Portal'}
             </h3>
             <p className="text-xs text-gray-400 mt-1">
               {authModalTab === 'login'
                 ? 'Sign in to track orders, manage addresses & wishlist'
-                : 'Join now and get ₹100 discount coupon on your first order'}
+                : authModalTab === 'signup'
+                ? 'Join now and get ₹100 discount coupon on your first order'
+                : 'Enterprise platform ops for orders, restaurants, riders & finances'}
             </p>
           </div>
 
-          {/* Tab Switcher: Login / Create Account */}
-          <div className="flex items-center p-1 bg-white/5 rounded-2xl mb-5 border border-white/10">
+          {/* Tab Switcher: Log In / Create Account / Admin Login */}
+          <div className="flex items-center p-1 bg-white/5 rounded-2xl mb-5 border border-white/10 gap-1">
             <button
               type="button"
               onClick={() => setAuthModalTab('login')}
-              className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`flex-1 py-2 px-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${
                 authModalTab === 'login'
                   ? 'bg-gradient-to-r from-brand-600 to-rose-600 text-white shadow-md shadow-rose-950/60'
                   : 'text-gray-400 hover:text-white'
@@ -168,13 +225,25 @@ export default function AuthModal() {
             <button
               type="button"
               onClick={() => setAuthModalTab('signup')}
-              className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`flex-1 py-2 px-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${
                 authModalTab === 'signup'
                   ? 'bg-gradient-to-r from-brand-600 to-rose-600 text-white shadow-md shadow-rose-950/60'
                   : 'text-gray-400 hover:text-white'
               }`}
             >
               Create Account
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthModalTab('admin')}
+              className={`flex-1 py-2 px-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                authModalTab === 'admin'
+                  ? 'bg-gradient-to-r from-rose-600 via-brand-600 to-amber-600 text-white shadow-md shadow-rose-950/60'
+                  : 'text-rose-400 hover:text-rose-300'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+              <span>Admin Login</span>
             </button>
           </div>
 
@@ -186,9 +255,9 @@ export default function AuthModal() {
           )}
 
           {/* ======================================================== */}
-          {/* TAB 1: LOGIN FORM                                       */}
+          {/* TAB 1: CUSTOMER LOGIN FORM                               */}
           {/* ======================================================== */}
-          {authModalTab === 'login' ? (
+          {authModalTab === 'login' && (
             <div>
               <form onSubmit={handleLoginSubmit} className="space-y-3.5">
                 <div>
@@ -257,22 +326,36 @@ export default function AuthModal() {
                 </button>
               </form>
 
-              {/* Switch to Signup */}
-              <div className="text-center text-xs text-gray-400 mt-6 pt-4 border-t border-white/10">
-                Don't have an account yet?{' '}
-                <button
-                  type="button"
-                  onClick={() => setAuthModalTab('signup')}
-                  className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4 cursor-pointer"
-                >
-                  Create Account Now
-                </button>
+              {/* Switch to Admin or Signup */}
+              <div className="flex flex-col gap-2 text-center text-xs text-gray-400 mt-6 pt-4 border-t border-white/10">
+                <div>
+                  Don't have an account yet?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setAuthModalTab('signup')}
+                    className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4 cursor-pointer"
+                  >
+                    Create Account Now
+                  </button>
+                </div>
+                <div className="text-[11px] text-gray-500">
+                  Platform Administrator?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setAuthModalTab('admin')}
+                    className="text-amber-400 font-semibold hover:text-amber-300 cursor-pointer"
+                  >
+                    Switch to Admin Login →
+                  </button>
+                </div>
               </div>
             </div>
-          ) : (
-            /* ======================================================== */
-            /* TAB 2: CREATE ACCOUNT FORM                              */
-            /* ======================================================== */
+          )}
+
+          {/* ======================================================== */}
+          {/* TAB 2: CREATE ACCOUNT FORM                               */}
+          {/* ======================================================== */}
+          {authModalTab === 'signup' && (
             <div>
               {/* Promo offer badge */}
               <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-gradient-to-r from-rose-950/40 to-brand-950/40 border border-rose-500/30 mb-4">
@@ -383,6 +466,171 @@ export default function AuthModal() {
                   className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4 cursor-pointer"
                 >
                   Log In Now
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ======================================================== */}
+          {/* TAB 3: ADMIN LOGIN & DEMO ADMIN LOGIN                     */}
+          {/* ======================================================== */}
+          {authModalTab === 'admin' && (
+            <div className="space-y-4">
+              {/* Highlighted One-Click Demo Admin Card */}
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/50 via-rose-950/30 to-[#191924] border border-amber-500/35 shadow-lg shadow-black/40 relative overflow-hidden">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300 shrink-0 mt-0.5">
+                    <Zap className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <h4 className="text-xs font-black text-white">
+                        Demo Admin Login
+                      </h4>
+                      <span className="text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">
+                        1-Click Access
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-gray-300 mt-0.5 leading-snug">
+                      Instant Super Admin access with full controls for Orders, Restaurants, Riders, and Analytics.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleDemoAdminClick}
+                  disabled={loading}
+                  className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 via-rose-600 to-brand-600 hover:from-amber-400 hover:via-rose-500 hover:to-brand-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-rose-950/60 transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <ShieldCheck className="w-4 h-4 text-amber-200" />
+                  <span>{loading ? 'Authenticating...' : 'One-Click Demo Admin Login'}</span>
+                </button>
+
+                <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-gray-400 font-mono">
+                  <span>admin@cravewave.internal</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAdminEmail('admin@cravewave.internal');
+                      setAdminPassword('admin123');
+                    }}
+                    className="text-amber-400 hover:text-amber-300 underline cursor-pointer"
+                  >
+                    Auto-fill Form
+                  </button>
+                </div>
+              </div>
+
+              {/* Subtle Divider */}
+              <div className="relative flex py-1 items-center">
+                <div className="flex-grow border-t border-white/10" />
+                <span className="flex-shrink mx-3 text-[10px] uppercase font-bold text-gray-500 tracking-wider">
+                  Or Sign In With Admin Credentials
+                </span>
+                <div className="flex-grow border-t border-white/10" />
+              </div>
+
+              {/* Admin Credentials Form */}
+              <form onSubmit={handleAdminSubmit} className="space-y-3">
+                <div>
+                  <label className="block text-xs font-bold text-gray-300 mb-1">
+                    Enterprise Admin Email
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="email"
+                      value={adminEmail}
+                      onChange={(e) => setAdminEmail(e.target.value)}
+                      placeholder="admin@cravewave.internal"
+                      required
+                      className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-bold text-gray-300">
+                      Admin Password
+                    </label>
+                    <span className="text-[10px] text-gray-400 font-mono">Default: admin123</span>
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type={showAdminPassword ? 'text' : 'password'}
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
+                      placeholder="Enter admin password"
+                      required
+                      className="w-full pl-10 pr-10 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-amber-500 transition-colors"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowAdminPassword(!showAdminPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white cursor-pointer"
+                      aria-label={showAdminPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showAdminPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-300 mb-1">
+                      Assigned Role
+                    </label>
+                    <select
+                      value={adminRole}
+                      onChange={(e) => setAdminRole(e.target.value)}
+                      className="w-full px-2.5 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-hidden focus:border-amber-500 transition-colors cursor-pointer"
+                    >
+                      <option value="Super Admin" className="bg-[#14141C] text-white">Super Admin</option>
+                      <option value="Operations Lead" className="bg-[#14141C] text-white">Operations Lead</option>
+                      <option value="Finance Manager" className="bg-[#14141C] text-white">Finance Manager</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-300 mb-1">
+                      Security PIN
+                    </label>
+                    <input
+                      type="password"
+                      maxLength={4}
+                      value={adminPin}
+                      onChange={(e) => setAdminPin(e.target.value)}
+                      placeholder="9021"
+                      className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-hidden focus:border-amber-500 transition-colors text-center tracking-widest font-mono"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-rose-600 via-brand-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-950/60 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>{loading ? 'Authenticating Admin Key...' : 'Log In to Admin Flow'}</span>
+                </button>
+              </form>
+
+              {/* Switch back to regular customer login */}
+              <div className="text-center text-xs text-gray-400 pt-3 border-t border-white/10">
+                Ordering food today?{' '}
+                <button
+                  type="button"
+                  onClick={() => setAuthModalTab('login')}
+                  className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4 cursor-pointer"
+                >
+                  Back to Customer Login
                 </button>
               </div>
             </div>

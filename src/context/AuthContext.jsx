@@ -203,6 +203,90 @@ export function AuthProvider({ children }) {
     return { success: true };
   };
 
+  const adminLogin = (email, password, role = 'Super Admin') => {
+    const derivedName = email
+      .split('@')[0]
+      .replace(/[._]/g, ' ')
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+
+    const adminUser = {
+      id: 'admin-' + Date.now(),
+      name: derivedName || 'Akash Barik',
+      email: email.trim(),
+      phone: '+91 98888 77777',
+      role: 'admin',
+      adminRole: role,
+      isGoldMember: true,
+      walletCoins: 9999,
+      savedAddresses: DEMO_USER.savedAddresses,
+    };
+
+    setUser(adminUser);
+    try {
+      localStorage.setItem(
+        'cravewave_current_admin',
+        JSON.stringify({
+          name: adminUser.name,
+          email: adminUser.email,
+          role: role,
+          avatar: (adminUser.name.slice(0, 2) || 'AB').toUpperCase(),
+          lastLogin: 'Just now',
+        })
+      );
+    } catch (e) {
+      // ignore
+    }
+
+    showToast({
+      type: 'success',
+      title: 'Admin Access Granted! 🛡️',
+      message: `Welcome back, ${adminUser.name}! Opening CraveWave Admin Flow...`,
+    });
+    return { success: true };
+  };
+
+  const demoAdminLogin = () => {
+    const adminUser = {
+      id: 'admin-super-01',
+      name: 'Akash Barik',
+      email: 'admin@cravewave.internal',
+      phone: '+91 98888 77777',
+      role: 'admin',
+      adminRole: 'Super Admin',
+      isGoldMember: true,
+      walletCoins: 9999,
+      savedAddresses: DEMO_USER.savedAddresses,
+    };
+
+    setUser(adminUser);
+    try {
+      localStorage.setItem(
+        'cravewave_current_admin',
+        JSON.stringify({
+          name: 'Akash Barik',
+          email: 'admin@cravewave.internal',
+          role: 'Super Admin',
+          avatar: 'AB',
+          lastLogin: 'Just now',
+        })
+      );
+    } catch (e) {
+      // ignore
+    }
+
+    showToast({
+      type: 'success',
+      title: 'Demo Admin Access Granted! 🛡️',
+      message: 'Logged in as Super Admin. Redirecting to Admin Operations Dashboard...',
+    });
+    return { success: true };
+  };
+
+  const openAdminLoginModal = () => {
+    setAuthModalTab('admin');
+    setIsAuthModalOpen(true);
+  };
+
   const updateProfile = (updatedFields) => {
     setUser((prev) => {
       if (!prev) return null;
@@ -382,6 +466,9 @@ export function AuthProvider({ children }) {
         loginWithPhone,
         signup,
         demoLogin,
+        adminLogin,
+        demoAdminLogin,
+        openAdminLoginModal,
         updateProfile,
         logout,
         // CraveWave Gold & Wallet Coins
