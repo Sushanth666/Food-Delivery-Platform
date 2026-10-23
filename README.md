@@ -1,168 +1,221 @@
-# CraveWave — Modern Food Delivery & Live Tracking Platform
+# 🍕 CraveWave — Modern Food Delivery & Live Tracking Platform
 
-An elegant, responsive, and feature-complete food delivery single-page application built with **React**, **Vite**, **Tailwind CSS**, **React Router**, and **Framer Motion**.
+[![React](https://img.shields.io/badge/React-19.2.8-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.3.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.19-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![React Router](https://img.shields.io/badge/React_Router-7.18.4-CA4245?logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> **CraveWave** is a full-featured, luxury-themed food delivery single-page application built for high performance, visual elegance, and fluid responsiveness across **Desktop**, **Tablet**, and **Mobile** devices. It simulates an authentic end-to-end food delivery journey—from smart GPS location detection and multi-cuisine restaurant discovery to interactive item customization, collaborative group ordering, instant coupon discounts, simulated payment gateways, and real-time 5-stage live delivery tracking.
 
 ---
 
-## 🌟 Key Features
+## 📖 Table of Contents
+- [Project Overview](#-project-overview)
+- [Key Features](#-key-features)
+- [Responsive Screen Previews](#-responsive-screen-previews)
+  - [🖥️ Desktop Version](#-desktop-version-1280px)
+  - [📱 Tablet Version](#-tablet-version-768px---1024px)
+  - [📲 Mobile Version](#-mobile-version-390px---phone)
+- [Technology Stack](#-technology-stack)
+- [Project Architecture](#-project-architecture)
+- [Getting Started](#-getting-started)
+- [Multi-Device Verification](#-multi-device-verification)
+- [License](#-license)
 
-### 1. Smart Location System (Auto GPS & Manual Entry)
-- **Automatic GPS Location Detection**: One-click detection using the HTML5 Geolocation API with reverse geocoding to automatically identify the user's locality, city, state, and PIN code.
-- **Manual Search & Location Picker**:
-  - Instant search across major Indian tech hubs and residential areas (Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Pune).
-  - Quick-select popular city chips and localities (Koramangala, Indiranagar, Connaught Place, Bandra West, Cyber City, etc.).
-  - **Custom Address Builder**: Enter specific Flat/Building number, street, area, city, and 6-digit PIN code.
-  - One-click auto-fill during checkout.
+---
 
-### 2. Home & Restaurant Discovery
+## 🌟 Project Overview
 
-### 2. Restaurant Details & Menu Customization
-- **Immersive Restaurant Header**: Ambient backdrop cover, verified review badges, operational status, and delivery details.
-- **Categorized Menu Navigation**: Sticky category sub-navigation with dish counts.
-- **Dietary Indicators**: Standardized Vegetarian and Non-Vegetarian badges.
-- **Item Customization Modal (Item Builder)**:
-  - Portion size selection (Regular, Double, Large) with real-time price delta calculations.
-  - Add-on toppings & extra sides checkboxes with individual price tags.
-  - Spice level preferences (Mild, Medium, Hot).
-  - Special kitchen requests/instructions textarea.
+CraveWave was crafted to deliver an extraordinary, responsive user experience modeled after top global food delivery platforms (such as Swiggy, Zomato, and DoorDash) combined with a dark luxury aesthetic.
 
-### 3. Cart & Coupon System
-- **Dual Cart Modes**:
-  - **Slide-Over Quick Cart Drawer**: Opens automatically upon adding items or via the persistent navigation bag button.
-  - **Dedicated Cart Page (`/cart`)**: Complete order review with item breakdown, customization badges, and quantity adjusters.
-- **Multi-Restaurant Conflict Protection**: Prevents accidental mixing of items from different restaurants with an alert modal.
-- **Promotional Coupon Engine**:
-  - Input promo code or select from recommended chips (`WELCOME50`, `TASTY20`, `FREEDEL`, `FEAST15`).
-  - Validation rules including minimum order values, percentage caps, flat discounts, and delivery fee waivers.
-- **Transparent Bill Calculation**: Item subtotal, discounts, dynamic delivery fee ($3.49 or FREE for orders over $35/with coupon), platform fee ($1.49), and 8% taxes.
+### Core Highlights:
+- **605+ Curated Dishes & Restaurants**: Handcrafted menu database covering authentic Indian, Italian, Pan-Asian, Continental, Fast Food, Mithai, and Street Food.
+- **Precision Item Customization**: Configure portion sizes, add-on toppings, spice levels (Mild Nawabi, Medium, Fiery Andhra), and kitchen instructions with live price recalculation.
+- **Intelligent Location System**: Automatic HTML5 Geolocation detection + reverse geocoding, plus instant manual search covering major Indian hubs (Bengaluru, Mumbai, Delhi NCR, Hyderabad, Chennai, Kolkata, Pune).
+- **Gamified Rewards & VIP Club**: CraveCoins rewards wallet, interactive Craving Wheel (Spin & Win), scratch cards with confetti animations, and Gold VIP free delivery membership.
+- **Collaborative Group & Gift Ordering**: Group room codes for itemized/split billing with friends, plus surprise digital gift order greetings.
+- **Interactive Live 5-Step Order Tracker**: Animated delivery stages, simulated GPS night-mode delivery map, live scooter movement, driver contact modal, and delivery chat drawer.
 
-### 4. Checkout & Form Validation
-- **Contact & Address Form**: Real-time validation for Full Name, Phone number format, Street Address, City, and ZIP code.
-- **Payment Method Selectors**:
-  - Credit / Debit Cards (with card details inputs).
-  - Instant UPI Apps (GPay, PhonePe, Paytm with VPA validation).
-  - Cash on Delivery (COD).
-  - Net Banking.
-- **Celebratory Transition**: Canvas confetti celebration on successful placement.
+---
 
-### 5. Live Order Tracking & Simulation
-- **Animated 5-Stage Delivery Timeline**:
-  1. *Order Confirmed*
-  2. *Kitchen Preparing Food*
-  3. *Delivery Partner Assigned*
-  4. *Out for Delivery (On the Way)*
-  5. *Delivered*
-- **Interactive Step Simulator**: Built-in test controls allowing testers to advance delivery steps (`Next Step >>`) or reset to Step 1.
-- **Simulated GPS Delivery Map**: Night mode map canvas with pulsing satellite tracking and animated scooter movement.
-- **Delivery Driver Profile**: Driver photo avatar, verified star rating, completed trip counts, vehicle registration, and direct call action.
+## 🚀 Key Features
 
-### 6. Order History & Instant Re-Ordering
-- **Local Storage Persistence**: Active orders and cart state persist seamlessly across page refreshes.
-- **1-Click Re-order**: Instant recreation of previous meals directly back into the cart.
+| Category | Highlights |
+| :--- | :--- |
+| **📍 Location System** | GPS auto-detection, reverse geocoding, popular city/tech-hub chips, and custom apartment/street address builder. |
+| **🔍 Search & Filtering** | Global Omnisearch (`⌘K` / `Ctrl+K`), live dish/cuisine search, pure vegetarian filter, bestsellers filter, rating & price sorting. |
+| **🍔 Menu & Item Builder** | Dynamic portion sizing, add-on toppings with incremental pricing, spice level selectors, and dietary badges (Veg/Non-Veg). |
+| **🛒 Cart & Promo Engine** | Slide-over cart drawer, dedicated cart page, multi-restaurant conflict alerts, promo coupon validation (`WELCOME100`, `CRAVE50`, `FREEDEL`), CraveCoins discounts, no-cutlery & EV fleet eco-options. |
+| **💳 Checkout & Payments** | Contact and address forms, UPI ID verification (GPay/PhonePe/Paytm), Card payments, Net Banking, and Cash on Delivery (COD). |
+| **🛵 Live Order Tracking** | 5-stage animated progress timeline, simulated real-time map with moving delivery partner, test step controller (`Next Step >>`), driver call, and live customer support chat. |
+| **📜 Order History & Re-order** | Persistent order archives, detailed itemized receipts, download/view summary, and instant 1-click re-ordering back into the cart. |
+| **👤 User Authentication** | Clean email/password sign-in and sign-up with personalized placeholder defaults, custom user avatar color themes, and address book management. |
+
+---
+
+## 📸 Responsive Screen Previews
+
+Below are visual captures of all versions across **Desktop**, **Tablet**, and **Mobile** viewports.
+
+---
+
+### 🖥️ Desktop Version (`1280px+`)
+
+The Desktop version offers an expansive wide-screen layout with sticky navigation, top location picker, global search bar, multi-column restaurant grid, and side-by-side checkout breakdown.
+
+| Page / Feature | Desktop Screenshot Preview |
+| :--- | :--- |
+| **01. Homepage & Discovery**<br>_Category bar, luxury hero banner, exquisite cuisines, and restaurant grid_ | ![Desktop Homepage](screenshots/desktop/01_homepage.png) |
+| **02. Restaurant Menu & Customizer**<br>_Sticky category index, dish cards, and interactive item builder modal_ | ![Desktop Restaurant Detail](screenshots/desktop/02_restaurant_detail.png) |
+| **03. Cart Review & Bill Summary**<br>_Item customization breakdown, promo codes, eco-switches, and live total_ | ![Desktop Cart Page](screenshots/desktop/03_cart_page.png) |
+| **04. Secure Checkout**<br>_Address autofill, payment gateways (UPI, Card, COD), and security badges_ | ![Desktop Checkout Page](screenshots/desktop/04_checkout_page.png) |
+| **05. Live Order Tracking**<br>_5-stage timeline, simulated night map, delivery partner card, and step simulator_ | ![Desktop Order Tracking](screenshots/desktop/05_order_tracking.png) |
+| **06. Order History & Re-Order**<br>_Past order cards, status badges, item summaries, and instant 1-click reorder_ | ![Desktop Order History](screenshots/desktop/06_order_history.png) |
+| **07. User Sign In**<br>_Clean email & password authentication with quick demo access_ | ![Desktop Login](screenshots/desktop/07_login_page.png) |
+| **08. Foodie Sign Up**<br>_Registration form featuring personalized name placeholder (`sushanth`)_ | ![Desktop Signup](screenshots/desktop/08_signup_page.png) |
+
+---
+
+### 📱 Tablet Version (`768px - 1024px`)
+
+The Tablet layout seamlessly balances screen real estate with touch navigation, featuring a balanced 2-column card grid, adapted top search header, and persistent bottom navigation bar.
+
+| Page / Feature | Tablet Screenshot Preview |
+| :--- | :--- |
+| **01. Tablet Homepage**<br>_Top search header, quick category scroller, and 2-column restaurant grid_ | ![Tablet Homepage](screenshots/tablet/01_homepage.png) |
+| **02. Tablet Restaurant Detail**<br>_Menu categorization, dish cards, and responsive customizer popup_ | ![Tablet Restaurant Detail](screenshots/tablet/02_restaurant_detail.png) |
+| **03. Tablet Cart & Discounts**<br>_Streamlined tablet bill breakdown and coupon selector_ | ![Tablet Cart Page](screenshots/tablet/03_cart_page.png) |
+| **04. Tablet Checkout**<br>_Touch-friendly address form and payment selector cards_ | ![Tablet Checkout Page](screenshots/tablet/04_checkout_page.png) |
+| **05. Tablet Live Tracking**<br>_Real-time delivery progress stages and interactive controls_ | ![Tablet Order Tracking](screenshots/tablet/05_order_tracking.png) |
+| **06. Tablet Order History**<br>_Past order activity and quick reorder shortcuts_ | ![Tablet Order History](screenshots/tablet/06_order_history.png) |
+| **07. Tablet Sign In**<br>_Centered sign-in card with modern glassmorphism aesthetic_ | ![Tablet Login](screenshots/tablet/07_login_page.png) |
+| **08. Tablet Sign Up**<br>_Touch-optimized registration with `sushanth` placeholder_ | ![Tablet Signup](screenshots/tablet/08_signup_page.png) |
+
+---
+
+### 📲 Mobile Version (`390px - Phone`)
+
+The Mobile version is engineered for one-handed thumb interactions, featuring touch carousels, a sticky bottom navigation bar (`Explore`, `Orders`, `Cart`, `Profile`), sliding bottom sheets, and floating CTA buttons.
+
+| Page / Feature | Mobile Screenshot Preview |
+| :--- | :--- |
+| **01. Mobile Homepage**<br>_Compact header, location chip, hero promo carousel, and single-column restaurant cards_ | ![Mobile Homepage](screenshots/mobile/01_homepage.png) |
+| **02. Mobile Restaurant Detail**<br>_Touch-friendly dish cards, dietary indicators, and floating bottom cart pill_ | ![Mobile Restaurant Detail](screenshots/mobile/02_restaurant_detail.png) |
+| **03. Mobile Cart Review**<br>_Slide-over cart drawer and dedicated cart view with padded checkout clearance_ | ![Mobile Cart Page](screenshots/mobile/03_cart_page.png) |
+| **04. Mobile Checkout**<br>_Accordion delivery forms, UPI direct payment, and sticky place order CTA_ | ![Mobile Checkout Page](screenshots/mobile/04_checkout_page.png) |
+| **05. Mobile Live Tracking**<br>_Step-by-step delivery animation, driver details, and live test controller_ | ![Mobile Order Tracking](screenshots/mobile/05_order_tracking.png) |
+| **06. Mobile Order History**<br>_Scrollable past receipts with 1-click reorder buttons_ | ![Mobile Order History](screenshots/mobile/06_order_history.png) |
+| **07. Mobile Profile Drawer**<br>_Slide-up bottom sheet with Gold VIP card, CraveCoins, address preview & profile edit_ | ![Mobile Profile](screenshots/mobile/09_mobile_profile.png) |
+| **08. Mobile Sign In & Sign Up**<br>_Responsive mobile auth flow with default name placeholder `sushanth`_ | ![Mobile Signup](screenshots/mobile/08_signup_page.png) |
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology |
+| Layer | Technologies Used |
 | :--- | :--- |
-| **Framework & Build** | React 19 + Vite 8 |
-| **Styling & Design System** | Tailwind CSS v3.4 + PostCSS + Autoprefixer |
-| **Routing** | React Router DOM v7 |
-| **State Management** | Context API (`CartContext`, `OrderContext`, `FilterContext`) |
-| **Icons** | Lucide React |
-| **Animations** | Framer Motion + Canvas Confetti |
-| **Persistence** | Browser LocalStorage API |
+| **Frontend Framework** | **React 19** (`react`, `react-dom`) |
+| **Build Tooling & Dev Server** | **Vite 8** (with ES modules & lightning-fast HMR) |
+| **Styling & CSS Architecture** | **Tailwind CSS v3.4**, PostCSS, Autoprefixer, Custom Luxury Theme Tokens |
+| **Routing** | **React Router DOM v7** (Declarative client-side routing) |
+| **State Management** | React Context API (`AuthContext`, `CartContext`, `OrderContext`, `FilterContext`, `LocationContext`, `WishlistContext`) |
+| **Icons & Visuals** | **Lucide React** (feather-weight SVG iconography) |
+| **Animations & Effects** | **Framer Motion**, **Canvas Confetti** |
+| **Code Quality & Linting** | **Oxlint** (0 errors / clean linting) |
+| **Storage & Persistence** | Browser `localStorage` API |
 
 ---
 
-## 📁 Project Structure
-
-For a full directory breakdown and architecture guide, see [PROJECT_STRUCTURE.md](file:///c:/Users/susha/OneDrive/Desktop/Project%20Tasks/Food%20Delivery%20Platform/PROJECT_STRUCTURE.md).
+## 📁 Project Architecture
 
 ```plaintext
-food-delivery-platform/
-├── public/
-│   ├── favicon.svg               # SVG brand favicon
-│   └── images/                   # 605 local dish photos & cuisine imagery
+Food Delivery Platform/
+├── public/                       # Static public assets
+│   ├── favicon.svg               # SVG brand logo icon
+│   └── images/                   # Localized dish photography & cuisine banners
 │       ├── cuisines/             # 6 authentic regional cuisine images
-│       └── dishes/               # 605 localized dish photos (item-101 to item-705)
-├── screenshots/                  # Verified mobile, tablet, and desktop captures
+│       └── dishes/               # 605 high-resolution dish pictures (item-101 to item-705)
+├── screenshots/                  # High-resolution screenshots of all 3 versions
+│   ├── desktop/                  # 8 Desktop view captures (1280x800)
+│   ├── tablet/                   # 8 Tablet view captures (768x1024)
+│   └── mobile/                   # 9 Mobile view captures (390x844)
 ├── src/
-│   ├── components/               # Modular component library with barrel exports
-│   │   ├── ui/                   # Badges, pills, avatar, ambient background
-│   │   ├── modals/               # All application dialogs and sheets
-│   │   ├── feedback/             # User toasts & notifications
-│   │   ├── cart/                 # CartDrawer, group order, gift order
-│   │   ├── home/                 # HeroBanner, CategoryBar, FilterBar, RestaurantCard
-│   │   ├── layout/               # Navbar, Footer, MobileBottomNav
-│   │   ├── restaurant/           # ItemCustomizerModal
-│   │   ├── rewards/              # RewardsHubModal & CraveCoins
-│   │   ├── search/               # EnhancedSearchModal with ⌘K
+│   ├── assets/                   # Vector logos and fallback images
+│   ├── components/               # Modular reusable UI components
+│   │   ├── cart/                 # CartDrawer, GroupOrderModal, GiftOrderModal
+│   │   ├── feedback/             # ToastNotification system
+│   │   ├── home/                 # HeroBanner, CategoryBar, FilterBar, RestaurantCard, CravingWheelModal
+│   │   ├── layout/               # Navbar, Footer, MobileBottomNav (with slide-up profile sheet)
+│   │   ├── modals/               # LocationModal, AuthModal, EditProfileModal, WishlistModal, etc.
+│   │   ├── restaurant/           # ItemCustomizerModal (sizes, spice levels, add-ons)
+│   │   ├── rewards/              # RewardsHubModal & ScratchCardModal
+│   │   ├── search/               # EnhancedSearchModal (with ⌘K shortcut)
 │   │   ├── tracking/             # DeliveryChatDrawer
-│   │   └── index.js              # Master component barrel export
-│   ├── context/                  # React Context state management
-│   │   ├── AuthContext.jsx       # User auth, profile, Gold VIP, and wallet coins
-│   │   ├── CartContext.jsx       # Multi-item cart, customizations, coupons, fees
-│   │   ├── FilterContext.jsx     # Active category, cuisines, veg toggle, search
-│   │   ├── LocationContext.jsx   # GPS geolocation & Indian address picker
-│   │   ├── OrderContext.jsx      # Order placement, active history & 5-step simulation
-│   │   └── WishlistContext.jsx   # Favorited restaurants & dishes
-│   ├── data/                     # Mock databases & initial state catalogs
-│   │   ├── categories.js         # Food categories with icons & tags
-│   │   ├── coupons.js            # Active discount codes & validation rules
-│   │   ├── featuredCuisines.js   # Featured cuisine cards
-│   │   ├── restaurants.js        # Curated catalog of restaurants & 605 menu items
-│   │   └── mockOrders.js         # Initial order history & timeline step definitions
-│   ├── pages/                    # Top-level page views (Home, Detail, Cart, Checkout, Track, Orders)
-│   ├── utils/                    # Bill calculations, currency formatting, nutrition, storage
-│   ├── App.jsx                   # Route configurations & layout shell
-│   ├── index.css                 # Tailwind directives, keyframe animations & luxury theme
-│   └── main.jsx                  # React DOM root with BrowserRouter
-├── tailwind.config.js
-├── vite.config.js
-└── package.json
+│   │   ├── ui/                   # Badges, DietaryBadge, DishNutritionBadge, UserAvatar
+│   │   └── index.js              # Central barrel export
+│   ├── context/                  # React Context providers (Auth, Cart, Filter, Location, Order, Wishlist)
+│   ├── data/                     # Data stores (categories, coupons, mockOrders, restaurants)
+│   ├── pages/                    # Route pages (HomePage, RestaurantDetailPage, CartPage, CheckoutPage, OrderTrackingPage, OrderHistoryPage, LoginPage, SignupPage)
+│   ├── utils/                    # Helper utilities (formatCurrency, billCalculator, storage)
+│   ├── App.jsx                   # Main application router and modal orchestrator
+│   ├── index.css                 # Global CSS design tokens, scrollbar styling, luxury gradients
+│   └── main.jsx                  # Application entry point
+├── package.json                  # Dependencies and execution scripts
+├── tailwind.config.js            # Design system, custom colors, animations, responsive breakpoints
+└── vite.config.js                # Vite development server and build configuration
 ```
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js (v18.0.0 or later recommended)
-- npm or yarn
+### 1. Prerequisites
+- **Node.js**: v18.0.0 or higher
+- **npm** or **yarn**
 
-### Installation
-1. Clone the repository or navigate to the project directory:
-   ```bash
-   cd "Food Delivery Platform"
-   ```
+### 2. Installation
+Clone the repository and install all dependencies:
+```bash
+git clone https://github.com/Sushanth666/Food-Delivery-Platform.git
+cd "Food Delivery Platform"
+npm install
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+### 3. Running Locally
+Start the local development server:
+```bash
+npm run dev
+```
+Open your browser and navigate to:
+```
+http://localhost:5174
+```
 
-3. Launch development server:
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:5174](http://localhost:5174) in your browser.
+### 4. Code Quality & Linting
+Run the Oxlint linter to verify code cleanliness:
+```bash
+npm run lint
+```
 
-4. Build for production:
-   ```bash
-   npm run build
-   ```
-   Outputs optimized production bundle to the `dist/` directory.
+### 5. Production Build
+Compile the optimized production bundle:
+```bash
+npm run build
+```
+The compiled assets will be placed in the `dist/` directory.
 
 ---
 
-## 📱 Responsive Layouts
-- **Desktop (1024px+)**: Sticky navigation with location switcher, multi-column restaurant grid, side-by-side checkout review.
-- **Tablet (768px - 1023px)**: Responsive 2-column dish layouts and flexible slide-over drawer.
-- **Mobile (320px - 767px)**: Full-width menu items, sticky mobile bottom navigation bar, touch-friendly pill carousels.
+## 📱 Multi-Device Verification
+
+CraveWave has undergone automated and manual cross-device testing across:
+- **Desktop (1280x800+)**: Chrome, Edge, Safari, Firefox.
+- **Tablet (768x1024 / iPad)**: Portrait and landscape adaptive testing.
+- **Mobile (390x844 / iPhone & Android)**: Bottom navigation bar touch targets, slide-up profile sheet, and viewport padding (`pb-28 lg:pb-20`) to eliminate element overlap.
 
 ---
 
 ## 📄 License
-MIT License. Crafted for modern food delivery excellence.
+
+This project is licensed under the **MIT License** — feel free to use and customize for personal or commercial projects.
