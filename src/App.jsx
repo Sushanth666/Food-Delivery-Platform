@@ -82,7 +82,9 @@ export default function App() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex-1 flex flex-col min-h-0"
+                        className={`flex-1 flex flex-col w-full ${
+                          isAdminRoute ? 'min-h-0 h-full overflow-hidden' : ''
+                        }`}
                       >
                         <Routes location={location}>
                           <Route path="/" element={<HomePage />} />
@@ -101,11 +103,11 @@ export default function App() {
                           <Route path="/signup" element={<SignupPage />} />
                           <Route path="*" element={<NotFoundPage />} />
                         </Routes>
+
+                        {/* Footer placed at the very end of the page flow below all restaurant cards */}
+                        {!hideFooter && <Footer />}
                       </motion.div>
                     </AnimatePresence>
-
-                    {/* Footer inside page scroll container */}
-                    {!hideFooter && <Footer />}
                   </div>
 
               {/* Overlays, Drawers & Location Modal (Storefront Only) */}

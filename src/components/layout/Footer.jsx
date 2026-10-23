@@ -29,7 +29,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-950 text-gray-400 mt-20 pt-16 pb-24 lg:pb-12 border-t border-gray-900 relative overflow-hidden">
+    <footer className="bg-gray-950 text-gray-400 mt-auto mt-20 pt-16 pb-24 lg:pb-12 border-t border-gray-900 relative overflow-hidden">
       {/* Ambient background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent pointer-events-none" />
 
