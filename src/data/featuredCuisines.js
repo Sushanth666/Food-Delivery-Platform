@@ -51,12 +51,12 @@ export const FEATURED_EXQUISITE_CUISINES = [
   },
   {
     id: 'feat-6',
-    name: 'Akira - Dim Sum',
-    cuisine: 'Asian Dim Sum',
-    rating: 4.7,
+    name: 'Dindigul Thalappakatti - Biryani',
+    cuisine: 'Authentic Biryani',
+    rating: 4.8,
     slug: 'dindigul-thalappakatti-biryani',
-    image: '/images/cuisines/asian_dimsum_momos.jpg',
-    deliveryTime: '30-40 min',
-    distance: '3.5 km',
+    image: '/images/dindigul_thalappakatti_biryani.jpg',
+    deliveryTime: '25-35 min',
+    distance: '2.3 km',
   },
 ];
