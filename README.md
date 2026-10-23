@@ -17,6 +17,15 @@
   - [🖥️ Desktop Version](#-desktop-version-1280px)
   - [📱 Tablet Version](#-tablet-version-768px---1024px)
   - [📲 Mobile Version](#-mobile-version-390px---phone)
+- [👑 Enterprise Admin Flow (8 Modules)](#-enterprise-admin-flow-8-modules)
+  - [01. Dashboard & Analytics](#01-dashboard--analytics)
+  - [02. Order Management](#02-order-management)
+  - [03. Restaurant & Menu Management](#03-restaurant--menu-management)
+  - [04. Delivery Partner Fleet](#04-delivery-partner-fleet)
+  - [05. Customer Management & CRM](#05-customer-management--crm)
+  - [06. Payments & Finance](#06-payments--finance)
+  - [07. Offers & Promotions](#07-offers--promotions)
+  - [08. Support Desk & System Settings](#08-support-desk--system-settings)
 - [Technology Stack](#-technology-stack)
 - [Project Architecture](#-project-architecture)
 - [Getting Started](#-getting-started)
@@ -111,6 +120,23 @@ The Mobile version is engineered for one-handed thumb interactions, featuring to
 
 ---
 
+## 👑 Enterprise Admin Flow (8 Modules)
+
+The **CraveWave Admin Flow** (`/admin`) is a full-featured, enterprise-grade operations platform designed for platform administrators, restaurant managers, fleet coordinators, and finance leads. Accessible via direct URL or through the **Admin Login** tab in the authentication modal with **One-Click Demo Admin Access**.
+
+| Module | Core Functionality | Screenshot Preview |
+| :--- | :--- | :--- |
+| **01. Dashboard & Analytics**<br>`?tab=dashboard` | Real-time GMV revenue tracking, active orders throughput, customer acquisition trends, hourly peak statistics, top performing restaurants, and quick operation triggers. | ![01 Dashboard Analytics](screenshots/admin/01_dashboard_analytics.png) |
+| **02. Order Management**<br>`?tab=orders` | Live order monitoring board, multi-state status tracking (Pending, Confirmed, In Kitchen, Out for Delivery, Delivered, Cancelled), rider manual assignment, refund authorization, and printable itemized receipts. | ![02 Order Management](screenshots/admin/02_order_management.png) |
+| **03. Restaurant & Menu Management**<br>`?tab=restaurants` | Active restaurant directory, partner registration approval queue, document compliance verification (FSSAI, GSTIN, PAN), menu category editor, dish pricing, spice level and out-of-stock toggles. | ![03 Restaurant Menu](screenshots/admin/03_restaurant_menu.png) |
+| **04. Delivery Partner Fleet**<br>`?tab=delivery` | Live delivery fleet map, active rider tracking, vehicle stats (EV vs Petrol), KYC document verification audits (Aadhaar, DL, RC), online/busy/offline state controls, and weekly earnings calculation. | ![04 Delivery Partners](screenshots/admin/04_delivery_partners.png) |
+| **05. Customer Management & CRM**<br>`?tab=customers` | Complete consumer database, contact details, total lifetime spend and order history, CraveWave Gold VIP badge status, wallet CraveCoins management, and complaint resolution logs. | ![05 Customer Management](screenshots/admin/05_customer_management.png) |
+| **06. Payments & Finance**<br>`?tab=finance` | Financial dashboard, platform net commission breakdowns, automated restaurant payout ledger, batch settlement processing (NEFT/RTGS), payment gateway distribution, and GST tax statements. | ![06 Payments Finance](screenshots/admin/06_payments_finance.png) |
+| **07. Offers & Promotions**<br>`?tab=offers` | Promo code engine, campaign creation wizard, percentage and flat discounts (`WELCOME100`, `CRAVE50`, `FEAST75`), minimum spend rules, expiry date scheduling, and redemption analytics. | ![07 Offers Promotions](screenshots/admin/07_offers_promotions.png) |
+| **08. Support Desk & System Settings**<br>`?tab=support` | Customer support ticket desk with quick response composer, dynamic surge multiplier zones (rain/rush-hour), push notification broadcaster, RBAC admin permissions matrix, and immutable audit logs. | ![08 Support Settings](screenshots/admin/08_support_settings.png) |
+
+---
+
 ## 🛠️ Technology Stack
 
 | Layer | Technologies Used |
@@ -119,7 +145,7 @@ The Mobile version is engineered for one-handed thumb interactions, featuring to
 | **Build Tooling & Dev Server** | **Vite 8** (with ES modules & lightning-fast HMR) |
 | **Styling & CSS Architecture** | **Tailwind CSS v3.4**, PostCSS, Autoprefixer, Custom Luxury Theme Tokens |
 | **Routing** | **React Router DOM v7** (Declarative client-side routing) |
-| **State Management** | React Context API (`AuthContext`, `CartContext`, `OrderContext`, `FilterContext`, `LocationContext`, `WishlistContext`) |
+| **State Management** | React Context API (`AuthContext`, `CartContext`, `OrderContext`, `FilterContext`, `LocationContext`, `WishlistContext`, `AdminContext`) |
 | **Icons & Visuals** | **Lucide React** (feather-weight SVG iconography) |
 | **Animations & Effects** | **Framer Motion**, **Canvas Confetti** |
 | **Code Quality & Linting** | **Oxlint** (0 errors / clean linting) |
@@ -136,10 +162,11 @@ Food Delivery Platform/
 │   └── images/                   # Localized dish photography & cuisine banners
 │       ├── cuisines/             # 6 authentic regional cuisine images
 │       └── dishes/               # 605 high-resolution dish pictures (item-101 to item-705)
-├── screenshots/                  # High-resolution screenshots of all 3 versions
+├── screenshots/                  # High-resolution screenshots of all platforms
 │   ├── desktop/                  # 8 Desktop view captures (1280x800)
 │   ├── tablet/                   # 8 Tablet view captures (768x1024)
-│   └── mobile/                   # 9 Mobile view captures (390x844)
+│   ├── mobile/                   # 9 Mobile view captures (390x844)
+│   └── admin/                    # 8 Enterprise Admin Flow Module captures (1440x900)
 ├── src/
 │   ├── assets/                   # Vector logos and fallback images
 │   ├── components/               # Modular reusable UI components

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useAdmin } from '../../context/AdminContext';
 import {
   LayoutDashboard,
@@ -40,7 +40,21 @@ export default function AdminLayout() {
     couponsList,
   } = useAdmin();
 
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlTab = searchParams.get('tab');
+  const [activeTab, setActiveTabState] = useState(urlTab || 'dashboard');
+
+  useEffect(() => {
+    if (urlTab && urlTab !== activeTab) {
+      setActiveTabState(urlTab);
+    }
+  }, [urlTab, activeTab]);
+
+  const setActiveTab = (tab) => {
+    setActiveTabState(tab);
+    setSearchParams({ tab });
+  };
+
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
