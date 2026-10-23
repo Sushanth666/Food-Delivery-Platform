@@ -392,7 +392,9 @@ export default function CravingWheelModal({ isOpen, onClose }) {
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          window.scrollTo({ top: 900, behavior: 'smooth' });
+          const sc = document.getElementById('main-scroll-container');
+          if (sc) sc.scrollTo({ top: 900, behavior: 'smooth' });
+          else window.scrollTo({ top: 900, behavior: 'smooth' });
         }
       }, 150);
       onClose();
@@ -419,7 +421,9 @@ export default function CravingWheelModal({ isOpen, onClose }) {
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        window.scrollTo({ top: 900, behavior: 'smooth' });
+        const sc = document.getElementById('main-scroll-container');
+        if (sc) sc.scrollTo({ top: 900, behavior: 'smooth' });
+        else window.scrollTo({ top: 900, behavior: 'smooth' });
       }
     }, 150);
   };

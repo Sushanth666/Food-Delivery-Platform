@@ -38,6 +38,10 @@ function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    const container = document.getElementById('main-scroll-container');
+    if (container) {
+      container.scrollTo(0, 0);
+    }
   }, [pathname]);
   return null;
 }
@@ -54,14 +58,17 @@ export default function App() {
           <FilterProvider>
             <CartProvider>
               <OrderProvider>
-                <div className="min-h-screen flex flex-col bg-[#0B0B0E] bg-dark-luxury text-gray-100 selection:bg-brand-500 selection:text-white relative">
+                <div className="h-screen flex flex-col bg-[#0B0B0E] bg-dark-luxury text-gray-100 selection:bg-brand-500 selection:text-white relative overflow-hidden">
                   {!isAdminRoute && <AmbientBackground />}
                   <ScrollToTop />
-                  {/* Global Storefront Navigation (Hidden on Admin Routes) */}
+                  {/* Global Storefront Navigation: Fixed at top with ZERO scrollbar beside it */}
                   {!isAdminRoute && <Navbar />}
 
-                  {/* Main Page Route Views with Cinematic Page Transitions */}
-                  <div className="flex-1 flex flex-col relative z-10">
+                  {/* Main Page Scroll Container: Scrollbar exists ONLY in pages, starting below the navbar */}
+                  <div
+                    id="main-scroll-container"
+                    className="flex-1 overflow-y-auto flex flex-col relative z-10"
+                  >
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={location.pathname}
@@ -90,6 +97,9 @@ export default function App() {
                         </Routes>
                       </motion.div>
                     </AnimatePresence>
+
+                    {/* Footer inside page scroll container */}
+                    {!hideFooter && <Footer />}
                   </div>
 
               {/* Overlays, Drawers & Location Modal (Storefront Only) */}
@@ -107,9 +117,6 @@ export default function App() {
                   <MobileBottomNav />
                 </>
               )}
-
-              {/* Footer (Storefront Only) */}
-              {!hideFooter && <Footer />}
             </div>
           </OrderProvider>
         </CartProvider>
