@@ -326,29 +326,6 @@ export default function AuthModal() {
                 </button>
               </form>
 
-              {/* Switch to Admin or Signup */}
-              <div className="flex flex-col gap-2 text-center text-xs text-gray-400 mt-6 pt-4 border-t border-white/10">
-                <div>
-                  Don't have an account yet?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setAuthModalTab('signup')}
-                    className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4 cursor-pointer"
-                  >
-                    Create Account Now
-                  </button>
-                </div>
-                <div className="text-[11px] text-gray-500">
-                  Platform Administrator?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setAuthModalTab('admin')}
-                    className="text-amber-400 font-semibold hover:text-amber-300 cursor-pointer"
-                  >
-                    Switch to Admin Login →
-                  </button>
-                </div>
-              </div>
             </div>
           )}
 
@@ -457,17 +434,6 @@ export default function AuthModal() {
                 </button>
               </form>
 
-              {/* Switch to Login */}
-              <div className="text-center text-xs text-gray-400 mt-4">
-                Already have an account?{' '}
-                <button
-                  type="button"
-                  onClick={() => setAuthModalTab('login')}
-                  className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4 cursor-pointer"
-                >
-                  Log In Now
-                </button>
-              </div>
             </div>
           )}
 
@@ -476,23 +442,21 @@ export default function AuthModal() {
           {/* ======================================================== */}
           {authModalTab === 'admin' && (
             <div className="space-y-4">
-              {/* Highlighted One-Click Demo Admin Card */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/50 via-rose-950/30 to-[#191924] border border-amber-500/35 shadow-lg shadow-black/40 relative overflow-hidden">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300 shrink-0 mt-0.5">
+              {/* Compact Demo Admin Login */}
+              <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300 shrink-0">
                     <Zap className="w-4 h-4 fill-amber-400 text-amber-400" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <h4 className="text-xs font-black text-white">
-                        Demo Admin Login
-                      </h4>
-                      <span className="text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">
-                        1-Click Access
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-black text-white">Demo Admin</span>
+                      <span className="text-[9px] font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.2 rounded border border-amber-500/30">
+                        1-Click
                       </span>
                     </div>
-                    <p className="text-[11px] text-gray-300 mt-0.5 leading-snug">
-                      Instant Super Admin access with full controls for Orders, Restaurants, Riders, and Analytics.
+                    <p className="text-[10px] text-gray-400 font-mono truncate">
+                      admin@cravewave.internal
                     </p>
                   </div>
                 </div>
@@ -501,25 +465,11 @@ export default function AuthModal() {
                   type="button"
                   onClick={handleDemoAdminClick}
                   disabled={loading}
-                  className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 via-rose-600 to-brand-600 hover:from-amber-400 hover:via-rose-500 hover:to-brand-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-rose-950/60 transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+                  className="py-2 px-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-rose-950/60 transition-all active:scale-98 cursor-pointer flex items-center gap-1.5 shrink-0"
                 >
-                  <ShieldCheck className="w-4 h-4 text-amber-200" />
-                  <span>{loading ? 'Authenticating...' : 'One-Click Demo Admin Login'}</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-200" />
+                  <span>Demo Login</span>
                 </button>
-
-                <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-gray-400 font-mono">
-                  <span>admin@cravewave.internal</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAdminEmail('admin@cravewave.internal');
-                      setAdminPassword('admin123');
-                    }}
-                    className="text-amber-400 hover:text-amber-300 underline cursor-pointer"
-                  >
-                    Auto-fill Form
-                  </button>
-                </div>
               </div>
 
               {/* Subtle Divider */}
@@ -622,17 +572,6 @@ export default function AuthModal() {
                 </button>
               </form>
 
-              {/* Switch back to regular customer login */}
-              <div className="text-center text-xs text-gray-400 pt-3 border-t border-white/10">
-                Ordering food today?{' '}
-                <button
-                  type="button"
-                  onClick={() => setAuthModalTab('login')}
-                  className="text-rose-400 font-bold hover:text-rose-300 underline underline-offset-4 cursor-pointer"
-                >
-                  Back to Customer Login
-                </button>
-              </div>
             </div>
           )}
         </motion.div>
